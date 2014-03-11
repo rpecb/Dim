@@ -7,6 +7,11 @@ class FactoryTest extends PHPUnit_Framework_TestCase
 
     }
 
+    public function testConstructException()
+    {
+
+    }
+
     public function testGet()
     {
 

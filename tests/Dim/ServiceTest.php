@@ -7,6 +7,11 @@ class ServiceTest extends PHPUnit_Framework_TestCase
 
     }
 
+    public function testConstructException()
+    {
+
+    }
+
     public function testGet()
     {
 
@@ -22,12 +27,27 @@ class ServiceTest extends PHPUnit_Framework_TestCase
 
     }
 
+    public function testResolveClassException()
+    {
+
+    }
+
     public function testResolveCallable()
     {
 
     }
 
+    public function testResolveCallableException()
+    {
+
+    }
+
     public function testGetReflectionParameters()
+    {
+
+    }
+
+    public function testGetReflectionParametersException()
     {
 
     }
