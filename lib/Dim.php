@@ -2,7 +2,7 @@
 
 class Dim implements ArrayAccess
 {
-    // TODO: Unit tests: services, with arguments
+    // TODO: Unit tests: services, stdClass
     // TODO: namespaces
     // TODO: Doc blocks
     // TODO: PHP CS Fixer
@@ -10,24 +10,14 @@ class Dim implements ArrayAccess
     // TODO: Security analysis
     // TODO: Composer package
     // TODO: Post on Github
-    public static $testing = false;
     protected $values = array();
     protected $scopes;
 
-    protected function __construct()
+    public function __construct()
     {
         $this->scopes = new SplDoublyLinkedList;
         $this->scopes->setIteratorMode(SplDoublyLinkedList::IT_MODE_DELETE);
         $this->instance($this, get_called_class());
-    }
-
-    public static function getInstance()
-    {
-        static $instance = null;
-        if (static::$testing || $instance === null) {
-            $instance = new static;
-        }
-        return $instance;
     }
 
     public function scope($scope, $callable = null)
@@ -198,26 +188,5 @@ class Dim implements ArrayAccess
     public function __unset($name)
     {
         $this->remove($name);
-    }
-
-    /**
-     * @codeCoverageIgnore
-     */
-    protected function __clone()
-    {
-    }
-
-    /**
-     * @codeCoverageIgnore
-     */
-    protected function __sleep()
-    {
-    }
-
-    /**
-     * @codeCoverageIgnore
-     */
-    protected function __wakeup()
-    {
     }
 }

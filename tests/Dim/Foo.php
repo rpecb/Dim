@@ -6,4 +6,11 @@ class Foo
     {
         return new static;
     }
-} 
+}
+
+class Poo
+{
+    protected function __construct()
+    {
+    }
+}

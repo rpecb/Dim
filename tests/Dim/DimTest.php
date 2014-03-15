@@ -2,31 +2,31 @@
 
 class DimTest extends PHPUnit_Framework_TestCase
 {
-    public function setUp()
+    public function testConstructAndRaw()
     {
-        Dim::$testing = true;
-        ChildDim::$testing = true;
-    }
-
-    public function testGetInstanceAndRaw()
-    {
-        Dim::$testing = false;
-        ChildDim::$testing = false;
-        $dim = Dim::getInstance();
-        $childDim = ChildDim::getInstance();
-        $this->assertSame($dim, Dim::getInstance());
-        $this->assertSame($childDim, ChildDim::getInstance());
-        $this->assertNotSame($dim, $childDim);
+        $dim = new Dim;
+        $childDim = new ChildDim;
         $this->assertSame($dim, $dim->raw('Dim'));
         $this->assertSame($childDim, $childDim->raw('ChildDim'));
     }
 
     /**
-     * @depends testGetInstanceAndRaw
+     * @depends testConstructAndRaw
+     * @expectedException InvalidArgumentException
+     * @expectedExceptionMessage Dependency foo is not defined in current scope.
+     */
+    public function testRawException()
+    {
+        $dim = new Dim;
+        $dim->raw('foo');
+    }
+
+    /**
+     * @depends testConstructAndRaw
      */
     public function testAddWithoutNames()
     {
-        $dim = Dim::getInstance();
+        $dim = new Dim;
         $dim->add('ChildDim');
         $foo = $dim->raw('ChildDim');
         $bar = $dim->raw('Dim');
@@ -38,21 +38,21 @@ class DimTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @depends testGetInstanceAndRaw
+     * @depends testConstructAndRaw
      */
     public function testAddWithName()
     {
-        $dim = Dim::getInstance();
+        $dim = new Dim;
         $dim->add('ChildDim', 'dim');
         $this->assertInstanceOf('Service', $dim->raw('dim'));
     }
 
     /**
-     * @depends testGetInstanceAndRaw
+     * @depends testConstructAndRaw
      */
     public function testAddWithNames()
     {
-        $dim = Dim::getInstance();
+        $dim = new Dim;
         $dim->add('ChildDim', array('foo', 'bar'));
         $foo = $dim->raw('foo');
         $bar = $dim->raw('bar');
@@ -62,31 +62,31 @@ class DimTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @depends testGetInstanceAndRaw
+     * @depends testConstructAndRaw
      */
     public function testSingletonWithoutNames()
     {
-        $dim = Dim::getInstance();
+        $dim = new Dim;
         $dim->singleton('Foo');
         $this->assertInstanceOf('Singleton', $dim->raw('Foo'));
     }
 
     /**
-     * @depends testGetInstanceAndRaw
+     * @depends testConstructAndRaw
      */
     public function testSingletonWithName()
     {
-        $dim = Dim::getInstance();
+        $dim = new Dim;
         $dim->singleton('Foo', 'foo');
         $this->assertInstanceOf('Singleton', $dim->raw('foo'));
     }
 
     /**
-     * @depends testGetInstanceAndRaw
+     * @depends testConstructAndRaw
      */
     public function testSingletonWithNames()
     {
-        $dim = Dim::getInstance();
+        $dim = new Dim;
         $dim->singleton('Foo', array('foo', 'bar'));
         $foo = $dim->raw('foo');
         $bar = $dim->raw('bar');
@@ -96,54 +96,55 @@ class DimTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @depends testGetInstanceAndRaw
+     * @depends testConstructAndRaw
      */
     public function testInstanceWithoutNames()
     {
-        $dim = Dim::getInstance();
-        $dim->instance(ChildDim::getInstance());
+        $dim = new Dim;
+        $dim->instance(new ChildDim);
         $this->assertSame($dim->raw('ChildDim'), $dim->raw('Dim'));
     }
 
     /**
-     * @depends testGetInstanceAndRaw
+     * @depends testConstructAndRaw
      */
     public function testInstanceWithName()
     {
-        $dim = Dim::getInstance();
-        $childDim = ChildDim::getInstance();
+        $dim = new Dim;
+        $childDim = new ChildDim;
         $dim->instance($childDim, 'childdim');
         $this->assertSame($childDim, $dim->raw('childdim'));
     }
 
     /**
-     * @depends testGetInstanceAndRaw
+     * @depends testConstructAndRaw
      */
     public function testInstanceWithNames()
     {
-        $dim = Dim::getInstance();
-        $childDim = ChildDim::getInstance();
+        $dim = new Dim;
+        $childDim = new ChildDim;
         $dim->instance($childDim, array('foo', 'bar'));
         $this->assertSame($childDim, $dim->raw('foo'));
         $this->assertSame($childDim, $dim->raw('bar'));
     }
 
     /**
-     * @depends testGetInstanceAndRaw
+     * @depends testConstructAndRaw
      * @expectedException InvalidArgumentException
      * @expectedExceptionMessage An instance expected.
      */
     public function testInstanceException()
     {
-        Dim::getInstance()->instance('Child');
+        $dim = new Dim;
+        $dim->instance('Child');
     }
 
     /**
-     * @depends testGetInstanceAndRaw
+     * @depends testConstructAndRaw
      */
     public function testFactoryWithName()
     {
-        $dim = Dim::getInstance();
+        $dim = new Dim;
         $dim->factory(
             function () {
                 return new Foo;
@@ -154,11 +155,11 @@ class DimTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @depends testGetInstanceAndRaw
+     * @depends testConstructAndRaw
      */
     public function testFactoryWithNames()
     {
-        $dim = Dim::getInstance();
+        $dim = new Dim;
         $dim->factory(
             function () {
                 return new Foo;
@@ -173,12 +174,12 @@ class DimTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @depends testGetInstanceAndRaw
+     * @depends testConstructAndRaw
      * @depends testAddWithoutNames
      */
     public function testExtendWithName()
     {
-        $dim = Dim::getInstance();
+        $dim = new Dim;
         $dim->add('Foo');
         $dim->extend(
             'Foo',
@@ -191,12 +192,12 @@ class DimTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @depends testGetInstanceAndRaw
+     * @depends testConstructAndRaw
      * @depends testAddWithoutNames
      */
     public function testExtendWithNames()
     {
-        $dim = Dim::getInstance();
+        $dim = new Dim;
         $dim->add('ChildDim');
         $dim->extend(
             array('ChildDim', 'Dim'),
@@ -214,13 +215,14 @@ class DimTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @depends testGetInstanceAndRaw
+     * @depends testConstructAndRaw
      * @expectedException InvalidArgumentException
      * @expectedExceptionMessage Dependency foo is not defined in current scope.
      */
     public function testExtendException()
     {
-        Dim::getInstance()->extend(
+        $dim = new Dim;
+        $dim->extend(
             'foo',
             function ($foo) {
                 return $foo;
@@ -229,12 +231,12 @@ class DimTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @depends testGetInstanceAndRaw
+     * @depends testConstructAndRaw
      * @depends testAddWithoutNames
      */
     public function testAlias()
     {
-        $dim = Dim::getInstance();
+        $dim = new Dim;
         $dim->add('Foo');
         $dim->alias('Foo', 'foo');
         $foo1 = $dim->raw('Foo');
@@ -245,12 +247,12 @@ class DimTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @depends testGetInstanceAndRaw
+     * @depends testConstructAndRaw
      * @depends testAddWithoutNames
      */
     public function testAliases()
     {
-        $dim = Dim::getInstance();
+        $dim = new Dim;
         $dim->add('Foo');
         $dim->alias('Foo', array('bar1', 'bar2'));
         $foo = $dim->raw('Foo');
@@ -264,45 +266,36 @@ class DimTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @depends testGetInstanceAndRaw
+     * @depends testConstructAndRaw
      * @expectedException InvalidArgumentException
      * @expectedExceptionMessage Dependency foo is not defined in current scope.
      */
     public function testAliasException()
     {
-        Dim::getInstance()->alias('foo', 'bar');
+        $dim = new Dim;
+        $dim->alias('foo', 'bar');
     }
 
     /**
-     * @depends testGetInstanceAndRaw
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage Dependency foo is not defined in current scope.
-     */
-    public function testRawException()
-    {
-        Dim::getInstance()->raw('foo');
-    }
-
-    /**
-     * @depends testGetInstanceAndRaw
+     * @depends testConstructAndRaw
      * @depends testAddWithoutNames
      */
     public function testHas()
     {
-        $dim = Dim::getInstance();
+        $dim = new Dim;
         $dim->add('Foo');
         $this->assertTrue($dim->has('Foo'));
         $this->assertFalse($dim->has('Bar'));
     }
 
     /**
-     * @depends testGetInstanceAndRaw
+     * @depends testConstructAndRaw
      * @depends testAddWithoutNames
      * @depends testHas
      */
     public function testRemove()
     {
-        $dim = Dim::getInstance();
+        $dim = new Dim;
         $dim->add('Foo');
         $dim->remove('Foo');
         $dim->remove('Bar');
@@ -310,13 +303,13 @@ class DimTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @depends testGetInstanceAndRaw
+     * @depends testConstructAndRaw
      * @depends testAddWithoutNames
      * @depends testHas
      */
     public function testClear()
     {
-        $dim = Dim::getInstance();
+        $dim = new Dim;
         $dim->add('Foo');
         $dim->add('ChildDim');
         $dim->clear();
@@ -327,11 +320,11 @@ class DimTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @depends testGetInstanceAndRaw
+     * @depends testConstructAndRaw
      */
     public function testGetNames()
     {
-        $dim = Dim::getInstance();
+        $dim = new Dim;
         $reflection = new ReflectionClass('Dim');
         $getNames = $reflection->getMethod('getNames');
         $getNames->setAccessible(true);
@@ -343,38 +336,38 @@ class DimTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @depends testGetInstanceAndRaw
+     * @depends testConstructAndRaw
      * @depends testAddWithoutNames
      * @depends testHas
      */
     public function testOffsetExists()
     {
-        $dim = Dim::getInstance();
+        $dim = new Dim;
         $dim->add('Foo');
         $this->assertTrue(isset($dim['Foo']));
         $this->assertFalse(isset($dim['Bar']));
     }
 
     /**
-     * @depends testGetInstanceAndRaw
+     * @depends testConstructAndRaw
      * @depends testAddWithName
      */
     public function testOffsetSet()
     {
-        $dim = Dim::getInstance();
+        $dim = new Dim;
         $dim['Foo'] = 'Foo';
         $this->assertInstanceOf('Service', $dim->raw('Foo'));
     }
 
     /**
-     * @depends testGetInstanceAndRaw
+     * @depends testConstructAndRaw
      * @depends testAddWithoutNames
      * @depends testRemove
      * @depends testHas
      */
     public function testOffsetUnset()
     {
-        $dim = Dim::getInstance();
+        $dim = new Dim;
         $dim->add('Foo');
         unset($dim['Foo']);
         unset($dim['Bar']);
@@ -382,38 +375,38 @@ class DimTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @depends testGetInstanceAndRaw
+     * @depends testConstructAndRaw
      * @depends testAddWithoutNames
      * @depends testHas
      */
     public function testIsset()
     {
-        $dim = Dim::getInstance();
+        $dim = new Dim;
         $dim->add('Foo');
         $this->assertTrue(isset($dim->Foo));
         $this->assertFalse(isset($dim->Bar));
     }
 
     /**
-     * @depends testGetInstanceAndRaw
+     * @depends testConstructAndRaw
      * @depends testAddWithName
      */
     public function testSet()
     {
-        $dim = Dim::getInstance();
+        $dim = new Dim;
         $dim->foo = 'Foo';
         $this->assertInstanceOf('Service', $dim->raw('foo'));
     }
 
     /**
-     * @depends testGetInstanceAndRaw
+     * @depends testConstructAndRaw
      * @depends testAddWithoutNames
      * @depends testRemove
      * @depends testHas
      */
     public function testUnset()
     {
-        $dim = Dim::getInstance();
+        $dim = new Dim;
         $dim->add('Foo');
         unset($dim->Foo);
         unset($dim->Bar);
@@ -421,7 +414,7 @@ class DimTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @depends testGetInstanceAndRaw
+     * @depends testConstructAndRaw
      * @depends testAddWithName
      * @depends testSingletonWithName
      * @depends testFactoryWithName
@@ -429,7 +422,7 @@ class DimTest extends PHPUnit_Framework_TestCase
      */
     public function testGet()
     {
-        $dim = Dim::getInstance();
+        $dim = new Dim;
         $dim->add('Foo', 'foo');
         $dim->singleton('Foo', 'bar');
         $dim->factory('Foo::factory', 'foobar');
@@ -460,7 +453,7 @@ class DimTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @depends testGetInstanceAndRaw
+     * @depends testConstructAndRaw
      * @depends testAddWithName
      * @depends testSingletonWithName
      * @depends testFactoryWithName
@@ -469,7 +462,7 @@ class DimTest extends PHPUnit_Framework_TestCase
      */
     public function testOffsetGet()
     {
-        $dim = Dim::getInstance();
+        $dim = new Dim;
         $dim->add('Foo', 'foo');
         $dim->singleton('Foo', 'bar');
         $dim->factory('Foo::factory', 'foobar');
@@ -500,7 +493,7 @@ class DimTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @depends testGetInstanceAndRaw
+     * @depends testConstructAndRaw
      * @depends testAddWithName
      * @depends testSingletonWithName
      * @depends testFactoryWithName
@@ -509,7 +502,7 @@ class DimTest extends PHPUnit_Framework_TestCase
      */
     public function testInvoke()
     {
-        $dim = Dim::getInstance();
+        $dim = new Dim;
         $dim->add('Foo', 'foo');
         $dim->singleton('Foo', 'bar');
         $dim->factory('Foo::factory', 'foobar');
@@ -540,7 +533,7 @@ class DimTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @depends testGetInstanceAndRaw
+     * @depends testConstructAndRaw
      * @depends testAddWithName
      * @depends testSingletonWithName
      * @depends testFactoryWithName
@@ -549,7 +542,7 @@ class DimTest extends PHPUnit_Framework_TestCase
      */
     public function testMagicGet()
     {
-        $dim = Dim::getInstance();
+        $dim = new Dim;
         $dim->add('Foo', 'foo');
         $dim->singleton('Foo', 'bar');
         $dim->factory('Foo::factory', 'foobar');
@@ -580,7 +573,7 @@ class DimTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @depends testGetInstanceAndRaw
+     * @depends testConstructAndRaw
      * @depends testAddWithName
      * @depends testOffsetSet
      * @depends testSet
@@ -603,12 +596,12 @@ class DimTest extends PHPUnit_Framework_TestCase
      */
     public function testScope()
     {
-        $dim = Dim::getInstance();
+        $dim = new Dim;
         $dim->scope('foo')->add('Foo', 'foo1');
         $scope = $dim->scope('foo');
         $scope['foobar1'] = 'Foo';
         $dim->scope('foo')->foobar2 = 'Foo';
-        $dim->scope('foo')->instance(ChildDim::getInstance(), 'childdim');
+        $dim->scope('foo')->instance(new ChildDim, 'childdim');
         $dim->scope('foo')->singleton('Foo', 'foo2');
         $dim->scope('foo')->factory('Foo::factory', 'foo3');
         $dim->scope('foo')->extend(
@@ -736,14 +729,14 @@ class DimTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @depends testGetInstanceAndRaw
+     * @depends testConstructAndRaw
      * @depends testScope
      * @depends testAddWithoutNames
      * @depends testHas
      */
     public function testSubScope()
     {
-        $dim = Dim::getInstance();
+        $dim = new Dim;
         $dim->scope('foo')->scope('bar')->add('Foo');
         $this->assertFalse($dim->has('Foo'));
         $this->assertFalse($dim->scope('foo')->has('Foo'));
@@ -752,7 +745,7 @@ class DimTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @depends testGetInstanceAndRaw
+     * @depends testConstructAndRaw
      * @depends testScope
      * @depends testAddWithoutNames
      * @depends testInstanceWithoutNames
@@ -760,12 +753,12 @@ class DimTest extends PHPUnit_Framework_TestCase
      */
     public function testScopeWithCallable()
     {
-        $dim = Dim::getInstance();
+        $dim = new Dim;
         $dim->scope(
             'foo',
             function () use ($dim) {
                 $dim->add('Foo');
-                $dim->instance(ChildDim::getInstance());
+                $dim->instance(new ChildDim);
             }
         );
         $this->assertFalse($dim->has('Foo'));
@@ -775,7 +768,31 @@ class DimTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @depends testGetInstanceAndRaw
+     * @depends testConstructAndRaw
+     * @expectedException InvalidArgumentException
+     * @expectedExceptionMessage A callable expected.
+     */
+    public function testScopeException()
+    {
+        $dim = new Dim;
+        $dim->scope('foo', 'bar');
+    }
+
+    /**
+     * @depends testConstructAndRaw
+     * @depends testAddWithoutNames
+     * @expectedException InvalidArgumentException
+     * @expectedExceptionMessage Dependency Foo is not defined in current scope.
+     */
+    public function testScopeRawException()
+    {
+        $dim = new Dim;
+        $dim->add('Foo');
+        $dim->scope('foo')->raw('Foo');
+    }
+
+    /**
+     * @depends testConstructAndRaw
      * @depends testAddWithoutNames
      * @depends testExtendException
      * @expectedException InvalidArgumentException
@@ -783,7 +800,7 @@ class DimTest extends PHPUnit_Framework_TestCase
      */
     public function testScopeExtendException()
     {
-        $dim = Dim::getInstance();
+        $dim = new Dim;
         $dim->add('Foo');
         $dim->scope('foo')->extend(
             'Foo',
@@ -794,7 +811,7 @@ class DimTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @depends testGetInstanceAndRaw
+     * @depends testConstructAndRaw
      * @depends testAddWithoutNames
      * @depends testAliasException
      * @expectedException InvalidArgumentException
@@ -802,33 +819,9 @@ class DimTest extends PHPUnit_Framework_TestCase
      */
     public function testScopeAliasException()
     {
-        $dim = Dim::getInstance();
+        $dim = new Dim;
         $dim->add('Foo');
         $dim->scope('foo')->alias('Foo', 'Foo1');
-    }
-
-    /**
-     * @depends testGetInstanceAndRaw
-     * @depends testAddWithoutNames
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage Dependency Foo is not defined in current scope.
-     */
-    public function testScopeRawException()
-    {
-        $dim = Dim::getInstance();
-        $dim->add('Foo');
-        $dim->scope('foo')->raw('Foo');
-    }
-
-    /**
-     * @depends testGetInstanceAndRaw
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage A callable expected.
-     */
-    public function testScopeException()
-    {
-        $dim = Dim::getInstance();
-        $dim->scope('foo', 'bar');
     }
 }
  

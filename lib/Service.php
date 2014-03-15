@@ -30,11 +30,11 @@ class Service
     protected function resolveClass($class, array $arguments = array())
     {
         $reflectionClass = new ReflectionClass($class);
+        if (!$reflectionClass->isInstantiable()) {
+            throw new InvalidArgumentException($class . ' class is not instantiable.');
+        }
         $reflectionMethod = $reflectionClass->getConstructor();
         if ($reflectionMethod) {
-            if (!$reflectionMethod->isPublic()) {
-                throw new InvalidArgumentException('Can not access to non-public constructor of class ' . $class . '.');
-            }
             return $reflectionClass->newInstanceArgs(
                 $this->getReflectionParameters($reflectionMethod, $arguments)
             );
@@ -72,14 +72,12 @@ class Service
                 $parameters[] = $arguments[$reflectionParameter->getPosition()];
             } elseif ($reflectionParameter->isDefaultValueAvailable()) {
                 $parameters[] = $reflectionParameter->getDefaultValue();
-            } elseif ($reflectionParameter->isOptional()) {
-                $parameters[] = null;
             } else {
                 $classReflection = $reflectionParameter->getClass();
                 if (!is_object($classReflection)) {
                     throw new BadMethodCallException('Not enough arguments.');
                 }
-                $parameters[] = $this->dim($classReflection->getName());
+                $parameters[] = $this->dim->get($classReflection->getName());
             }
         }
         return $parameters ? $parameters : $arguments;
