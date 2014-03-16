@@ -2,12 +2,13 @@
 
 class Singleton extends Service
 {
+    protected $instance;
+
     public function get($arguments = array())
     {
-        static $instance = null;
-        if ($instance === null) {
-            $instance = parent::get($arguments);
+        if ($this->instance === null) {
+            $this->instance = parent::get($arguments);
         }
-        return $instance;
+        return $this->instance;
     }
 } 

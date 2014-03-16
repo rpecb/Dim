@@ -67,8 +67,8 @@ class DimTest extends PHPUnit_Framework_TestCase
     public function testSingletonWithoutNames()
     {
         $dim = new Dim;
-        $dim->singleton('Foo');
-        $this->assertInstanceOf('Singleton', $dim->raw('Foo'));
+        $dim->singleton('stdClass');
+        $this->assertInstanceOf('Singleton', $dim->raw('stdClass'));
     }
 
     /**
@@ -77,7 +77,7 @@ class DimTest extends PHPUnit_Framework_TestCase
     public function testSingletonWithName()
     {
         $dim = new Dim;
-        $dim->singleton('Foo', 'foo');
+        $dim->singleton('stdClass', 'foo');
         $this->assertInstanceOf('Singleton', $dim->raw('foo'));
     }
 
@@ -87,7 +87,7 @@ class DimTest extends PHPUnit_Framework_TestCase
     public function testSingletonWithNames()
     {
         $dim = new Dim;
-        $dim->singleton('Foo', array('foo', 'bar'));
+        $dim->singleton('stdClass', array('foo', 'bar'));
         $foo = $dim->raw('foo');
         $bar = $dim->raw('bar');
         $this->assertInstanceOf('Singleton', $foo);
@@ -102,7 +102,9 @@ class DimTest extends PHPUnit_Framework_TestCase
     {
         $dim = new Dim;
         $dim->instance(new ChildDim);
-        $this->assertSame($dim->raw('ChildDim'), $dim->raw('Dim'));
+        $childdim = $dim->raw('ChildDim');
+        $this->assertSame($childdim, $dim->raw('Dim'));
+        $this->assertSame($childdim, $dim->raw('ArrayAccess'));
     }
 
     /**
@@ -147,7 +149,7 @@ class DimTest extends PHPUnit_Framework_TestCase
         $dim = new Dim;
         $dim->factory(
             function () {
-                return new Foo;
+                return new stdClass;
             },
             'foo'
         );
@@ -162,12 +164,12 @@ class DimTest extends PHPUnit_Framework_TestCase
         $dim = new Dim;
         $dim->factory(
             function () {
-                return new Foo;
+                return new stdClass;
             },
             array('foo', 'bar')
         );
         $foo = $dim->raw('foo');
-        $bar = $dim->raw('foo');
+        $bar = $dim->raw('bar');
         $this->assertInstanceOf('Factory', $foo);
         $this->assertInstanceOf('Factory', $bar);
         $this->assertSame($foo, $bar);
@@ -180,14 +182,14 @@ class DimTest extends PHPUnit_Framework_TestCase
     public function testExtendWithName()
     {
         $dim = new Dim;
-        $dim->add('Foo');
+        $dim->add('stdClass');
         $dim->extend(
-            'Foo',
-            function (Foo $foo) {
+            'stdClass',
+            function (stdClass $foo) {
                 return $foo;
             }
         );
-        $foo = $dim->raw('Foo');
+        $foo = $dim->raw('stdClass');
         $this->assertInstanceOf('Extended', $foo);
     }
 
@@ -237,9 +239,9 @@ class DimTest extends PHPUnit_Framework_TestCase
     public function testAlias()
     {
         $dim = new Dim;
-        $dim->add('Foo');
-        $dim->alias('Foo', 'foo');
-        $foo1 = $dim->raw('Foo');
+        $dim->add('stdClass');
+        $dim->alias('stdClass', 'foo');
+        $foo1 = $dim->raw('stdClass');
         $foo2 = $dim->raw('foo');
         $this->assertInstanceOf('Service', $foo1);
         $this->assertInstanceOf('Service', $foo2);
@@ -253,16 +255,16 @@ class DimTest extends PHPUnit_Framework_TestCase
     public function testAliases()
     {
         $dim = new Dim;
-        $dim->add('Foo');
-        $dim->alias('Foo', array('bar1', 'bar2'));
-        $foo = $dim->raw('Foo');
-        $bar1 = $dim->raw('bar1');
-        $bar2 = $dim->raw('bar2');
+        $dim->add('stdClass');
+        $dim->alias('stdClass', array('foo', 'bar'));
+        $foo = $dim->raw('stdClass');
+        $foo1 = $dim->raw('foo');
+        $bar = $dim->raw('bar');
         $this->assertInstanceOf('Service', $foo);
-        $this->assertInstanceOf('Service', $bar1);
-        $this->assertInstanceOf('Service', $bar2);
-        $this->assertSame($foo, $bar1);
-        $this->assertSame($bar1, $bar2);
+        $this->assertInstanceOf('Service', $foo1);
+        $this->assertInstanceOf('Service', $bar);
+        $this->assertSame($foo, $bar);
+        $this->assertSame($foo1, $bar);
     }
 
     /**
@@ -283,8 +285,8 @@ class DimTest extends PHPUnit_Framework_TestCase
     public function testHas()
     {
         $dim = new Dim;
-        $dim->add('Foo');
-        $this->assertTrue($dim->has('Foo'));
+        $dim->add('stdClass');
+        $this->assertTrue($dim->has('stdClass'));
         $this->assertFalse($dim->has('Bar'));
     }
 
@@ -296,10 +298,10 @@ class DimTest extends PHPUnit_Framework_TestCase
     public function testRemove()
     {
         $dim = new Dim;
-        $dim->add('Foo');
-        $dim->remove('Foo');
+        $dim->add('stdClass');
+        $dim->remove('stdClass');
         $dim->remove('Bar');
-        $this->assertFalse($dim->has('Foo'));
+        $this->assertFalse($dim->has('stdClass'));
     }
 
     /**
@@ -310,10 +312,10 @@ class DimTest extends PHPUnit_Framework_TestCase
     public function testClear()
     {
         $dim = new Dim;
-        $dim->add('Foo');
+        $dim->add('stdClass');
         $dim->add('ChildDim');
         $dim->clear();
-        $this->assertFalse($dim->has('Foo'));
+        $this->assertFalse($dim->has('stdClass'));
         $this->assertFalse($dim->has('ChildDim'));
         $this->assertFalse($dim->has('Dim'));
         $this->assertFalse($dim->has('ArrayAccess'));
@@ -343,8 +345,8 @@ class DimTest extends PHPUnit_Framework_TestCase
     public function testOffsetExists()
     {
         $dim = new Dim;
-        $dim->add('Foo');
-        $this->assertTrue(isset($dim['Foo']));
+        $dim->add('stdClass');
+        $this->assertTrue(isset($dim['stdClass']));
         $this->assertFalse(isset($dim['Bar']));
     }
 
@@ -355,8 +357,8 @@ class DimTest extends PHPUnit_Framework_TestCase
     public function testOffsetSet()
     {
         $dim = new Dim;
-        $dim['Foo'] = 'Foo';
-        $this->assertInstanceOf('Service', $dim->raw('Foo'));
+        $dim['stdClass'] = 'stdClass';
+        $this->assertInstanceOf('Service', $dim->raw('stdClass'));
     }
 
     /**
@@ -368,10 +370,10 @@ class DimTest extends PHPUnit_Framework_TestCase
     public function testOffsetUnset()
     {
         $dim = new Dim;
-        $dim->add('Foo');
-        unset($dim['Foo']);
+        $dim->add('stdClass');
+        unset($dim['stdClass']);
         unset($dim['Bar']);
-        $this->assertFalse($dim->has('Foo'));
+        $this->assertFalse($dim->has('stdClass'));
     }
 
     /**
@@ -382,8 +384,8 @@ class DimTest extends PHPUnit_Framework_TestCase
     public function testIsset()
     {
         $dim = new Dim;
-        $dim->add('Foo');
-        $this->assertTrue(isset($dim->Foo));
+        $dim->add('stdClass');
+        $this->assertTrue(isset($dim->stdClass));
         $this->assertFalse(isset($dim->Bar));
     }
 
@@ -394,7 +396,7 @@ class DimTest extends PHPUnit_Framework_TestCase
     public function testSet()
     {
         $dim = new Dim;
-        $dim->foo = 'Foo';
+        $dim->foo = 'stdClass';
         $this->assertInstanceOf('Service', $dim->raw('foo'));
     }
 
@@ -407,10 +409,10 @@ class DimTest extends PHPUnit_Framework_TestCase
     public function testUnset()
     {
         $dim = new Dim;
-        $dim->add('Foo');
-        unset($dim->Foo);
+        $dim->add('stdClass');
+        unset($dim->stdClass);
         unset($dim->Bar);
-        $this->assertFalse($dim->has('Foo'));
+        $this->assertFalse($dim->has('stdClass'));
     }
 
     /**
@@ -737,11 +739,11 @@ class DimTest extends PHPUnit_Framework_TestCase
     public function testSubScope()
     {
         $dim = new Dim;
-        $dim->scope('foo')->scope('bar')->add('Foo');
-        $this->assertFalse($dim->has('Foo'));
-        $this->assertFalse($dim->scope('foo')->has('Foo'));
-        $this->assertFalse($dim->scope('bar')->has('Foo'));
-        $this->assertTrue($dim->scope('foo')->scope('bar')->has('Foo'));
+        $dim->scope('foo')->scope('bar')->add('stdClass');
+        $this->assertFalse($dim->has('stdClass'));
+        $this->assertFalse($dim->scope('foo')->has('stdClass'));
+        $this->assertFalse($dim->scope('bar')->has('stdClass'));
+        $this->assertTrue($dim->scope('foo')->scope('bar')->has('stdClass'));
     }
 
     /**
@@ -757,14 +759,16 @@ class DimTest extends PHPUnit_Framework_TestCase
         $dim->scope(
             'foo',
             function () use ($dim) {
-                $dim->add('Foo');
+                $dim->add('stdClass');
                 $dim->instance(new ChildDim);
             }
         );
-        $this->assertFalse($dim->has('Foo'));
+        $this->assertFalse($dim->has('stdClass'));
         $this->assertFalse($dim->has('ChildDim'));
-        $this->assertTrue($dim->scope('foo')->has('Foo'));
+        $this->assertTrue($dim->scope('foo')->has('stdClass'));
         $this->assertTrue($dim->scope('foo')->has('ChildDim'));
+        $this->assertTrue($dim->scope('foo')->has('Dim'));
+        $this->assertTrue($dim->scope('foo')->has('ArrayAccess'));
     }
 
     /**
@@ -782,13 +786,13 @@ class DimTest extends PHPUnit_Framework_TestCase
      * @depends testConstructAndRaw
      * @depends testAddWithoutNames
      * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage Dependency Foo is not defined in current scope.
+     * @expectedExceptionMessage Dependency stdClass is not defined in current scope.
      */
     public function testScopeRawException()
     {
         $dim = new Dim;
-        $dim->add('Foo');
-        $dim->scope('foo')->raw('Foo');
+        $dim->add('stdClass');
+        $dim->scope('foo')->raw('stdClass');
     }
 
     /**
@@ -796,14 +800,14 @@ class DimTest extends PHPUnit_Framework_TestCase
      * @depends testAddWithoutNames
      * @depends testExtendException
      * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage Dependency Foo is not defined in current scope.
+     * @expectedExceptionMessage Dependency stdClass is not defined in current scope.
      */
     public function testScopeExtendException()
     {
         $dim = new Dim;
-        $dim->add('Foo');
+        $dim->add('stdClass');
         $dim->scope('foo')->extend(
-            'Foo',
+            'stdClass',
             function ($foo) {
                 return $foo;
             }
@@ -815,13 +819,13 @@ class DimTest extends PHPUnit_Framework_TestCase
      * @depends testAddWithoutNames
      * @depends testAliasException
      * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage Dependency Foo is not defined in current scope.
+     * @expectedExceptionMessage Dependency stdClass is not defined in current scope.
      */
     public function testScopeAliasException()
     {
         $dim = new Dim;
-        $dim->add('Foo');
-        $dim->scope('foo')->alias('Foo', 'Foo1');
+        $dim->add('stdClass');
+        $dim->scope('foo')->alias('stdClass', 'foo');
     }
 }
  

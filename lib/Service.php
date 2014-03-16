@@ -49,15 +49,19 @@ class Service
         } elseif (is_string($callable) && strpos($callable, '::') !== false) {
             list($class, $method) = explode('::', $callable, 2);
         } elseif (method_exists($callable, '__invoke')) {
-            $reflection = new ReflectionMethod($callable, '__invoke');
-        } else {
-            $reflection = new ReflectionFunction($callable);
+            $class = $callable;
+            $method = '__invoke';
         }
         if (isset($class) && isset($method)) {
             $reflection = new ReflectionMethod($class, $method);
             if (!$reflection->isPublic()) {
-                throw new InvalidArgumentException('Can not access to non-public method.');
+                throw new InvalidArgumentException(
+                    'Can not access to non-public method ' .
+                    (is_object($class) ? get_class($class) : $class) . '::' . $method . '.'
+                );
             }
+        } else {
+            $reflection = new ReflectionFunction($callable);
         }
         return call_user_func_array($callable, $this->getReflectionParameters($reflection, $arguments));
     }

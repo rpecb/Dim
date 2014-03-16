@@ -15,19 +15,19 @@ class ServiceTest extends PHPUnit_Framework_TestCase
 
     public function testGetReflectionParameters()
     {
-        $foo = new Foo;
+        $foo = new stdClass;
         $dim = $this->getMock('Dim');
         $dim->expects($this->once())
             ->method('get')
-            ->with($this->stringContains('Foo'))
+            ->with($this->stringContains('stdClass'))
             ->will($this->returnValue($foo));
         $class = new ReflectionClass('Service');
         $getReflectionParameters = $class->getMethod('getReflectionParameters');
         $getReflectionParameters->setAccessible(true);
-        $reflection = new ReflectionFunction(function (Foo $foo, $bar, $foobar, $null = null) {
+        $reflection = new ReflectionFunction(function (stdClass $foo, $bar, $foobar, $null = null) {
         });
         $parameters = $getReflectionParameters->invokeArgs(
-            new Service($dim, 'Foo'),
+            new Service($dim, 'stdClass'),
             array($reflection, array('bar' => 'bar', 2 => 'foobar'))
         );
         $this->assertCount(4, $parameters);
@@ -47,7 +47,7 @@ class ServiceTest extends PHPUnit_Framework_TestCase
      */
     public function testGetReflectionParametersException()
     {
-        $service = new Service($this->getMock('Dim'), 'Foo');
+        $service = new Service($this->getMock('Dim'), 'stdClass');
         $class = new ReflectionClass('Service');
         $getReflectionParameters = $class->getMethod('getReflectionParameters');
         $getReflectionParameters->setAccessible(true);
@@ -64,10 +64,10 @@ class ServiceTest extends PHPUnit_Framework_TestCase
         $class = new ReflectionClass('Service');
         $resolveClass = $class->getMethod('resolveClass');
         $resolveClass->setAccessible(true);
-        $service = new Service($this->getMock('Dim'), 'Foo');
-        $this->getMockBuilder('Foo')->setMockClassName('Foo1')->setMethods(array('__construct'))->getMock();
-        $this->assertInstanceOf('Foo', $resolveClass->invoke($service, 'Foo'));
-        $this->assertInstanceOf('Foo1', $resolveClass->invoke($service, 'Foo1'));
+        $service = new Service($this->getMock('Dim'), 'stdClass');
+        $this->getMockBuilder('stdClass')->setMockClassName('stdClass1')->setMethods(array('__construct'))->getMock();
+        $this->assertInstanceOf('stdClass', $resolveClass->invoke($service, 'stdClass'));
+        $this->assertInstanceOf('stdClass1', $resolveClass->invoke($service, 'stdClass1'));
     }
 
     /**
@@ -84,22 +84,78 @@ class ServiceTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @depends testGetReflectionParameters
+     */
+    public function testResolveCallable()
+    {
+        $class = new ReflectionClass('Service');
+        $resolveCallable = $class->getMethod('resolveCallable');
+        $resolveCallable->setAccessible(true);
+        $service = new Service($this->getMock('Dim'), 'Foo');
+        $this->assertInstanceOf('Foo', $resolveCallable->invoke($service, array(new Foo, 'factory')));
+        $this->assertInstanceOf('Foo', $resolveCallable->invoke($service, 'Foo::factory'));
+        $this->assertInstanceOf('Foo', $resolveCallable->invoke($service, new Foo));
+        $this->assertInstanceOf(
+            'Foo',
+            $resolveCallable->invoke(
+                $service,
+                function () {
+                    return new Foo;
+                }
+            )
+        );
+        function foobar()
+        {
+            return new Foo;
+        }
+
+        ;
+        $this->assertInstanceOf('Foo', $resolveCallable->invoke($service, 'foobar'));
+    }
+
+    /**
+     * @expectedException InvalidArgumentException
+     * @expectedExceptionMessage Can not access to non-public method Foo::bar.
+     */
+    public function testResolveCallableException1()
+    {
+        $class = new ReflectionClass('Service');
+        $resolveCallable = $class->getMethod('resolveCallable');
+        $resolveCallable->setAccessible(true);
+        $service = new Service($this->getMock('Dim'), 'Foo');
+        $resolveCallable->invoke($service, array(new Foo, 'bar'));
+    }
+
+    /**
+     * @expectedException InvalidArgumentException
+     * @expectedExceptionMessage Can not access to non-public method Foo::bar.
+     */
+    public function testResolveCallableException2()
+    {
+        $class = new ReflectionClass('Service');
+        $resolveCallable = $class->getMethod('resolveCallable');
+        $resolveCallable->setAccessible(true);
+        $service = new Service($this->getMock('Dim'), 'Foo');
+        $resolveCallable->invoke($service, 'Foo::bar');
+    }
+
+    /**
      * @depends testResolveClass
      */
     public function testGet()
     {
+        $service = new Service($this->getMock('Dim'), 'stdClass');
+        $this->assertInstanceOf('stdClass', $service->get());
     }
 
+    /**
+     * @depends testResolveClass
+     * @depends testGet
+     */
     public function testInvoke()
     {
-    }
-
-    public function testResolveCallable()
-    {
-    }
-
-    public function testResolveCallableException()
-    {
+        $service = new Service($this->getMock('Dim'), 'stdClass');
+        $this->assertInstanceOf('stdClass', $service());
     }
 }
  
