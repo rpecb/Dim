@@ -2,7 +2,7 @@
 
 class ServiceTest extends PHPUnit_Framework_TestCase
 {
-    // TODO: with scopes, arguments, parent constructors, parent methods
+    // TODO: with scopes, arguments
 
     /**
      * @expectedException InvalidArgumentException
@@ -10,7 +10,7 @@ class ServiceTest extends PHPUnit_Framework_TestCase
      */
     public function testConstructException()
     {
-        new Service($this->getMock('Dim'), 'Bar');
+        new Service($this->getMock('Dim'), 'FooBar');
     }
 
     public function testGetReflectionParameters()
@@ -72,15 +72,15 @@ class ServiceTest extends PHPUnit_Framework_TestCase
 
     /**
      * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage Poo class is not instantiable.
+     * @expectedExceptionMessage Bar class is not instantiable.
      */
     public function testResolveClassException()
     {
         $class = new ReflectionClass('Service');
         $resolveClass = $class->getMethod('resolveClass');
         $resolveClass->setAccessible(true);
-        $service = new Service($this->getMock('Dim'), 'Poo');
-        $resolveClass->invoke($service, 'Poo');
+        $service = new Service($this->getMock('Dim'), 'Bar');
+        $resolveClass->invoke($service, 'Bar');
     }
 
     /**

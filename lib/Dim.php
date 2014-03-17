@@ -2,7 +2,7 @@
 
 class Dim implements ArrayAccess
 {
-    // TODO: Unit tests: stdClass, service interface, break dependency
+    // TODO: Unit tests: service interface, break dependency
     // TODO: namespaces
     // TODO: Doc blocks
     // TODO: PHP CS Fixer
@@ -117,8 +117,12 @@ class Dim implements ArrayAccess
 
     public function clear()
     {
+        $count = count($this->scopes);
         $scope = & $this->getScope();
         $scope = array();
+        if (!$count) {
+            $this->instance($this, get_called_class());
+        }
     }
 
     protected function &getScope()

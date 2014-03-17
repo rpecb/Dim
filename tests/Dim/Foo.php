@@ -17,10 +17,3 @@ class Foo
         return static::factory();
     }
 }
-
-class Poo
-{
-    protected function __construct()
-    {
-    }
-}

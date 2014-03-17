@@ -5,9 +5,7 @@ class DimTest extends PHPUnit_Framework_TestCase
     public function testConstructAndRaw()
     {
         $dim = new Dim;
-        $childDim = new ChildDim;
         $this->assertSame($dim, $dim->raw('Dim'));
-        $this->assertSame($childDim, $childDim->raw('ChildDim'));
     }
 
     /**
@@ -27,10 +25,10 @@ class DimTest extends PHPUnit_Framework_TestCase
     public function testAddWithoutNames()
     {
         $dim = new Dim;
-        $dim->add('ChildDim');
-        $foo = $dim->raw('ChildDim');
-        $bar = $dim->raw('Dim');
-        $foobar = $dim->raw('ArrayAccess');
+        $dim->add('ArrayObject');
+        $foo = $dim->raw('ArrayObject');
+        $bar = $dim->raw('ArrayAccess');
+        $foobar = $dim->raw('Countable');
         $this->assertInstanceOf('Service', $foo);
         $this->assertInstanceOf('Service', $bar);
         $this->assertInstanceOf('Service', $foobar);
@@ -43,8 +41,8 @@ class DimTest extends PHPUnit_Framework_TestCase
     public function testAddWithName()
     {
         $dim = new Dim;
-        $dim->add('ChildDim', 'dim');
-        $this->assertInstanceOf('Service', $dim->raw('dim'));
+        $dim->add('stdClass', 'std');
+        $this->assertInstanceOf('Service', $dim->raw('std'));
     }
 
     /**
@@ -53,7 +51,7 @@ class DimTest extends PHPUnit_Framework_TestCase
     public function testAddWithNames()
     {
         $dim = new Dim;
-        $dim->add('ChildDim', array('foo', 'bar'));
+        $dim->add('stdClass', array('foo', 'bar'));
         $foo = $dim->raw('foo');
         $bar = $dim->raw('bar');
         $this->assertInstanceOf('Service', $foo);
@@ -101,10 +99,11 @@ class DimTest extends PHPUnit_Framework_TestCase
     public function testInstanceWithoutNames()
     {
         $dim = new Dim;
-        $dim->instance(new ChildDim);
-        $childdim = $dim->raw('ChildDim');
-        $this->assertSame($childdim, $dim->raw('Dim'));
-        $this->assertSame($childdim, $dim->raw('ArrayAccess'));
+        $foo = new ArrayObject;
+        $dim->instance($foo);
+        $this->assertSame($foo, $dim->raw('ArrayObject'));
+        $this->assertSame($foo, $dim->raw('ArrayAccess'));
+        $this->assertSame($foo, $dim->raw('Countable'));
     }
 
     /**
@@ -113,9 +112,9 @@ class DimTest extends PHPUnit_Framework_TestCase
     public function testInstanceWithName()
     {
         $dim = new Dim;
-        $childDim = new ChildDim;
-        $dim->instance($childDim, 'childdim');
-        $this->assertSame($childDim, $dim->raw('childdim'));
+        $foo = new ArrayObject;
+        $dim->instance($foo, 'foo');
+        $this->assertSame($foo, $dim->raw('foo'));
     }
 
     /**
@@ -124,10 +123,10 @@ class DimTest extends PHPUnit_Framework_TestCase
     public function testInstanceWithNames()
     {
         $dim = new Dim;
-        $childDim = new ChildDim;
-        $dim->instance($childDim, array('foo', 'bar'));
-        $this->assertSame($childDim, $dim->raw('foo'));
-        $this->assertSame($childDim, $dim->raw('bar'));
+        $foo = new ArrayObject;
+        $dim->instance($foo, array('foo', 'bar'));
+        $this->assertSame($foo, $dim->raw('foo'));
+        $this->assertSame($foo, $dim->raw('bar'));
     }
 
     /**
@@ -200,16 +199,16 @@ class DimTest extends PHPUnit_Framework_TestCase
     public function testExtendWithNames()
     {
         $dim = new Dim;
-        $dim->add('ChildDim');
+        $dim->add('ArrayObject');
         $dim->extend(
-            array('ChildDim', 'Dim'),
-            function (Dim $foo) {
+            array('ArrayObject', 'ArrayAccess'),
+            function (ArrayObject $foo) {
                 return $foo;
             }
         );
-        $foo = $dim->raw('ChildDim');
-        $bar = $dim->raw('Dim');
-        $foobar = $dim->raw('ArrayAccess');
+        $foo = $dim->raw('ArrayObject');
+        $bar = $dim->raw('ArrayAccess');
+        $foobar = $dim->raw('Countable');
         $this->assertInstanceOf('Extended', $foo);
         $this->assertInstanceOf('Extended', $bar);
         $this->assertInstanceOf('Service', $foobar);
@@ -287,7 +286,7 @@ class DimTest extends PHPUnit_Framework_TestCase
         $dim = new Dim;
         $dim->add('stdClass');
         $this->assertTrue($dim->has('stdClass'));
-        $this->assertFalse($dim->has('Bar'));
+        $this->assertFalse($dim->has('Foo'));
     }
 
     /**
@@ -300,7 +299,7 @@ class DimTest extends PHPUnit_Framework_TestCase
         $dim = new Dim;
         $dim->add('stdClass');
         $dim->remove('stdClass');
-        $dim->remove('Bar');
+        $dim->remove('Foo');
         $this->assertFalse($dim->has('stdClass'));
     }
 
@@ -313,12 +312,13 @@ class DimTest extends PHPUnit_Framework_TestCase
     {
         $dim = new Dim;
         $dim->add('stdClass');
-        $dim->add('ChildDim');
+        $dim->add('ArrayObject');
         $dim->clear();
         $this->assertFalse($dim->has('stdClass'));
-        $this->assertFalse($dim->has('ChildDim'));
-        $this->assertFalse($dim->has('Dim'));
+        $this->assertFalse($dim->has('ArrayObject'));
         $this->assertFalse($dim->has('ArrayAccess'));
+        $this->assertFalse($dim->has('Countable'));
+        $this->assertTrue($dim->has('Dim'));
     }
 
     /**
@@ -330,11 +330,14 @@ class DimTest extends PHPUnit_Framework_TestCase
         $reflection = new ReflectionClass('Dim');
         $getNames = $reflection->getMethod('getNames');
         $getNames->setAccessible(true);
-        $names = $getNames->invokeArgs($dim, array('ChildDim'));
-        $this->assertCount(3, $names);
-        $this->assertContains('ChildDim', $names);
-        $this->assertContains('Dim', $names);
+        $names = $getNames->invokeArgs($dim, array('ArrayObject'));
+        $this->assertCount(6, $names);
+        $this->assertContains('ArrayObject', $names);
+        $this->assertContains('IteratorAggregate', $names);
+        $this->assertContains('Traversable', $names);
         $this->assertContains('ArrayAccess', $names);
+        $this->assertContains('Serializable', $names);
+        $this->assertContains('Countable', $names);
     }
 
     /**
@@ -347,7 +350,7 @@ class DimTest extends PHPUnit_Framework_TestCase
         $dim = new Dim;
         $dim->add('stdClass');
         $this->assertTrue(isset($dim['stdClass']));
-        $this->assertFalse(isset($dim['Bar']));
+        $this->assertFalse(isset($dim['Foo']));
     }
 
     /**
@@ -372,7 +375,7 @@ class DimTest extends PHPUnit_Framework_TestCase
         $dim = new Dim;
         $dim->add('stdClass');
         unset($dim['stdClass']);
-        unset($dim['Bar']);
+        unset($dim['Foo']);
         $this->assertFalse($dim->has('stdClass'));
     }
 
@@ -386,7 +389,7 @@ class DimTest extends PHPUnit_Framework_TestCase
         $dim = new Dim;
         $dim->add('stdClass');
         $this->assertTrue(isset($dim->stdClass));
-        $this->assertFalse(isset($dim->Bar));
+        $this->assertFalse(isset($dim->Foo));
     }
 
     /**
@@ -411,7 +414,7 @@ class DimTest extends PHPUnit_Framework_TestCase
         $dim = new Dim;
         $dim->add('stdClass');
         unset($dim->stdClass);
-        unset($dim->Bar);
+        unset($dim->Foo);
         $this->assertFalse($dim->has('stdClass'));
     }
 
@@ -425,32 +428,29 @@ class DimTest extends PHPUnit_Framework_TestCase
     public function testGet()
     {
         $dim = new Dim;
-        $dim->add('Foo', 'foo');
-        $dim->singleton('Foo', 'bar');
+        $dim->add('stdClass', 'foo');
+        $dim->singleton('stdClass', 'bar');
         $dim->factory('Foo::factory', 'foobar');
         $this->assertSame($dim, $dim->get('Dim'));
         $foo = $dim->get('foo');
         $bar1 = $dim->get('bar');
         $bar2 = $dim->get('bar');
         $foobar = $dim->get('foobar');
-        $this->assertInstanceOf('Foo', $foo);
-        $this->assertInstanceOf('Foo', $bar1);
-        $this->assertInstanceOf('Foo', $bar2);
+        $this->assertInstanceOf('stdClass', $foo);
+        $this->assertInstanceOf('stdClass', $bar1);
+        $this->assertInstanceOf('stdClass', $bar2);
         $this->assertInstanceOf('Foo', $foobar);
         $this->assertNotSame($foo, $bar1);
         $this->assertNotSame($foo, $bar2);
-        $this->assertNotSame($foo, $foobar);
         $this->assertSame($bar1, $bar2);
-        $this->assertNotSame($bar1, $foobar);
-        $this->assertNotSame($bar2, $foobar);
         $dim->extend(
             'foo',
-            function (Foo $foo) {
+            function (stdClass $foo) {
                 return $foo;
             }
         );
         $extendedFoo = $dim->get('foo');
-        $this->assertInstanceOf('Foo', $extendedFoo);
+        $this->assertInstanceOf('stdClass', $extendedFoo);
         $this->assertNotSame($extendedFoo, $foo);
     }
 
@@ -465,32 +465,29 @@ class DimTest extends PHPUnit_Framework_TestCase
     public function testOffsetGet()
     {
         $dim = new Dim;
-        $dim->add('Foo', 'foo');
-        $dim->singleton('Foo', 'bar');
+        $dim->add('stdClass', 'foo');
+        $dim->singleton('stdClass', 'bar');
         $dim->factory('Foo::factory', 'foobar');
         $this->assertSame($dim, $dim['Dim']);
         $foo = $dim['foo'];
         $bar1 = $dim['bar'];
         $bar2 = $dim['bar'];
         $foobar = $dim['foobar'];
-        $this->assertInstanceOf('Foo', $foo);
-        $this->assertInstanceOf('Foo', $bar1);
-        $this->assertInstanceOf('Foo', $bar2);
+        $this->assertInstanceOf('stdClass', $foo);
+        $this->assertInstanceOf('stdClass', $bar1);
+        $this->assertInstanceOf('stdClass', $bar2);
         $this->assertInstanceOf('Foo', $foobar);
         $this->assertNotSame($foo, $bar1);
         $this->assertNotSame($foo, $bar2);
-        $this->assertNotSame($foo, $foobar);
         $this->assertSame($bar1, $bar2);
-        $this->assertNotSame($bar1, $foobar);
-        $this->assertNotSame($bar2, $foobar);
         $dim->extend(
             'foo',
-            function (Foo $foo) {
+            function (stdClass $foo) {
                 return $foo;
             }
         );
         $extendedFoo = $dim['foo'];
-        $this->assertInstanceOf('Foo', $extendedFoo);
+        $this->assertInstanceOf('stdClass', $extendedFoo);
         $this->assertNotSame($extendedFoo, $foo);
     }
 
@@ -505,32 +502,29 @@ class DimTest extends PHPUnit_Framework_TestCase
     public function testInvoke()
     {
         $dim = new Dim;
-        $dim->add('Foo', 'foo');
-        $dim->singleton('Foo', 'bar');
+        $dim->add('stdClass', 'foo');
+        $dim->singleton('stdClass', 'bar');
         $dim->factory('Foo::factory', 'foobar');
         $this->assertSame($dim, $dim('Dim'));
         $foo = $dim('foo');
         $bar1 = $dim('bar');
         $bar2 = $dim('bar');
         $foobar = $dim('foobar');
-        $this->assertInstanceOf('Foo', $foo);
-        $this->assertInstanceOf('Foo', $bar1);
-        $this->assertInstanceOf('Foo', $bar2);
+        $this->assertInstanceOf('stdClass', $foo);
+        $this->assertInstanceOf('stdClass', $bar1);
+        $this->assertInstanceOf('stdClass', $bar2);
         $this->assertInstanceOf('Foo', $foobar);
         $this->assertNotSame($foo, $bar1);
         $this->assertNotSame($foo, $bar2);
-        $this->assertNotSame($foo, $foobar);
         $this->assertSame($bar1, $bar2);
-        $this->assertNotSame($bar1, $foobar);
-        $this->assertNotSame($bar2, $foobar);
         $dim->extend(
             'foo',
-            function (Foo $foo) {
+            function (stdClass $foo) {
                 return $foo;
             }
         );
         $extendedFoo = $dim('foo');
-        $this->assertInstanceOf('Foo', $extendedFoo);
+        $this->assertInstanceOf('stdClass', $extendedFoo);
         $this->assertNotSame($extendedFoo, $foo);
     }
 
@@ -545,32 +539,29 @@ class DimTest extends PHPUnit_Framework_TestCase
     public function testMagicGet()
     {
         $dim = new Dim;
-        $dim->add('Foo', 'foo');
-        $dim->singleton('Foo', 'bar');
+        $dim->add('stdClass', 'foo');
+        $dim->singleton('stdClass', 'bar');
         $dim->factory('Foo::factory', 'foobar');
         $this->assertSame($dim, $dim->Dim);
         $foo = $dim->foo;
         $bar1 = $dim->bar;
         $bar2 = $dim->bar;
         $foobar = $dim->foobar;
-        $this->assertInstanceOf('Foo', $foo);
-        $this->assertInstanceOf('Foo', $bar1);
-        $this->assertInstanceOf('Foo', $bar2);
+        $this->assertInstanceOf('stdClass', $foo);
+        $this->assertInstanceOf('stdClass', $bar1);
+        $this->assertInstanceOf('stdClass', $bar2);
         $this->assertInstanceOf('Foo', $foobar);
         $this->assertNotSame($foo, $bar1);
         $this->assertNotSame($foo, $bar2);
-        $this->assertNotSame($foo, $foobar);
         $this->assertSame($bar1, $bar2);
-        $this->assertNotSame($bar1, $foobar);
-        $this->assertNotSame($bar2, $foobar);
         $dim->extend(
             'foo',
-            function (Foo $foo) {
+            function (stdClass $foo) {
                 return $foo;
             }
         );
         $extendedFoo = $dim->foo;
-        $this->assertInstanceOf('Foo', $extendedFoo);
+        $this->assertInstanceOf('stdClass', $extendedFoo);
         $this->assertNotSame($extendedFoo, $foo);
     }
 
@@ -599,12 +590,12 @@ class DimTest extends PHPUnit_Framework_TestCase
     public function testScope()
     {
         $dim = new Dim;
-        $dim->scope('foo')->add('Foo', 'foo1');
+        $dim->scope('foo')->add('stdClass', 'foo1');
         $scope = $dim->scope('foo');
-        $scope['foobar1'] = 'Foo';
-        $dim->scope('foo')->foobar2 = 'Foo';
-        $dim->scope('foo')->instance(new ChildDim, 'childdim');
-        $dim->scope('foo')->singleton('Foo', 'foo2');
+        $scope['foobar1'] = 'stdClass';
+        $dim->scope('foo')->foobar2 = 'stdClass';
+        $dim->scope('foo')->instance(new stdClass, 'stdclass');
+        $dim->scope('foo')->singleton('stdClass', 'foo2');
         $dim->scope('foo')->factory('Foo::factory', 'foo3');
         $dim->scope('foo')->extend(
             'foo3',
@@ -613,22 +604,22 @@ class DimTest extends PHPUnit_Framework_TestCase
             }
         );
 
-        $dim->scope('foo')->alias('childdim', 'dim');
+        $dim->scope('foo')->alias('stdclass', 'std');
 
         $this->assertFalse($dim->has('foo1'));
         $this->assertFalse($dim->has('foobar1'));
         $this->assertFalse($dim->has('foobar2'));
-        $this->assertFalse($dim->has('childdim'));
+        $this->assertFalse($dim->has('stdclass'));
         $this->assertFalse($dim->has('foo2'));
         $this->assertFalse($dim->has('foo3'));
-        $this->assertFalse($dim->has('dim'));
+        $this->assertFalse($dim->has('std'));
         $this->assertTrue($dim->scope('foo')->has('foo1'));
         $this->assertTrue($dim->scope('foo')->has('foobar1'));
         $this->assertTrue($dim->scope('foo')->has('foobar2'));
-        $this->assertTrue($dim->scope('foo')->has('childdim'));
+        $this->assertTrue($dim->scope('foo')->has('stdclass'));
         $this->assertTrue($dim->scope('foo')->has('foo2'));
         $this->assertTrue($dim->scope('foo')->has('foo3'));
-        $this->assertTrue($dim->scope('foo')->has('dim'));
+        $this->assertTrue($dim->scope('foo')->has('std'));
 
         $scope = $dim->scope('foo');
         $this->assertTrue(isset($scope['foo1']));
@@ -637,90 +628,90 @@ class DimTest extends PHPUnit_Framework_TestCase
         $scope = $dim->scope('foo');
         $this->assertTrue(isset($scope['foobar2']));
         $scope = $dim->scope('foo');
-        $this->assertTrue(isset($scope['childdim']));
+        $this->assertTrue(isset($scope['stdclass']));
         $scope = $dim->scope('foo');
         $this->assertTrue(isset($scope['foo2']));
         $scope = $dim->scope('foo');
         $this->assertTrue(isset($scope['foo3']));
         $scope = $dim->scope('foo');
-        $this->assertTrue(isset($scope['dim']));
+        $this->assertTrue(isset($scope['std']));
 
         $this->assertTrue(isset($dim->scope('foo')->foo1));
         $this->assertTrue(isset($dim->scope('foo')->foobar1));
         $this->assertTrue(isset($dim->scope('foo')->foobar2));
-        $this->assertTrue(isset($dim->scope('foo')->childdim));
+        $this->assertTrue(isset($dim->scope('foo')->stdclass));
         $this->assertTrue(isset($dim->scope('foo')->foo2));
         $this->assertTrue(isset($dim->scope('foo')->foo3));
-        $this->assertTrue(isset($dim->scope('foo')->dim));
+        $this->assertTrue(isset($dim->scope('foo')->std));
 
         $this->assertInstanceOf('Service', $dim->scope('foo')->raw('foo1'));
         $this->assertInstanceOf('Service', $dim->scope('foo')->raw('foobar1'));
         $this->assertInstanceOf('Service', $dim->scope('foo')->raw('foobar2'));
-        $this->assertInstanceOf('ChildDim', $dim->scope('foo')->raw('childdim'));
+        $this->assertInstanceOf('stdClass', $dim->scope('foo')->raw('stdclass'));
         $this->assertInstanceOf('Singleton', $dim->scope('foo')->raw('foo2'));
         $this->assertInstanceOf('Extended', $dim->scope('foo')->raw('foo3'));
-        $this->assertInstanceOf('ChildDim', $dim->scope('foo')->raw('dim'));
+        $this->assertInstanceOf('stdClass', $dim->scope('foo')->raw('std'));
 
-        $this->assertInstanceOf('Foo', $dim->scope('foo')->get('foo1'));
-        $this->assertInstanceOf('Foo', $dim->scope('foo')->get('foobar1'));
-        $this->assertInstanceOf('Foo', $dim->scope('foo')->get('foobar2'));
-        $this->assertInstanceOf('ChildDim', $dim->scope('foo')->get('childdim'));
-        $this->assertInstanceOf('Foo', $dim->scope('foo')->get('foo2'));
+        $this->assertInstanceOf('stdClass', $dim->scope('foo')->get('foo1'));
+        $this->assertInstanceOf('stdClass', $dim->scope('foo')->get('foobar1'));
+        $this->assertInstanceOf('stdClass', $dim->scope('foo')->get('foobar2'));
+        $this->assertInstanceOf('stdClass', $dim->scope('foo')->get('stdclass'));
+        $this->assertInstanceOf('stdClass', $dim->scope('foo')->get('foo2'));
         $this->assertInstanceOf('Foo', $dim->scope('foo')->get('foo3'));
-        $this->assertInstanceOf('ChildDim', $dim->scope('foo')->get('dim'));
+        $this->assertInstanceOf('stdClass', $dim->scope('foo')->get('std'));
 
         $scope = $dim->scope('foo');
-        $this->assertInstanceOf('Foo', $scope['foo1']);
+        $this->assertInstanceOf('stdClass', $scope['foo1']);
         $scope = $dim->scope('foo');
-        $this->assertInstanceOf('Foo', $scope['foobar1']);
+        $this->assertInstanceOf('stdClass', $scope['foobar1']);
         $scope = $dim->scope('foo');
-        $this->assertInstanceOf('Foo', $scope['foobar2']);
+        $this->assertInstanceOf('stdClass', $scope['foobar2']);
         $scope = $dim->scope('foo');
-        $this->assertInstanceOf('ChildDim', $scope['childdim']);
+        $this->assertInstanceOf('stdClass', $scope['stdclass']);
         $scope = $dim->scope('foo');
-        $this->assertInstanceOf('Foo', $scope['foo2']);
+        $this->assertInstanceOf('stdClass', $scope['foo2']);
         $scope = $dim->scope('foo');
         $this->assertInstanceOf('Foo', $scope['foo3']);
         $scope = $dim->scope('foo');
-        $this->assertInstanceOf('ChildDim', $scope['dim']);
+        $this->assertInstanceOf('stdClass', $scope['std']);
 
-        $this->assertInstanceOf('Foo', $dim->scope('foo')->foo1);
-        $this->assertInstanceOf('Foo', $dim->scope('foo')->foobar1);
-        $this->assertInstanceOf('Foo', $dim->scope('foo')->foobar2);
-        $this->assertInstanceOf('ChildDim', $dim->scope('foo')->childdim);
-        $this->assertInstanceOf('Foo', $dim->scope('foo')->foo2);
+        $this->assertInstanceOf('stdClass', $dim->scope('foo')->foo1);
+        $this->assertInstanceOf('stdClass', $dim->scope('foo')->foobar1);
+        $this->assertInstanceOf('stdClass', $dim->scope('foo')->foobar2);
+        $this->assertInstanceOf('stdClass', $dim->scope('foo')->stdclass);
+        $this->assertInstanceOf('stdClass', $dim->scope('foo')->foo2);
         $this->assertInstanceOf('Foo', $dim->scope('foo')->foo3);
-        $this->assertInstanceOf('ChildDim', $dim->scope('foo')->dim);
+        $this->assertInstanceOf('stdClass', $dim->scope('foo')->std);
 
         $scope = $dim->scope('foo');
-        $this->assertInstanceOf('Foo', $scope('foo1'));
+        $this->assertInstanceOf('stdClass', $scope('foo1'));
         $scope = $dim->scope('foo');
-        $this->assertInstanceOf('Foo', $scope('foobar1'));
+        $this->assertInstanceOf('stdClass', $scope('foobar1'));
         $scope = $dim->scope('foo');
-        $this->assertInstanceOf('Foo', $scope('foobar2'));
+        $this->assertInstanceOf('stdClass', $scope('foobar2'));
         $scope = $dim->scope('foo');
-        $this->assertInstanceOf('ChildDim', $scope('childdim'));
+        $this->assertInstanceOf('stdClass', $scope('stdclass'));
         $scope = $dim->scope('foo');
-        $this->assertInstanceOf('Foo', $scope('foo2'));
+        $this->assertInstanceOf('stdClass', $scope('foo2'));
         $scope = $dim->scope('foo');
         $this->assertInstanceOf('Foo', $scope('foo3'));
         $scope = $dim->scope('foo');
-        $this->assertInstanceOf('ChildDim', $scope('dim'));
+        $this->assertInstanceOf('stdClass', $scope('std'));
 
         $this->assertNotSame($dim->scope('foo')->get('foo1'), $dim->scope('foo')->get('foo1'));
         $this->assertNotSame($dim->scope('foo')->get('foobar1'), $dim->scope('foo')->get('foobar1'));
         $this->assertNotSame($dim->scope('foo')->get('foobar2'), $dim->scope('foo')->get('foobar2'));
         $this->assertNotSame($dim->scope('foo')->get('foo3'), $dim->scope('foo')->get('foo3'));
-        $this->assertSame($dim->scope('foo')->get('childdim'), $dim->scope('foo')->get('childdim'));
+        $this->assertSame($dim->scope('foo')->get('stdclass'), $dim->scope('foo')->get('stdclass'));
         $this->assertSame($dim->scope('foo')->get('foo2'), $dim->scope('foo')->get('foo2'));
-        $this->assertSame($dim->scope('foo')->get('dim'), $dim->scope('foo')->get('childdim'));
+        $this->assertSame($dim->scope('foo')->get('std'), $dim->scope('foo')->get('stdclass'));
 
-        $dim->scope('foo')->remove('dim');
+        $dim->scope('foo')->remove('std');
         $scope = $dim->scope('foo');
-        unset($scope['childdim']);
+        unset($scope['stdclass']);
         unset($dim->scope('foo')->foo3);
-        $this->assertFalse($dim->scope('foo')->has('dim'));
-        $this->assertFalse($dim->scope('foo')->has('childdim'));
+        $this->assertFalse($dim->scope('foo')->has('std'));
+        $this->assertFalse($dim->scope('foo')->has('stdclass'));
         $this->assertFalse($dim->scope('foo')->has('foo3'));
 
         $dim->scope('foo')->clear();
@@ -749,8 +740,8 @@ class DimTest extends PHPUnit_Framework_TestCase
     /**
      * @depends testConstructAndRaw
      * @depends testScope
-     * @depends testAddWithoutNames
-     * @depends testInstanceWithoutNames
+     * @depends testAddWithName
+     * @depends testInstanceWithName
      * @depends testHas
      */
     public function testScopeWithCallable()
@@ -759,16 +750,14 @@ class DimTest extends PHPUnit_Framework_TestCase
         $dim->scope(
             'foo',
             function () use ($dim) {
-                $dim->add('stdClass');
-                $dim->instance(new ChildDim);
+                $dim->add('stdClass', 'std1');
+                $dim->instance(new stdClass, 'std2');
             }
         );
-        $this->assertFalse($dim->has('stdClass'));
-        $this->assertFalse($dim->has('ChildDim'));
-        $this->assertTrue($dim->scope('foo')->has('stdClass'));
-        $this->assertTrue($dim->scope('foo')->has('ChildDim'));
-        $this->assertTrue($dim->scope('foo')->has('Dim'));
-        $this->assertTrue($dim->scope('foo')->has('ArrayAccess'));
+        $this->assertFalse($dim->has('std1'));
+        $this->assertFalse($dim->has('std2'));
+        $this->assertTrue($dim->scope('foo')->has('std1'));
+        $this->assertTrue($dim->scope('foo')->has('std2'));
     }
 
     /**
