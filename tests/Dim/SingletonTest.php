@@ -4,12 +4,12 @@ class SingletonTest extends PHPUnit_Framework_TestCase
 {
     public function testGet()
     {
-        $singleton1 = new Singleton($this->getMock('Dim'), 'stdClass');
+        $singleton1 = new Singleton('stdClass');
         $foo1 = $singleton1->get();
         $this->assertInstanceOf('stdClass', $foo1);
         $this->assertSame($foo1, $singleton1->get());
 
-        $singleton2 = new Singleton($this->getMock('Dim'), 'stdClass');
+        $singleton2 = new Singleton('stdClass');
         $foo2 = $singleton2->get();
         $this->assertInstanceOf('stdClass', $foo2);
         $this->assertSame($foo2, $singleton2->get());

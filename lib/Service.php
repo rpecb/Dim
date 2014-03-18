@@ -2,16 +2,14 @@
 
 class Service
 {
-    protected $dim;
     protected $class;
     protected $arguments;
 
-    public function __construct(Dim $dim, $class, $arguments = array())
+    public function __construct($class, $arguments = array())
     {
         if (!is_string($class) || !class_exists($class)) {
             throw new InvalidArgumentException('A class name expected.');
         }
-        $this->dim = $dim;
         $this->class = $class;
         $this->arguments = is_array($arguments) ? $arguments : array($arguments);
     }

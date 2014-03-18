@@ -4,9 +4,9 @@ class Extended extends Factory
 {
     protected $value;
 
-    public function __construct(Dim $dim, $value, $callable, $arguments = array())
+    public function __construct($value, $callable, $arguments = array())
     {
-        parent::__construct($dim, $callable);
+        parent::__construct($callable, $arguments);
         $this->value = $value;
     }
 

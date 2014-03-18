@@ -2,7 +2,7 @@
 
 class Dim implements ArrayAccess
 {
-    // TODO: Unit tests: service interface, break dependency
+    // TODO: Unit tests: with scopes and arguments, update depends, getClass, resolve
     // TODO: namespaces
     // TODO: Doc blocks
     // TODO: PHP CS Fixer
@@ -17,7 +17,7 @@ class Dim implements ArrayAccess
     {
         $this->scopes = new SplDoublyLinkedList;
         $this->scopes->setIteratorMode(SplDoublyLinkedList::IT_MODE_DELETE);
-        $this->instance($this, get_called_class());
+        $this->set($this, get_called_class());
     }
 
     public function scope($scope, $callable = null)
@@ -35,46 +35,20 @@ class Dim implements ArrayAccess
         return $this;
     }
 
-    public function add($class, $names = null, $arguments = array())
+    public function set($service, $names = null)
     {
         $scope = & $this->getScope();
-        $service = new Service($this, $class, $arguments);
-        $scope = array_fill_keys($names ? (array)$names : $this->getNames($class), $service) + $scope;
-    }
-
-    public function singleton($class, $names = null, $arguments = array())
-    {
-        $scope = & $this->getScope();
-        $singleton = new Singleton($this, $class, $arguments);
-        $scope = array_fill_keys($names ? (array)$names : $this->getNames($class), $singleton) + $scope;
-    }
-
-    public function factory($callable, $names, $arguments = array())
-    {
-        $scope = & $this->getScope();
-        $factory = new Factory($this, $callable, $arguments);
-        $scope = array_fill_keys((array)$names, $factory) + $scope;
-    }
-
-    public function instance($instance, $names = null)
-    {
-        if (!is_object($instance)) {
-            throw new InvalidArgumentException('An instance expected.');
-        }
-        $scope = & $this->getScope();
-        $scope = array_fill_keys($names ? (array)$names : $this->getNames(get_class($instance)), $instance) + $scope;
-    }
-
-    public function extend($names, $callable, $arguments = array())
-    {
         $names = (array)$names;
-        $name = current($names);
-        $scope = & $this->getScope();
-        if (!array_key_exists($name, $scope)) {
-            throw new InvalidArgumentException('Dependency ' . $name . ' is not defined in current scope.');
+        if (!$names) {
+            if ($service instanceof Service) {
+                $names = $this->getNames($service->getClass());
+            } elseif (is_object($service)) {
+                $names = $this->getNames(get_class($service));
+            } else {
+                throw new BadMethodCallException('Service name does not specified.');
+            }
         }
-        $extended = new Extended($this, $scope[$name], $callable, $arguments);
-        $scope = array_fill_keys($names, $extended) + $scope;
+        $scope = array_fill_keys($names, $service) + $scope;
     }
 
     public function alias($name, $aliases)
@@ -121,7 +95,7 @@ class Dim implements ArrayAccess
         $scope = & $this->getScope();
         $scope = array();
         if (!$count) {
-            $this->instance($this, get_called_class());
+            $this->set($this, get_called_class());
         }
     }
 
@@ -140,18 +114,16 @@ class Dim implements ArrayAccess
     protected function getNames($class)
     {
         $names = class_parents($class) + class_implements($class);
-        // @codeCoverageIgnoreStart
         if (function_exists('class_uses')) {
             $names += class_uses($class);
         }
-        // @codeCoverageIgnoreEnd
         $names[] = $class;
         return $names;
     }
 
-    public function offsetSet($name, $class)
+    public function offsetSet($name, $service)
     {
-        $this->add($class, $name);
+        $this->set($service, $name);
     }
 
     public function offsetGet($name)
@@ -169,9 +141,9 @@ class Dim implements ArrayAccess
         $this->remove($name);
     }
 
-    public function __set($name, $class)
+    public function __set($name, $service)
     {
-        $this->add($class, $name);
+        $this->set($service, $name);
     }
 
     public function __get($name)

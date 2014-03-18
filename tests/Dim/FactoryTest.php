@@ -8,12 +8,12 @@ class FactoryTest extends PHPUnit_Framework_TestCase
      */
     public function testConstructException()
     {
-        new Factory($this->getMock('Dim'), 'stdClass');
+        new Factory('foo');
     }
 
     public function testGet()
     {
-        $factory = new Factory($this->getMock('Dim'), function () {
+        $factory = new Factory(function () {
             return new stdClass;
         });
         $this->assertInstanceOf('stdClass', $factory->get());
