@@ -2,7 +2,7 @@
 
 class Dim implements ArrayAccess
 {
-    // TODO: Unit tests: with scopes and arguments, update depends, getClass, resolve
+    // TODO: Unit tests: with scopes and arguments, update depends
     // TODO: namespaces
     // TODO: Doc blocks
     // TODO: PHP CS Fixer
@@ -64,7 +64,7 @@ class Dim implements ArrayAccess
     {
         $arguments = is_array($arguments) ? $arguments : array($arguments);
         $value = $this->raw($name);
-        $result = $value instanceof Service ? $value($arguments) : $value;
+        $result = $value instanceof Service ? $value($arguments, $this) : $value;
         return $result;
     }
 

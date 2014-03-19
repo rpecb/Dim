@@ -14,18 +14,18 @@ class Service
         $this->arguments = is_array($arguments) ? $arguments : array($arguments);
     }
 
-    public function get($arguments = array())
+    public function get($arguments = array(), Dim $dim = null)
     {
         $arguments = is_array($arguments) ? $arguments : array($arguments);
-        return $this->resolveClass($this->class, array_merge($this->arguments, $arguments));
+        return $this->resolveClass($this->class, array_merge($this->arguments, $arguments), $dim);
     }
 
-    public function __invoke($arguments = array())
+    public function __invoke($arguments = array(), Dim $dim = null)
     {
-        return $this->get($arguments);
+        return $this->get($arguments, $dim);
     }
 
-    protected function resolveClass($class, array $arguments = array())
+    protected function resolveClass($class, array $arguments = array(), Dim $dim = null)
     {
         $reflectionClass = new ReflectionClass($class);
         if (!$reflectionClass->isInstantiable()) {
@@ -34,13 +34,13 @@ class Service
         $reflectionMethod = $reflectionClass->getConstructor();
         if ($reflectionMethod) {
             return $reflectionClass->newInstanceArgs(
-                $this->getReflectionParameters($reflectionMethod, $arguments)
+                $this->getReflectionParameters($reflectionMethod, $arguments, $dim)
             );
         }
         return $reflectionClass->newInstance();
     }
 
-    protected function resolveCallable($callable, array $arguments = array())
+    protected function resolveCallable($callable, array $arguments = array(), Dim $dim = null)
     {
         if (is_array($callable)) {
             list($class, $method) = $callable;
@@ -61,11 +61,14 @@ class Service
         } else {
             $reflection = new ReflectionFunction($callable);
         }
-        return call_user_func_array($callable, $this->getReflectionParameters($reflection, $arguments));
+        return call_user_func_array($callable, $this->getReflectionParameters($reflection, $arguments, $dim));
     }
 
-    protected function getReflectionParameters(ReflectionFunctionAbstract $reflection, array $arguments = array())
-    {
+    protected function getReflectionParameters(
+        ReflectionFunctionAbstract $reflection,
+        array $arguments = array(),
+        Dim $dim = null
+    ) {
         $parameters = array();
         foreach ($reflection->getParameters() as $reflectionParameter) {
             if (array_key_exists($reflectionParameter->getName(), $arguments)) {
@@ -76,10 +79,10 @@ class Service
                 $parameters[] = $reflectionParameter->getDefaultValue();
             } else {
                 $classReflection = $reflectionParameter->getClass();
-                if (!is_object($classReflection)) {
+                if (!is_object($classReflection) || $dim === null || !$dim->has($classReflection->getName())) {
                     throw new BadMethodCallException('Not enough arguments.');
                 }
-                $parameters[] = $this->dim->get($classReflection->getName());
+                $parameters[] = $dim->get($classReflection->getName());
             }
         }
         return $parameters ? $parameters : $arguments;

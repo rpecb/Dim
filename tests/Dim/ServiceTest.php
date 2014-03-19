@@ -14,6 +14,15 @@ class ServiceTest extends PHPUnit_Framework_TestCase
     public function testGetReflectionParameters()
     {
         $foo = new stdClass;
+        $dim = $this->getMock('Dim');
+        $dim->expects($this->once())
+            ->method('has')
+            ->with($this->stringContains('stdClass'))
+            ->will($this->returnValue(true));
+        $dim->expects($this->once())
+            ->method('get')
+            ->with($this->stringContains('stdClass'))
+            ->will($this->returnValue($foo));
         $class = new ReflectionClass('Service');
         $getReflectionParameters = $class->getMethod('getReflectionParameters');
         $getReflectionParameters->setAccessible(true);
@@ -21,7 +30,7 @@ class ServiceTest extends PHPUnit_Framework_TestCase
         });
         $parameters = $getReflectionParameters->invokeArgs(
             new Service('stdClass'),
-            array($reflection, array('bar' => 'bar', 2 => 'foobar'))
+            array($reflection, array('bar' => 'bar', 2 => 'foobar'), $dim)
         );
         $this->assertCount(4, $parameters);
         $this->assertArrayHasKey(0, $parameters);
