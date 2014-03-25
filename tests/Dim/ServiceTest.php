@@ -67,9 +67,7 @@ class ServiceTest extends PHPUnit_Framework_TestCase
         $resolveClass = $class->getMethod('resolveClass');
         $resolveClass->setAccessible(true);
         $service = new Service('stdClass');
-        $this->getMockBuilder('stdClass')->setMockClassName('stdClass1')->setMethods(array('__construct'))->getMock();
         $this->assertInstanceOf('stdClass', $resolveClass->invoke($service, 'stdClass'));
-        $this->assertInstanceOf('stdClass1', $resolveClass->invoke($service, 'stdClass1'));
     }
 
     /**

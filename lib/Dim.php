@@ -2,7 +2,7 @@
 
 class Dim implements ArrayAccess
 {
-    // TODO: Unit tests: with scopes and arguments, update depends
+    // TODO: Unit tests: with scopes and arguments, update depends, with services
     // TODO: namespaces
     // TODO: Doc blocks
     // TODO: PHP CS Fixer
@@ -27,10 +27,11 @@ class Dim implements ArrayAccess
             if (!is_callable($callable)) {
                 throw new InvalidArgumentException('A callable expected.');
             }
+            $mode = $this->scopes->getIteratorMode();
             $this->scopes->setIteratorMode(SplDoublyLinkedList::IT_MODE_KEEP);
             $callable();
             $this->scopes = new SplDoublyLinkedList;
-            $this->scopes->setIteratorMode(SplDoublyLinkedList::IT_MODE_DELETE);
+            $this->scopes->setIteratorMode($mode);
         }
         return $this;
     }
@@ -63,8 +64,11 @@ class Dim implements ArrayAccess
     public function get($name, $arguments = array())
     {
         $arguments = is_array($arguments) ? $arguments : array($arguments);
+        $mode = $this->scopes->getIteratorMode();
+        $this->scopes->setIteratorMode(SplDoublyLinkedList::IT_MODE_KEEP);
         $value = $this->raw($name);
         $result = $value instanceof Service ? $value($arguments, $this) : $value;
+        $this->scopes->setIteratorMode($mode);
         return $result;
     }
 

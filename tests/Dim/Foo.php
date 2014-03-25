@@ -17,3 +17,10 @@ class Foo
         return static::factory();
     }
 }
+
+class Foo1 {
+    public function __construct(stdClass $std)
+    {
+
+    }
+}

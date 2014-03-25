@@ -14,6 +14,11 @@ class Service
         $this->arguments = is_array($arguments) ? $arguments : array($arguments);
     }
 
+    public function getClass()
+    {
+        return $this->class;
+    }
+
     public function get($arguments = array(), Dim $dim = null)
     {
         $arguments = is_array($arguments) ? $arguments : array($arguments);
