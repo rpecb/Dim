@@ -2,11 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="59063b78-bedd-4b35-923d-f9420d1b65a7" name="Default" comment="Making unit tests">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/Dim/FooTest.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/Dim.php" afterPath="$PROJECT_DIR$/lib/Dim.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tests/Dim/Foo.php" afterPath="$PROJECT_DIR$/tests/Dim/Foo.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/Service.php" afterPath="$PROJECT_DIR$/lib/Service.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tests/Dim/ServiceTest.php" afterPath="$PROJECT_DIR$/tests/Dim/ServiceTest.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tests/Dim/DimTest.php" afterPath="$PROJECT_DIR$/tests/Dim/DimTest.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tests/Dim/FooTest.php" afterPath="$PROJECT_DIR$/tests/Dim/FooTest.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="Dim.iws" />
@@ -34,9 +32,9 @@
     <SUITE FILE_PATH="coverage/Dim$DimTest_testInvoke.coverage" NAME="DimTest.testInvoke Coverage Results" MODIFIED="1395180952525" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="PhpCoverage" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/Dim$DimTest_testSingletonWithNames.coverage" NAME="DimTest.testSingletonWithNames Coverage Results" MODIFIED="1394052021131" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="PhpCoverage" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/Dim$DimTest_testHas.coverage" NAME="DimTest.testHas Coverage Results" MODIFIED="1395180627114" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="PhpCoverage" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
-    <SUITE FILE_PATH="coverage/Dim$DimTest_testIsset.coverage" NAME="DimTest.testIsset Coverage Results" MODIFIED="1395180800905" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="PhpCoverage" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
-    <SUITE FILE_PATH="coverage/Dim$DimTest_testExtendWithName.coverage" NAME="DimTest.testExtendWithName Coverage Results" MODIFIED="1394079229785" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="PhpCoverage" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/Dim$ServiceTest_testResolveCallableException1.coverage" NAME="ServiceTest.testResolveCallableException1 Coverage Results" MODIFIED="1395181952026" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="PhpCoverage" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/Dim$DimTest_testExtendWithName.coverage" NAME="DimTest.testExtendWithName Coverage Results" MODIFIED="1394079229785" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="PhpCoverage" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/Dim$DimTest_testIsset.coverage" NAME="DimTest.testIsset Coverage Results" MODIFIED="1395180800905" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="PhpCoverage" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/Dim$ServiceTest_testResolveClass.coverage" NAME="ServiceTest.testResolveClass Coverage Results" MODIFIED="1395182032607" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="PhpCoverage" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/Dim$DimTest_testGetNames.coverage" NAME="DimTest.testGetNames Coverage Results" MODIFIED="1395180716425" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="PhpCoverage" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/Dim$ExtendedTest.coverage" NAME="ExtendedTest Coverage Results" MODIFIED="1395181753431" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="PhpCoverage" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
@@ -49,7 +47,7 @@
     <SUITE FILE_PATH="coverage/Dim$DimTest_testScopeWithCallable.coverage" NAME="DimTest.testScopeWithCallable Coverage Results" MODIFIED="1395181048787" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="PhpCoverage" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/Dim$ServiceTest_testResolveClassException.coverage" NAME="ServiceTest.testResolveClassException Coverage Results" MODIFIED="1395182011939" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="PhpCoverage" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/Dim$DimTest_testInstanceException.coverage" NAME="DimTest.testInstanceException Coverage Results" MODIFIED="1394052089369" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="PhpCoverage" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
-    <SUITE FILE_PATH="coverage/Dim$Dim.coverage" NAME="Dim Coverage Results" MODIFIED="1395744704381" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="PhpCoverage" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/Dim$Dim.coverage" NAME="Dim Coverage Results" MODIFIED="1396038582215" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="PhpCoverage" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/Dim$DimTest_testScopeRawException.coverage" NAME="DimTest.testScopeRawException Coverage Results" MODIFIED="1395181081594" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="PhpCoverage" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/Dim$DimTest_testAliases.coverage" NAME="DimTest.testAliases Coverage Results" MODIFIED="1395180596915" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="PhpCoverage" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/Dim$DimTest_testOffsetUnset.coverage" NAME="DimTest.testOffsetUnset Coverage Results" MODIFIED="1395180786238" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="PhpCoverage" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
@@ -73,10 +71,10 @@
     <SUITE FILE_PATH="coverage/Dim$DimTest_testAddWithName.coverage" NAME="DimTest.testAddWithName Coverage Results" MODIFIED="1395180518264" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="PhpCoverage" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/Dim$DimTest_testAddWithNames.coverage" NAME="DimTest.testAddWithNames Coverage Results" MODIFIED="1395180550843" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="PhpCoverage" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/Dim$ServiceTest_testOpa.coverage" NAME="ServiceTest.testOpa Coverage Results" MODIFIED="1395092657882" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="PhpCoverage" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
-    <SUITE FILE_PATH="coverage/Dim$DimTest_testInstanceWithName.coverage" NAME="DimTest.testInstanceWithName Coverage Results" MODIFIED="1394052042832" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="PhpCoverage" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/Dim$DimTest_testSubScope.coverage" NAME="DimTest.testSubScope Coverage Results" MODIFIED="1395181039809" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="PhpCoverage" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
-    <SUITE FILE_PATH="coverage/Dim$DimTest_testRawException.coverage" NAME="DimTest.testRawException Coverage Results" MODIFIED="1395180456307" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="PhpCoverage" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/Dim$DimTest_testInstanceWithName.coverage" NAME="DimTest.testInstanceWithName Coverage Results" MODIFIED="1394052042832" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="PhpCoverage" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/Dim$DimTest_testAddException.coverage" NAME="DimTest.testAddException Coverage Results" MODIFIED="1394051998861" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="PhpCoverage" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/Dim$DimTest_testRawException.coverage" NAME="DimTest.testRawException Coverage Results" MODIFIED="1395180456307" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="PhpCoverage" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/Dim$DimTest_testMagicSet.coverage" NAME="DimTest.testMagicSet Coverage Results" MODIFIED="1395180833877" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="PhpCoverage" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/Dim$ServiceTest_testConstructException.coverage" NAME="ServiceTest.testConstructException Coverage Results" MODIFIED="1395181865862" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="PhpCoverage" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/Dim$DimTest_testFactoryException.coverage" NAME="DimTest.testFactoryException Coverage Results" MODIFIED="1394052111091" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="PhpCoverage" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
@@ -100,28 +98,19 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="Dim.php" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="Dim.php" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib/Dim.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="76" column="8" selection-start="2564" selection-end="2593" vertical-scroll-proportion="0.36048526" vertical-offset="1008" max-vertical-offset="2832">
+            <state line="75" column="48" selection-start="2550" selection-end="2550" vertical-scroll-proportion="-2.6181817" vertical-offset="1056" max-vertical-offset="2912">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="FooTest.php" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="FooTest.php" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/tests/Dim/FooTest.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="7" column="46" selection-start="193" selection-end="193" vertical-scroll-proportion="-4.48" vertical-offset="0" max-vertical-offset="272">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ServiceTest.php" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/tests/Dim/ServiceTest.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="12" column="0" selection-start="273" selection-end="273" vertical-scroll-proportion="-7.68" vertical-offset="0" max-vertical-offset="2656">
+            <state line="9" column="57" selection-start="367" selection-end="367" vertical-scroll-proportion="0.36180905" vertical-offset="0" max-vertical-offset="398">
               <folding />
             </state>
           </provider>
@@ -130,7 +119,7 @@
       <file leaf-file-name="DimTest.php" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/tests/Dim/DimTest.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="372" column="0" selection-start="10578" selection-end="10578" vertical-scroll-proportion="-4.16" vertical-offset="5848" max-vertical-offset="8096">
+            <state line="368" column="49" selection-start="10466" selection-end="10466" vertical-scroll-proportion="-7.36" vertical-offset="5704" max-vertical-offset="8064">
               <folding />
             </state>
           </provider>
@@ -164,7 +153,6 @@
         <option value="$PROJECT_DIR$/lib/Singleton.php" />
         <option value="$PROJECT_DIR$/tests/Dim/Bar.php" />
         <option value="$PROJECT_DIR$/tests/bootstrap.php" />
-        <option value="$PROJECT_DIR$/tests/Dim/DimTest.php" />
         <option value="$PROJECT_DIR$/lib/Factory.php" />
         <option value="$PROJECT_DIR$/lib/Extended.php" />
         <option value="$PROJECT_DIR$/tests/Dim/ExtendedTest.php" />
@@ -173,8 +161,10 @@
         <option value="$PROJECT_DIR$/tests/Dim/ServiceTest.php" />
         <option value="$PROJECT_DIR$/tests/Dim/Foo.php" />
         <option value="$PROJECT_DIR$/lib/Service.php" />
-        <option value="$PROJECT_DIR$/tests/Dim/FooTest.php" />
+        <option value="$PROJECT_DIR$/zd.js" />
+        <option value="$PROJECT_DIR$/tests/Dim/DimTest.php" />
         <option value="$PROJECT_DIR$/lib/Dim.php" />
+        <option value="$PROJECT_DIR$/tests/Dim/FooTest.php" />
       </list>
     </option>
   </component>
@@ -258,6 +248,7 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -324,7 +315,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -338,6 +328,7 @@
     <property name="options.splitter.details.proportions" value="0.2" />
     <property name="options.searchVisible" value="true" />
     <property name="FullScreen" value="false" />
+    <property name="LayoutCode.rearrangeEntriesJavaScript" value="false" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -469,9 +460,9 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="64" y="-4" width="1303" height="773" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
-      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3288889" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3288889" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3288889" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3288889" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32988048" sideWeight="0.49853373" order="5" side_tool="false" content_ui="tabs" />
@@ -482,15 +473,15 @@
       <window_info id="Coverage" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.16972111" sideWeight="0.5014663" order="5" side_tool="true" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3422222" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24940239" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.187251" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.19043824" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.43555555" sideWeight="0.6334661" order="2" side_tool="false" content_ui="tabs" x="84" y="285" width="1255" height="334" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
     </layout>
     <layout-to-restore>
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -510,9 +501,9 @@
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24940239" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.22788845" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.45185184" sideWeight="0.4996016" order="2" side_tool="false" content_ui="tabs" x="84" y="285" width="1255" height="334" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.45185184" sideWeight="0.4996016" order="2" side_tool="false" content_ui="tabs" x="84" y="285" width="1255" height="334" />
     </layout-to-restore>
   </component>
   <component name="Vcs.Log.UiProperties">
@@ -536,22 +527,13 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="57" />
+      <option name="time" value="58" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/tests/Dim/ServiceTest.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="5" selection-start="235" selection-end="235" vertical-scroll-proportion="0.0" vertical-offset="144" max-vertical-offset="2656">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/lib/Service.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="82" column="0" selection-start="3402" selection-end="3402" vertical-scroll-proportion="0.0" vertical-offset="96" max-vertical-offset="1520">
-          <folding />
-        </state>
+        <state line="82" column="0" selection-start="3402" selection-end="3402" vertical-scroll-proportion="0.0" vertical-offset="96" max-vertical-offset="1520" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/lib/Dim.php">
@@ -763,37 +745,22 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/lib/Extended.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="8" column="49" selection-start="191" selection-end="191" vertical-scroll-proportion="0.41025642" vertical-offset="0" max-vertical-offset="384">
-          <folding />
-        </state>
+        <state line="8" column="49" selection-start="191" selection-end="191" vertical-scroll-proportion="0.41025642" vertical-offset="0" max-vertical-offset="384" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/lib/Factory.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="11" column="0" selection-start="257" selection-end="257" vertical-scroll-proportion="0.5641026" vertical-offset="0" max-vertical-offset="416">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tests/Dim/Foo.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="22" column="5" selection-start="317" selection-end="317" vertical-scroll-proportion="1.083077" vertical-offset="0" max-vertical-offset="496">
-          <folding />
-        </state>
+        <state line="11" column="0" selection-start="257" selection-end="257" vertical-scroll-proportion="0.5641026" vertical-offset="0" max-vertical-offset="416" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/lib/Singleton.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="5" column="0" selection-start="66" selection-end="66" vertical-scroll-proportion="0.24615385" vertical-offset="0" max-vertical-offset="325">
-          <folding />
-        </state>
+        <state line="5" column="0" selection-start="66" selection-end="66" vertical-scroll-proportion="0.24615385" vertical-offset="0" max-vertical-offset="325" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/lib/Service.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="12" column="30" selection-start="313" selection-end="313" vertical-scroll-proportion="-2.412463" vertical-offset="1005" max-vertical-offset="1600">
-          <folding />
-        </state>
+        <state line="12" column="30" selection-start="313" selection-end="313" vertical-scroll-proportion="-2.412463" vertical-offset="1005" max-vertical-offset="1600" />
       </provider>
     </entry>
     <entry file="jar://$APPLICATION_HOME_DIR$/plugins/php/lib/php.jar!/com/jetbrains/php/lang/psi/stubs/data/SPL_c1.php">
@@ -803,30 +770,44 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/tests/Dim/FooTest.php">
+    <entry file="jar://$APPLICATION_HOME_DIR$/plugins/php/lib/php.jar!/com/jetbrains/php/lang/psi/stubs/data/standard_8.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="7" column="46" selection-start="193" selection-end="193" vertical-scroll-proportion="-4.48" vertical-offset="0" max-vertical-offset="272">
+        <state line="903" column="9" selection-start="29194" selection-end="29194" vertical-scroll-proportion="0.34596375" vertical-offset="14238" max-vertical-offset="17632">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/tests/Dim/ServiceTest.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="12" column="0" selection-start="273" selection-end="273" vertical-scroll-proportion="-7.68" vertical-offset="0" max-vertical-offset="2656">
+        <state line="12" column="0" selection-start="273" selection-end="273" vertical-scroll-proportion="0.0" vertical-offset="192" max-vertical-offset="2656">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/tests/Dim/DimTest.php">
+    <entry file="file://$PROJECT_DIR$/tests/Dim/Foo.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="372" column="0" selection-start="10578" selection-end="10578" vertical-scroll-proportion="-4.16" vertical-offset="5848" max-vertical-offset="8096">
+        <state line="22" column="5" selection-start="317" selection-end="317" vertical-scroll-proportion="-7.28" vertical-offset="170" max-vertical-offset="496">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/lib/Dim.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="76" column="8" selection-start="2564" selection-end="2593" vertical-scroll-proportion="0.36048526" vertical-offset="1008" max-vertical-offset="2832">
+        <state line="75" column="48" selection-start="2550" selection-end="2550" vertical-scroll-proportion="-2.6181817" vertical-offset="1056" max-vertical-offset="2912">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/Dim/DimTest.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="368" column="49" selection-start="10466" selection-end="10466" vertical-scroll-proportion="-7.36" vertical-offset="5704" max-vertical-offset="8064">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/Dim/FooTest.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="9" column="57" selection-start="367" selection-end="367" vertical-scroll-proportion="0.36180905" vertical-offset="0" max-vertical-offset="398">
           <folding />
         </state>
       </provider>
