@@ -11,6 +11,12 @@ class ServiceTest extends PHPUnit_Framework_TestCase
         new Service('FooBar');
     }
 
+    public function testGetClass()
+    {
+        $service = new Service('stdClass');
+        $this->assertEquals('stdClass', $service->getClass());
+    }
+
     public function testGetReflectionParameters()
     {
         $foo = new stdClass;
@@ -41,6 +47,54 @@ class ServiceTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('bar', $parameters[1]);
         $this->assertEquals('foobar', $parameters[2]);
         $this->assertNull($parameters[3]);
+    }
+
+    public function testGetReflectionParametersWithScope()
+    {
+        $dim = $this->getMock('Dim');
+        $std = new stdClass;
+        $service = new Service('Foo1');
+        $dim->expects($this->at(0))
+            ->method('scope')
+            ->with($this->stringContains('foo'))
+            ->will($this->returnValue($dim));
+        $dim->expects($this->at(1))
+            ->method('set')
+            ->with($this->isInstanceOf('stdClass'));
+        $dim->scope('foo')->set($std);
+
+        $dim->expects($this->at(0))
+            ->method('scope')
+            ->with($this->stringContains('foo'))
+            ->will($this->returnValue($dim));
+        $dim->expects($this->at(1))
+            ->method('set')
+            ->with($this->isInstanceOf('Service'));
+        $dim->scope('foo')->set($service);
+
+        $dim->expects($this->at(0))
+            ->method('scope')
+            ->with($this->stringContains('foo'))
+            ->will($this->returnValue($dim));
+        $dim->expects($this->at(2))
+            ->method('has')
+            ->with($this->stringContains('stdClass'))
+            ->will($this->returnValue(true));
+        $dim->expects($this->at(3))
+            ->method('get')
+            ->with($this->stringContains('stdClass'))
+            ->will($this->returnValue($std));
+        $dim->expects($this->at(1))
+            ->method('get')
+            ->with($this->stringContains('Foo1'))
+            ->will(
+                $this->returnCallback(
+                    function () use ($service, $dim) {
+                        $service->get(array('bar' => 'bar', 2 => 'foobar'), $dim);
+                    }
+                )
+            );
+        $dim->scope('foo')->get('Foo1');
     }
 
     /**

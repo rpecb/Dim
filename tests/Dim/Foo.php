@@ -18,8 +18,9 @@ class Foo
     }
 }
 
-class Foo1 {
-    public function __construct(stdClass $std)
+class Foo1
+{
+    public function __construct(stdClass $std, $bar, $foobar, $null = null)
     {
 
     }

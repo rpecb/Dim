@@ -2,7 +2,7 @@
 
 class Dim implements ArrayAccess
 {
-    // TODO: Unit tests: with scopes and arguments, update depends, with services
+    // TODO: Unit tests: with arguments, update depends, with services
     // TODO: namespaces
     // TODO: Doc blocks
     // TODO: PHP CS Fixer
@@ -10,12 +10,11 @@ class Dim implements ArrayAccess
     // TODO: Security analysis
     // TODO: Composer package
     // TODO: Post on Github
-    protected $values;
-    public $scopes;
+    protected $values = array();
+    protected $scopes;
 
     public function __construct()
     {
-        $this->values = new ArrayObject;
         $this->scopes = new SplDoublyLinkedList;
         $this->scopes->setIteratorMode(SplDoublyLinkedList::IT_MODE_DELETE);
         $this->set($this, get_called_class());
@@ -39,7 +38,7 @@ class Dim implements ArrayAccess
 
     public function set($service, $names = null)
     {
-        $scope = $this->getScope();
+        $scope = & $this->getScope();
         $names = (array)$names;
         if (!$names) {
             if ($service instanceof Service) {
@@ -50,20 +49,16 @@ class Dim implements ArrayAccess
                 throw new BadMethodCallException('Service name does not specified.');
             }
         }
-        foreach ($names as $name) {
-            $scope[$name] = $service;
-        }
+        $scope = array_fill_keys($names, $service) + $scope;
     }
 
     public function alias($name, $aliases)
     {
-        $scope = $this->getScope();
-        if (!isset($scope[$name])) {
+        $scope = & $this->getScope();
+        if (!array_key_exists($name, $scope)) {
             throw new InvalidArgumentException('Dependency ' . $name . ' is not defined in current scope.');
         }
-        foreach ((array)$aliases as $alias) {
-            $scope[$alias] = $scope[$name];
-        }
+        $scope = array_fill_keys((array)$aliases, $scope[$name]) + $scope;
     }
 
     public function get($name, $arguments = array())
@@ -80,8 +75,8 @@ class Dim implements ArrayAccess
 
     public function raw($name)
     {
-        $scope = $this->getScope();
-        if (!isset($scope[$name])) {
+        $scope = & $this->getScope();
+        if (!array_key_exists($name, $scope)) {
             throw new InvalidArgumentException('Dependency ' . $name . ' is not defined in current scope.');
         }
         return $scope[$name];
@@ -89,33 +84,34 @@ class Dim implements ArrayAccess
 
     public function has($name)
     {
-        $scope = $this->getScope();
-        return isset($scope[$name]);
+        $scope = & $this->getScope();
+        return array_key_exists($name, $scope);
     }
 
     public function remove($name)
     {
-        $scope = $this->getScope();
+        $scope = & $this->getScope();
         unset($scope[$name]);
     }
 
     public function clear()
     {
         $count = count($this->scopes);
-        $this->getScope()->exchangeArray(array());
+        $scope = & $this->getScope();
+        $scope = array();
         if (!$count) {
             $this->set($this, get_called_class());
         }
     }
 
-    protected function getScope()
+    protected function &getScope()
     {
-        $scope = $this->values;
+        $scope = & $this->values;
         foreach ($this->scopes as $v) {
-            if (!isset($scope[$v])) {
-                $scope[$v] = new ArrayObject;
+            if (!array_key_exists($v, $scope)) {
+                $scope[$v] = array();
             }
-            $scope = $scope[$v];
+            $scope = & $scope[$v];
         }
         return $scope;
     }

@@ -22,7 +22,7 @@ class Service
     public function get($arguments = array(), Dim $dim = null)
     {
         $arguments = is_array($arguments) ? $arguments : array($arguments);
-        return $this->resolveClass($this->class, array_merge($this->arguments, $arguments), $dim);
+        return $this->resolveClass($this->class, $arguments + $this->arguments, $dim);
     }
 
     public function __invoke($arguments = array(), Dim $dim = null)

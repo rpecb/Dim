@@ -366,7 +366,6 @@ class DimTest extends PHPUnit_Framework_TestCase
         $this->assertSame($dim->scope('foo')->raw('std'), $dim->scope('foo')->raw('std1'));
 
         $this->assertInstanceOf('stdClass', $dim->scope('foo')->get('std'));
-        var_dump(iterator_to_array($dim->scopes));
         $this->assertInstanceOf('stdClass', $dim->scope('foo')->get('std1'));
         $this->assertInstanceOf('stdClass', $dim->scope('foo')->get('std2'));
         $this->assertInstanceOf('stdClass', $dim->scope('foo')->get('std3'));

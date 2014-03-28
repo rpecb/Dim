@@ -14,6 +14,6 @@ class Extended extends Factory
     {
         $arguments = is_array($arguments) ? $arguments : array($arguments);
         $value = $this->value instanceof Service ? $this->value->get() : $this->value;
-        return $this->resolveCallable($this->callable, array_merge(array($value), $this->arguments, $arguments));
+        return $this->resolveCallable($this->callable, $arguments + $this->arguments + array($value));
     }
 } 

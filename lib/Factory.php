@@ -16,6 +16,6 @@ class Factory extends Service
     public function get($arguments = array())
     {
         $arguments = is_array($arguments) ? $arguments : array($arguments);
-        return $this->resolveCallable($this->callable, array_merge($this->arguments, $arguments));
+        return $this->resolveCallable($this->callable, $arguments + $this->arguments);
     }
 }
