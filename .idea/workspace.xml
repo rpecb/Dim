@@ -1,15 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="59063b78-bedd-4b35-923d-f9420d1b65a7" name="Default" comment="Making unit tests">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/tests/Dim/FooTest.php" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/Dim.php" afterPath="$PROJECT_DIR$/lib/Dim.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tests/Dim/DimTest.php" afterPath="$PROJECT_DIR$/tests/Dim/DimTest.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/Extended.php" afterPath="$PROJECT_DIR$/lib/Extended.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/Factory.php" afterPath="$PROJECT_DIR$/lib/Factory.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tests/Dim/Foo.php" afterPath="$PROJECT_DIR$/tests/Dim/Foo.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/Service.php" afterPath="$PROJECT_DIR$/lib/Service.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tests/Dim/ServiceTest.php" afterPath="$PROJECT_DIR$/tests/Dim/ServiceTest.php" />
+    <list default="true" id="59063b78-bedd-4b35-923d-f9420d1b65a7" name="Default" comment="Fixed getting dependencies in current scope">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="Dim.iws" />
@@ -107,7 +99,7 @@
       <file leaf-file-name="Dim.php" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/lib/Dim.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="4" column="30" selection-start="72" selection-end="72" vertical-scroll-proportion="0.16080402" vertical-offset="0" max-vertical-offset="2848">
+            <state line="4" column="30" selection-start="72" selection-end="72" vertical-scroll-proportion="0.0" vertical-offset="64" max-vertical-offset="2848">
               <folding />
             </state>
           </provider>
@@ -236,7 +228,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -303,6 +294,7 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -448,7 +440,11 @@
       <created>1396038603500</created>
       <updated>1396038603500</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Fixed getting dependencies in current scope">
+      <created>1396041443307</created>
+      <updated>1396041443307</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -475,23 +471,23 @@
     <frame x="64" y="-4" width="1303" height="773" extended-state="6" />
     <editor active="false" />
     <layout>
-      <window_info id="Changes" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3288889" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3288889" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3288889" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3288889" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32988048" sideWeight="0.49853373" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25925925" sideWeight="0.36573705" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3288889" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="Coverage" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.16972111" sideWeight="0.5014663" order="5" side_tool="true" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3422222" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32988048" sideWeight="0.49853373" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24940239" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.19043824" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.19681275" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25925925" sideWeight="0.36573705" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.43555555" sideWeight="0.6334661" order="2" side_tool="false" content_ui="tabs" x="84" y="285" width="1255" height="334" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3288889" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3288889" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Coverage" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.16972111" sideWeight="0.5014663" order="5" side_tool="true" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
@@ -534,7 +530,8 @@
     <MESSAGE value="Made unit tests for Dim class" />
     <MESSAGE value="Made unit tests for Service class" />
     <MESSAGE value="Making unit tests" />
-    <option name="LAST_COMMIT_MESSAGE" value="Making unit tests" />
+    <MESSAGE value="Fixed getting dependencies in current scope" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed getting dependencies in current scope" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
@@ -743,9 +740,7 @@
     </entry>
     <entry file="jar://$APPLICATION_HOME_DIR$/plugins/php/lib/php.jar!/com/jetbrains/php/lang/psi/stubs/data/standard_8.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="903" column="9" selection-start="29194" selection-end="29194" vertical-scroll-proportion="0.34596375" vertical-offset="14238" max-vertical-offset="17632">
-          <folding />
-        </state>
+        <state line="903" column="9" selection-start="29194" selection-end="29194" vertical-scroll-proportion="0.34596375" vertical-offset="14238" max-vertical-offset="17632" />
       </provider>
     </entry>
     <entry file="jar://$APPLICATION_HOME_DIR$/plugins/php/lib/php.jar!/com/jetbrains/php/lang/psi/stubs/data/SPL_c1.php">
@@ -757,84 +752,62 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/tests/Dim/Bar.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="7" column="1" selection-start="69" selection-end="69" vertical-scroll-proportion="0.18064517" vertical-offset="0" max-vertical-offset="620">
-          <folding />
-        </state>
+        <state line="7" column="1" selection-start="69" selection-end="69" vertical-scroll-proportion="0.18064517" vertical-offset="0" max-vertical-offset="620" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/tests/Dim/DimTest.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="333" column="0" selection-start="8745" selection-end="8745" vertical-scroll-proportion="-3.387097" vertical-offset="7428" max-vertical-offset="8048">
-          <folding />
-        </state>
+        <state line="333" column="0" selection-start="8745" selection-end="8745" vertical-scroll-proportion="-3.387097" vertical-offset="7428" max-vertical-offset="8048" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/tests/Dim/ExtendedTest.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="4" column="29" selection-start="92" selection-end="92" vertical-scroll-proportion="0.103225805" vertical-offset="0" max-vertical-offset="620">
-          <folding />
-        </state>
+        <state line="4" column="29" selection-start="92" selection-end="92" vertical-scroll-proportion="0.103225805" vertical-offset="0" max-vertical-offset="620" />
       </provider>
     </entry>
     <entry file="phar:///usr/local/bin/phpunit.phar/phpunit-mock-objects/Framework/MockObject/Builder/InvocationMocker.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="131" column="20" selection-start="4713" selection-end="4713" vertical-scroll-proportion="0.34596375" vertical-offset="1230" max-vertical-offset="2528">
-          <folding />
-        </state>
+        <state line="131" column="20" selection-start="4713" selection-end="4713" vertical-scroll-proportion="0.34596375" vertical-offset="1230" max-vertical-offset="2528" />
       </provider>
     </entry>
     <entry file="phar:///usr/local/bin/phpunit.phar/phpunit/Framework/Assert.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="2639" column="39" selection-start="85585" selection-end="85597" vertical-scroll-proportion="-4.6545453" vertical-offset="41296" max-vertical-offset="44928">
-          <folding />
-        </state>
+        <state line="2639" column="39" selection-start="85585" selection-end="85597" vertical-scroll-proportion="-4.6545453" vertical-offset="41296" max-vertical-offset="44928" />
       </provider>
     </entry>
     <entry file="phar:///usr/local/bin/phpunit.phar/phpunit/Framework/TestCase.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="1620" column="41" selection-start="46943" selection-end="46957" vertical-scroll-proportion="2.909091" vertical-offset="25408" max-vertical-offset="29776">
-          <folding />
-        </state>
+        <state line="1620" column="41" selection-start="46943" selection-end="46957" vertical-scroll-proportion="2.909091" vertical-offset="25408" max-vertical-offset="29776" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/tests/Dim/Foo.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="21" column="32" selection-start="297" selection-end="297" vertical-scroll-proportion="0.5419355" vertical-offset="0" max-vertical-offset="620">
-          <folding />
-        </state>
+        <state line="21" column="32" selection-start="297" selection-end="297" vertical-scroll-proportion="0.5419355" vertical-offset="0" max-vertical-offset="620" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/lib/Factory.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="5" selection-start="381" selection-end="381" vertical-scroll-proportion="0.33548388" vertical-offset="0" max-vertical-offset="620">
-          <folding />
-        </state>
+        <state line="13" column="5" selection-start="381" selection-end="381" vertical-scroll-proportion="0.33548388" vertical-offset="0" max-vertical-offset="620" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/lib/Extended.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="11" column="0" selection-start="231" selection-end="231" vertical-scroll-proportion="0.28387097" vertical-offset="0" max-vertical-offset="620">
-          <folding />
-        </state>
+        <state line="11" column="0" selection-start="231" selection-end="231" vertical-scroll-proportion="0.28387097" vertical-offset="0" max-vertical-offset="620" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/lib/Service.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="77" column="0" selection-start="2712" selection-end="2712" vertical-scroll-proportion="1.9870968" vertical-offset="0" max-vertical-offset="1600">
-          <folding />
-        </state>
+        <state line="77" column="0" selection-start="2712" selection-end="2712" vertical-scroll-proportion="1.9870968" vertical-offset="0" max-vertical-offset="1600" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/tests/Dim/ServiceTest.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="10" column="30" selection-start="266" selection-end="266" vertical-scroll-proportion="-4.316129" vertical-offset="2836" max-vertical-offset="3456">
-          <folding />
-        </state>
+        <state line="10" column="30" selection-start="266" selection-end="266" vertical-scroll-proportion="-4.316129" vertical-offset="2836" max-vertical-offset="3456" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/lib/Dim.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="4" column="30" selection-start="72" selection-end="72" vertical-scroll-proportion="0.16080402" vertical-offset="0" max-vertical-offset="2848">
+        <state line="4" column="30" selection-start="72" selection-end="72" vertical-scroll-proportion="0.0" vertical-offset="64" max-vertical-offset="2848">
           <folding />
         </state>
       </provider>
