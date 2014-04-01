@@ -8,7 +8,7 @@ class ServiceTest extends PHPUnit_Framework_TestCase
      */
     public function testConstructException()
     {
-        new Service('FooBar');
+        new Service('BarFoo');
     }
 
     public function testGetClass()
@@ -53,7 +53,7 @@ class ServiceTest extends PHPUnit_Framework_TestCase
     {
         $dim = $this->getMock('Dim');
         $std = new stdClass;
-        $service = new Service('Foo1');
+        $service = new Service('FooBar');
         $dim->expects($this->at(0))
             ->method('scope')
             ->with($this->stringContains('foo'))
@@ -86,7 +86,7 @@ class ServiceTest extends PHPUnit_Framework_TestCase
             ->will($this->returnValue($std));
         $dim->expects($this->at(1))
             ->method('get')
-            ->with($this->stringContains('Foo1'))
+            ->with($this->stringContains('FooBar'))
             ->will(
                 $this->returnCallback(
                     function () use ($service, $dim) {
@@ -94,7 +94,7 @@ class ServiceTest extends PHPUnit_Framework_TestCase
                     }
                 )
             );
-        $dim->scope('foo')->get('Foo1');
+        $dim->scope('foo')->get('FooBar');
     }
 
     /**

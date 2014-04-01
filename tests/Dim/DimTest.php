@@ -25,14 +25,19 @@ class DimTest extends PHPUnit_Framework_TestCase
     public function testSetWithoutNames()
     {
         $dim = new Dim;
+        $service = $this->getMockBuilder('Service')->disableOriginalConstructor()->getMock();
+        $service->expects($this->once())->method('getClass')->will($this->returnValue('stdClass'));
         $dim->set(new ArrayObject);
+        $dim->set($service);
         $foo = $dim->raw('ArrayObject');
         $bar = $dim->raw('ArrayAccess');
         $foobar = $dim->raw('Countable');
+        $std = $dim->raw('stdClass');
         $this->assertInstanceOf('ArrayObject', $foo);
         $this->assertInstanceOf('ArrayObject', $bar);
         $this->assertInstanceOf('ArrayObject', $foobar);
         $this->assertSame($foo, $bar);
+        $this->assertInstanceOf('Service', $std);
     }
 
     /**
@@ -261,10 +266,16 @@ class DimTest extends PHPUnit_Framework_TestCase
     public function testGet()
     {
         $dim = new Dim;
+        $service = $this->getMockBuilder('Service')->disableOriginalConstructor()->getMock();
+        $service->expects($this->once())->method('__invoke')->with(
+            $this->isType('array'),
+            $this->isInstanceOf('Dim')
+        )->will($this->returnValue(new stdClass));
         $dim->set(new stdClass, 'std');
+        $dim->set($service, 'svc');
         $this->assertSame($dim, $dim->get('Dim'));
-        $foo = $dim->get('std');
-        $this->assertInstanceOf('stdClass', $foo);
+        $this->assertInstanceOf('stdClass', $dim->get('std'));
+        $this->assertInstanceOf('stdClass', $dim->get('svc'));
     }
 
     /**
@@ -275,10 +286,16 @@ class DimTest extends PHPUnit_Framework_TestCase
     public function testOffsetGet()
     {
         $dim = new Dim;
+        $service = $this->getMockBuilder('Service')->disableOriginalConstructor()->getMock();
+        $service->expects($this->once())->method('__invoke')->with(
+            $this->isType('array'),
+            $this->isInstanceOf('Dim')
+        )->will($this->returnValue(new stdClass));
         $dim->set(new stdClass, 'std');
+        $dim->set($service, 'svc');
         $this->assertSame($dim, $dim['Dim']);
-        $foo = $dim['std'];
-        $this->assertInstanceOf('stdClass', $foo);
+        $this->assertInstanceOf('stdClass', $dim['std']);
+        $this->assertInstanceOf('stdClass', $dim['svc']);
     }
 
     /**
@@ -289,10 +306,16 @@ class DimTest extends PHPUnit_Framework_TestCase
     public function testInvoke()
     {
         $dim = new Dim;
+        $service = $this->getMockBuilder('Service')->disableOriginalConstructor()->getMock();
+        $service->expects($this->once())->method('__invoke')->with(
+            $this->isType('array'),
+            $this->isInstanceOf('Dim')
+        )->will($this->returnValue(new stdClass));
         $dim->set(new stdClass, 'std');
+        $dim->set($service, 'svc');
         $this->assertSame($dim, $dim('Dim'));
-        $foo = $dim('std');
-        $this->assertInstanceOf('stdClass', $foo);
+        $this->assertInstanceOf('stdClass', $dim('std'));
+        $this->assertInstanceOf('stdClass', $dim('svc'));
     }
 
     /**
@@ -303,10 +326,16 @@ class DimTest extends PHPUnit_Framework_TestCase
     public function testMagicGet()
     {
         $dim = new Dim;
+        $service = $this->getMockBuilder('Service')->disableOriginalConstructor()->getMock();
+        $service->expects($this->once())->method('__invoke')->with(
+            $this->isType('array'),
+            $this->isInstanceOf('Dim')
+        )->will($this->returnValue(new stdClass));
         $dim->set(new stdClass, 'std');
+        $dim->set($service, 'svc');
         $this->assertSame($dim, $dim->Dim);
-        $foo = $dim->std;
-        $this->assertInstanceOf('stdClass', $foo);
+        $this->assertInstanceOf('stdClass', $dim->std);
+        $this->assertInstanceOf('stdClass', $dim->svc);
     }
 
     /**
