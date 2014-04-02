@@ -2,14 +2,24 @@
 
 class DimTest extends PHPUnit_Framework_TestCase
 {
-    public function testConstructAndRaw()
+    public function testConstruct()
+    {
+        $dim = $this->getMockBuilder('Dim')->disableOriginalConstructor()->setMethods(array('set'))->getMock();
+        $dim->expects($this->once())->method('set')->with($this->identicalTo($dim), $this->stringContains('Dim'));
+        $dim->__construct();
+    }
+
+    /**
+     * @depends testConstruct
+     */
+    public function testRaw()
     {
         $dim = new Dim;
         $this->assertSame($dim, $dim->raw('Dim'));
     }
 
     /**
-     * @depends testConstructAndRaw
+     * @depends testConstruct
      * @expectedException InvalidArgumentException
      * @expectedExceptionMessage Dependency foo is not defined in current scope.
      */
@@ -20,7 +30,7 @@ class DimTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @depends testConstructAndRaw
+     * @depends testRaw
      */
     public function testSetWithoutNames()
     {
@@ -41,7 +51,7 @@ class DimTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @depends testConstructAndRaw
+     * @depends testRaw
      */
     public function testSetWithName()
     {
@@ -51,7 +61,7 @@ class DimTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @depends testConstructAndRaw
+     * @depends testRaw
      */
     public function testSetWithNames()
     {
@@ -65,7 +75,7 @@ class DimTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @depends testConstructAndRaw
+     * @depends testConstruct
      * @expectedException BadMethodCallException
      * @expectedExceptionMessage Service name does not specified.
      */
@@ -76,7 +86,6 @@ class DimTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @depends testConstructAndRaw
      * @depends testSetWithoutNames
      */
     public function testAlias()
@@ -92,7 +101,6 @@ class DimTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @depends testConstructAndRaw
      * @depends testSetWithoutNames
      */
     public function testAliases()
@@ -111,7 +119,7 @@ class DimTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @depends testConstructAndRaw
+     * @depends testConstruct
      * @expectedException InvalidArgumentException
      * @expectedExceptionMessage Dependency foo is not defined in current scope.
      */
@@ -122,7 +130,25 @@ class DimTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @depends testConstructAndRaw
+     * @depends testSetWithName
+     */
+    public function testGet()
+    {
+        $args = array(1, 2, 3);
+        $dim = new Dim;
+        $service = $this->getMockBuilder('Service')->disableOriginalConstructor()->getMock();
+        $service->expects($this->once())->method('__invoke')->with(
+            $this->identicalTo($args),
+            $this->identicalTo($dim)
+        )->will($this->returnValue(new stdClass));
+        $dim->set(new stdClass, 'std');
+        $dim->set($service, 'svc');
+        $this->assertSame($dim, $dim->get('Dim', $args));
+        $this->assertInstanceOf('stdClass', $dim->get('std', $args));
+        $this->assertInstanceOf('stdClass', $dim->get('svc', $args));
+    }
+
+    /**
      * @depends testSetWithoutNames
      */
     public function testHas()
@@ -134,8 +160,6 @@ class DimTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @depends testConstructAndRaw
-     * @depends testSetWithoutNames
      * @depends testHas
      */
     public function testRemove()
@@ -147,8 +171,6 @@ class DimTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @depends testConstructAndRaw
-     * @depends testSetWithoutNames
      * @depends testHas
      */
     public function testClear()
@@ -165,15 +187,15 @@ class DimTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @depends testConstructAndRaw
+     * @depends testConstruct
      */
     public function testGetNames()
     {
         $dim = new Dim;
-        $reflection = new ReflectionClass('Dim');
+        $reflection = new ReflectionClass($dim);
         $getNames = $reflection->getMethod('getNames');
         $getNames->setAccessible(true);
-        $names = $getNames->invokeArgs($dim, array('ArrayObject'));
+        $names = $getNames->invoke($dim, 'ArrayObject');
         $this->assertCount(6, $names);
         $this->assertContains('ArrayObject', $names);
         $this->assertContains('IteratorAggregate', $names);
@@ -184,275 +206,130 @@ class DimTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @depends testConstructAndRaw
-     * @depends testSetWithoutNames
-     * @depends testHas
+     * @depends testConstruct
      */
     public function testOffsetExists()
     {
-        $dim = new Dim;
-        $dim->set(new stdClass);
-        $this->assertTrue(isset($dim['stdClass']));
-        $this->assertFalse(isset($dim['Foo']));
+        $dim = $this->getMock('Dim', array('has'));
+        $dim->expects($this->once())->method('has')->with($this->stringContains('foo'));
+        isset($dim['foo']);
     }
 
     /**
-     * @depends testConstructAndRaw
-     * @depends testSetWithName
+     * @depends testConstruct
      */
     public function testOffsetSet()
     {
-        $dim = new Dim;
-        $dim['std'] = new stdClass;
-        $this->assertInstanceOf('stdClass', $dim->raw('std'));
+        $dim = $this->getMock('Dim', array('set'));
+        $dim->expects($this->once())->method('set')->with($this->stringContains('bar'), $this->stringContains('foo'));
+        $dim['foo'] = 'bar';
     }
 
     /**
-     * @depends testConstructAndRaw
-     * @depends testSetWithoutNames
-     * @depends testRemove
-     * @depends testHas
-     */
-    public function testOffsetUnset()
-    {
-        $dim = new Dim;
-        $dim->set(new stdClass);
-        unset($dim['stdClass']);
-        $this->assertFalse($dim->has('stdClass'));
-    }
-
-    /**
-     * @depends testConstructAndRaw
-     * @depends testSetWithoutNames
-     * @depends testHas
-     */
-    public function testIsset()
-    {
-        $dim = new Dim;
-        $dim->set(new stdClass);
-        $this->assertTrue(isset($dim->stdClass));
-        $this->assertFalse(isset($dim->Foo));
-    }
-
-    /**
-     * @depends testConstructAndRaw
-     * @depends testSetWithName
-     */
-    public function testMagicSet()
-    {
-        $dim = new Dim;
-        $dim->std = new stdClass;
-        $this->assertInstanceOf('stdClass', $dim->raw('std'));
-    }
-
-    /**
-     * @depends testConstructAndRaw
-     * @depends testSetWithoutNames
-     * @depends testRemove
-     * @depends testHas
-     */
-    public function testUnset()
-    {
-        $dim = new Dim;
-        $dim->set(new stdClass);
-        unset($dim->stdClass);
-        $this->assertFalse($dim->has('stdClass'));
-    }
-
-    /**
-     * @depends testConstructAndRaw
-     * @depends testSetWithName
-     */
-    public function testGet()
-    {
-        $dim = new Dim;
-        $service = $this->getMockBuilder('Service')->disableOriginalConstructor()->getMock();
-        $service->expects($this->once())->method('__invoke')->with(
-            $this->isType('array'),
-            $this->isInstanceOf('Dim')
-        )->will($this->returnValue(new stdClass));
-        $dim->set(new stdClass, 'std');
-        $dim->set($service, 'svc');
-        $this->assertSame($dim, $dim->get('Dim'));
-        $this->assertInstanceOf('stdClass', $dim->get('std'));
-        $this->assertInstanceOf('stdClass', $dim->get('svc'));
-    }
-
-    /**
-     * @depends testConstructAndRaw
-     * @depends testSetWithName
-     * @depends testGet
+     * @depends testConstruct
      */
     public function testOffsetGet()
     {
-        $dim = new Dim;
-        $service = $this->getMockBuilder('Service')->disableOriginalConstructor()->getMock();
-        $service->expects($this->once())->method('__invoke')->with(
-            $this->isType('array'),
-            $this->isInstanceOf('Dim')
-        )->will($this->returnValue(new stdClass));
-        $dim->set(new stdClass, 'std');
-        $dim->set($service, 'svc');
-        $this->assertSame($dim, $dim['Dim']);
-        $this->assertInstanceOf('stdClass', $dim['std']);
-        $this->assertInstanceOf('stdClass', $dim['svc']);
+        $dim = $this->getMock('Dim', array('get'));
+        $dim->expects($this->once())->method('get')->with($this->stringContains('foo'));
+        $dim['foo'];
     }
 
     /**
-     * @depends testConstructAndRaw
-     * @depends testSetWithName
-     * @depends testGet
+     * @depends testConstruct
      */
-    public function testInvoke()
+    public function testOffsetUnset()
     {
-        $dim = new Dim;
-        $service = $this->getMockBuilder('Service')->disableOriginalConstructor()->getMock();
-        $service->expects($this->once())->method('__invoke')->with(
-            $this->isType('array'),
-            $this->isInstanceOf('Dim')
-        )->will($this->returnValue(new stdClass));
-        $dim->set(new stdClass, 'std');
-        $dim->set($service, 'svc');
-        $this->assertSame($dim, $dim('Dim'));
-        $this->assertInstanceOf('stdClass', $dim('std'));
-        $this->assertInstanceOf('stdClass', $dim('svc'));
+        $dim = $this->getMock('Dim', array('remove'));
+        $dim->expects($this->once())->method('remove')->with($this->stringContains('foo'));
+        unset($dim['foo']);
     }
 
     /**
-     * @depends testConstructAndRaw
-     * @depends testSetWithName
-     * @depends testGet
+     * @depends testConstruct
+     */
+    public function testIsset()
+    {
+        $dim = $this->getMock('Dim', array('has'));
+        $dim->expects($this->once())->method('has')->with($this->stringContains('foo'));
+        isset($dim->foo);
+    }
+
+    /**
+     * @depends testConstruct
+     */
+    public function testMagicSet()
+    {
+        $dim = $this->getMock('Dim', array('set'));
+        $dim->expects($this->once())->method('set')->with($this->stringContains('bar'), $this->stringContains('foo'));
+        $dim->foo = 'bar';
+    }
+
+    /**
+     * @depends testConstruct
      */
     public function testMagicGet()
     {
-        $dim = new Dim;
-        $service = $this->getMockBuilder('Service')->disableOriginalConstructor()->getMock();
-        $service->expects($this->once())->method('__invoke')->with(
-            $this->isType('array'),
-            $this->isInstanceOf('Dim')
-        )->will($this->returnValue(new stdClass));
-        $dim->set(new stdClass, 'std');
-        $dim->set($service, 'svc');
-        $this->assertSame($dim, $dim->Dim);
-        $this->assertInstanceOf('stdClass', $dim->std);
-        $this->assertInstanceOf('stdClass', $dim->svc);
+        $dim = $this->getMock('Dim', array('get'));
+        $dim->expects($this->once())->method('get')->with($this->stringContains('foo'));
+        $dim->foo;
     }
 
     /**
-     * @depends testConstructAndRaw
-     * @depends testSetWithName
-     * @depends testOffsetSet
-     * @depends testMagicSet
+     * @depends testConstruct
+     */
+    public function testUnset()
+    {
+        $dim = $this->getMock('Dim', array('remove'));
+        $dim->expects($this->once())->method('remove')->with($this->stringContains('foo'));
+        unset($dim->foo);
+    }
+
+    /**
+     * @depends testConstruct
+     */
+    public function testInvoke()
+    {
+        $dim = $this->getMock('Dim', array('get'));
+        $dim->expects($this->once())->method('get')->with($this->stringContains('foo'), $this->stringContains('bar'));
+        $dim('foo', 'bar');
+    }
+
+    /**
      * @depends testAlias
      * @depends testHas
-     * @depends testOffsetExists
-     * @depends testIsset
      * @depends testGet
-     * @depends testOffsetGet
-     * @depends testMagicGet
-     * @depends testInvoke
      * @depends testRemove
-     * @depends testOffsetUnset
-     * @depends testUnset
      * @depends testClear
      */
     public function testScope()
     {
         $dim = new Dim;
-        $dim->scope('foo')->set(new stdClass, 'std1');
-        $scope = $dim->scope('foo');
-        $scope['std2'] = new stdClass;
-        $dim->scope('foo')->std3 = new stdClass;
-        $dim->scope('foo')->alias('std1', 'std');
+        $dim->scope('foo')->set(new stdClass);
+        $dim->scope('foo')->alias('stdClass', 'std');
 
+        $this->assertFalse($dim->has('stdClass'));
         $this->assertFalse($dim->has('std'));
-        $this->assertFalse($dim->has('std1'));
-        $this->assertFalse($dim->has('std2'));
-        $this->assertFalse($dim->has('std3'));
+        $this->assertTrue($dim->scope('foo')->has('stdClass'));
         $this->assertTrue($dim->scope('foo')->has('std'));
-        $this->assertTrue($dim->scope('foo')->has('std1'));
-        $this->assertTrue($dim->scope('foo')->has('std2'));
-        $this->assertTrue($dim->scope('foo')->has('std2'));
 
-        $scope = $dim->scope('foo');
-        $this->assertTrue(isset($scope['std']));
-        $scope = $dim->scope('foo');
-        $this->assertTrue(isset($scope['std1']));
-        $scope = $dim->scope('foo');
-        $this->assertTrue(isset($scope['std2']));
-        $scope = $dim->scope('foo');
-        $this->assertTrue(isset($scope['std3']));
-
-        $this->assertTrue(isset($dim->scope('foo')->std));
-        $this->assertTrue(isset($dim->scope('foo')->std1));
-        $this->assertTrue(isset($dim->scope('foo')->std2));
-        $this->assertTrue(isset($dim->scope('foo')->std3));
-
+        $this->assertInstanceOf('stdClass', $dim->scope('foo')->raw('stdClass'));
         $this->assertInstanceOf('stdClass', $dim->scope('foo')->raw('std'));
-        $this->assertInstanceOf('stdClass', $dim->scope('foo')->raw('std1'));
-        $this->assertInstanceOf('stdClass', $dim->scope('foo')->raw('std2'));
-        $this->assertInstanceOf('stdClass', $dim->scope('foo')->raw('std3'));
-        $this->assertSame($dim->scope('foo')->raw('std'), $dim->scope('foo')->raw('std1'));
+        $this->assertSame($dim->scope('foo')->raw('stdClass'), $dim->scope('foo')->raw('std'));
 
+        $this->assertInstanceOf('stdClass', $dim->scope('foo')->get('stdClass'));
         $this->assertInstanceOf('stdClass', $dim->scope('foo')->get('std'));
-        $this->assertInstanceOf('stdClass', $dim->scope('foo')->get('std1'));
-        $this->assertInstanceOf('stdClass', $dim->scope('foo')->get('std2'));
-        $this->assertInstanceOf('stdClass', $dim->scope('foo')->get('std3'));
-        $this->assertSame($dim->scope('foo')->get('std'), $dim->scope('foo')->get('std1'));
+        $this->assertSame($dim->scope('foo')->get('stdClass'), $dim->scope('foo')->get('std'));
 
-        $scope = $dim->scope('foo');
-        $this->assertInstanceOf('stdClass', $scope['std']);
-        $scope = $dim->scope('foo');
-        $this->assertInstanceOf('stdClass', $scope['std1']);
-        $scope = $dim->scope('foo');
-        $this->assertInstanceOf('stdClass', $scope['std2']);
-        $scope = $dim->scope('foo');
-        $this->assertInstanceOf('stdClass', $scope['std3']);
-        $scope = $dim->scope('foo');
-        $std = $scope['std'];
-        $scope = $dim->scope('foo');
-        $std1 = $scope['std1'];
-        $this->assertSame($std, $std1);
-
-        $this->assertInstanceOf('stdClass', $dim->scope('foo')->std);
-        $this->assertInstanceOf('stdClass', $dim->scope('foo')->std1);
-        $this->assertInstanceOf('stdClass', $dim->scope('foo')->std2);
-        $this->assertInstanceOf('stdClass', $dim->scope('foo')->std3);
-        $std = $dim->scope('foo')->std;
-        $std1 = $dim->scope('foo')->std1;
-        $this->assertSame($std, $std1);
-
-        $scope = $dim->scope('foo');
-        $this->assertInstanceOf('stdClass', $scope('std'));
-        $scope = $dim->scope('foo');
-        $this->assertInstanceOf('stdClass', $scope('std1'));
-        $scope = $dim->scope('foo');
-        $this->assertInstanceOf('stdClass', $scope('std2'));
-        $scope = $dim->scope('foo');
-        $this->assertInstanceOf('stdClass', $scope('std3'));
-        $scope = $dim->scope('foo');
-        $std = $scope('std');
-        $scope = $dim->scope('foo');
-        $std1 = $scope('std1');
-        $this->assertSame($std, $std1);
-
-        $dim->scope('foo')->remove('std');
-        $scope = $dim->scope('foo');
-        unset($scope['std1']);
-        unset($dim->scope('foo')->std2);
-        $this->assertFalse($dim->scope('foo')->has('std'));
-        $this->assertFalse($dim->scope('foo')->has('std1'));
-        $this->assertFalse($dim->scope('foo')->has('std2'));
+        $dim->scope('foo')->remove('stdClass');
+        $this->assertFalse($dim->scope('foo')->has('stdClass'));
 
         $dim->scope('foo')->clear();
-        $this->assertFalse($dim->scope('foo')->has('std3'));
+        $this->assertFalse($dim->scope('foo')->has('std'));
     }
 
     /**
-     * @depends testConstructAndRaw
      * @depends testScope
-     * @depends testSetWithoutNames
-     * @depends testHas
      */
     public function testSubScope()
     {
@@ -465,10 +342,8 @@ class DimTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @depends testConstructAndRaw
      * @depends testScope
      * @depends testSetWithName
-     * @depends testHas
      */
     public function testScopeWithCallable()
     {
@@ -487,7 +362,7 @@ class DimTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @depends testConstructAndRaw
+     *
      * @expectedException InvalidArgumentException
      * @expectedExceptionMessage A callable expected.
      */
@@ -498,7 +373,6 @@ class DimTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @depends testConstructAndRaw
      * @depends testSetWithoutNames
      * @expectedException InvalidArgumentException
      * @expectedExceptionMessage Dependency stdClass is not defined in current scope.
@@ -511,7 +385,6 @@ class DimTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @depends testConstructAndRaw
      * @depends testSetWithoutNames
      * @depends testAliasException
      * @expectedException InvalidArgumentException

@@ -34,9 +34,11 @@ class ServiceTest extends PHPUnit_Framework_TestCase
         $getReflectionParameters->setAccessible(true);
         $reflection = new ReflectionFunction(function (stdClass $foo, $bar, $foobar, $null = null) {
         });
-        $parameters = $getReflectionParameters->invokeArgs(
+        $parameters = $getReflectionParameters->invoke(
             new Service('stdClass'),
-            array($reflection, array('bar' => 'bar', 2 => 'foobar'), $dim)
+            $reflection,
+            array('bar' => 'bar', 2 => 'foobar'),
+            $dim
         );
         $this->assertCount(4, $parameters);
         $this->assertArrayHasKey(0, $parameters);
@@ -109,7 +111,7 @@ class ServiceTest extends PHPUnit_Framework_TestCase
         $getReflectionParameters->setAccessible(true);
         $reflection = new ReflectionFunction(function ($foo) {
         });
-        $getReflectionParameters->invokeArgs($service, array($reflection));
+        $getReflectionParameters->invoke($service, $reflection);
     }
 
     /**
@@ -122,6 +124,27 @@ class ServiceTest extends PHPUnit_Framework_TestCase
         $resolveClass->setAccessible(true);
         $service = new Service('stdClass');
         $this->assertInstanceOf('stdClass', $resolveClass->invoke($service, 'stdClass'));
+    }
+
+    /**
+     * @depends testGetReflectionParameters
+     */
+    public function testResolveClassWithArguments()
+    {
+        $arguments = array(new stdClass, 2, 3);
+        $dim = $this->getMock('Dim');
+        $service = $this->getMockBuilder('Service')->disableOriginalConstructor()->setMethods(
+            array('getReflectionParameters')
+        )->getMock();
+        $service->expects($this->once())->method('getReflectionParameters')->with(
+            $this->anything(),
+            $this->identicalTo($arguments),
+            $this->identicalTo($dim)
+        )->will($this->returnValue($arguments));
+        $class = new ReflectionClass($service);
+        $resolveClass = $class->getMethod('resolveClass');
+        $resolveClass->setAccessible(true);
+        $this->assertInstanceOf('FooBar', $resolveClass->invoke($service, 'FooBar', $arguments, $dim));
     }
 
     /**
@@ -150,21 +173,52 @@ class ServiceTest extends PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Foo', $resolveCallable->invoke($service, 'Foo::factory'));
         $this->assertInstanceOf('Foo', $resolveCallable->invoke($service, new Foo));
         $this->assertInstanceOf(
-            'Foo',
+            'stdClass',
             $resolveCallable->invoke(
                 $service,
                 function () {
-                    return new Foo;
+                    return new stdClass;
                 }
             )
         );
         function foobar()
         {
-            return new Foo;
+            return new stdClass;
         }
 
         ;
-        $this->assertInstanceOf('Foo', $resolveCallable->invoke($service, 'foobar'));
+        $this->assertInstanceOf('stdClass', $resolveCallable->invoke($service, 'foobar'));
+    }
+
+    /**
+     * @depends testGetReflectionParameters
+     */
+    public function testResolveCallableWithArguments()
+    {
+        $args = array(1, 2, 3);
+        $dim = $this->getMock('Dim');
+        $service = $this->getMockBuilder('Service')->disableOriginalConstructor()->setMethods(
+            array('getReflectionParameters')
+        )->getMock();
+        $service->expects($this->once())->method('getReflectionParameters')->with(
+            $this->anything(),
+            $this->identicalTo($args),
+            $this->identicalTo($dim)
+        )->will($this->returnValue($args));
+        $class = new ReflectionClass($service);
+        $resolveCallable = $class->getMethod('resolveCallable');
+        $resolveCallable->setAccessible(true);
+        $this->assertInstanceOf(
+            'stdClass',
+            $resolveCallable->invoke(
+                $service,
+                function () {
+                    return new stdClass;
+                },
+                $args,
+                $dim
+            )
+        );
     }
 
     /**
@@ -198,18 +252,27 @@ class ServiceTest extends PHPUnit_Framework_TestCase
      */
     public function testGet()
     {
-        $service = new Service('stdClass');
-        $this->assertInstanceOf('stdClass', $service->get());
+        $args1 = array(1, 2, 3);
+        $args2 = array(3 => 4, 5, 6);
+        $dim = $this->getMock('Dim');
+        $service = $this->getMockBuilder('Service')->setMethods(array('resolveClass'))->setConstructorArgs(
+            array('stdClass', $args2)
+        )->getMock();
+        $service->expects($this->once())->method('resolveClass')->with(
+            $this->stringContains('stdClass'),
+            $this->identicalTo($args1 + $args2),
+            $this->identicalTo($dim)
+        )->will($this->returnValue(new stdClass));
+        $this->assertInstanceOf('stdClass', $service->get($args1, $dim));
     }
 
-    /**
-     * @depends testResolveClass
-     * @depends testGet
-     */
     public function testInvoke()
     {
-        $service = new Service('stdClass');
-        $this->assertInstanceOf('stdClass', $service());
+        $args = array(1, 2, 3);
+        $dim = $this->getMock('Dim');
+        $service = $this->getMockBuilder('Service')->disableOriginalConstructor()->setMethods(array('get'))->getMock();
+        $service->expects($this->once())->method('get')->with($this->identicalTo($args), $this->identicalTo($dim));
+        $service($args, $dim);
     }
 }
  
