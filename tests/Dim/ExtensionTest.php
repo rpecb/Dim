@@ -16,7 +16,7 @@ class ExtensionTest extends PHPUnit_Framework_TestCase
         $extended = $this->getMockBuilder('Extension')->setMethods(array('resolveCallable'))->setConstructorArgs(
             array($service, $callable, $args2)
         )->getMock();
-        $extended->expects($this->once())->method('resolveCallable')->with(
+        $extended->staticExpects($this->once())->method('resolveCallable')->with(
             $this->identicalTo($callable),
             $this->identicalTo($args1 + $args2),
             $this->identicalTo($dim)

@@ -2,7 +2,7 @@
 
 class Dim implements ArrayAccess
 {
-    // TODO: Unit tests: inject dependencies in tests, __call, update depends, test not required arguments, test arguments array casting
+    // TODO: Unit tests: inject dependencies in tests, update depends, test not required arguments, test arguments array casting
     // TODO: namespaces
     // TODO: Doc blocks
     // TODO: PHP CS Fixer
@@ -42,9 +42,9 @@ class Dim implements ArrayAccess
         $names = (array)$names;
         if (!$names) {
             if ($service instanceof Service) {
-                $names = $this->getNames($service->getClass());
+                $names = static::getNames($service->getClass());
             } elseif (is_object($service)) {
-                $names = $this->getNames(get_class($service));
+                $names = static::getNames(get_class($service));
             } else {
                 throw new BadMethodCallException('Service name does not specified.');
             }
@@ -67,7 +67,7 @@ class Dim implements ArrayAccess
         $mode = $this->scopes->getIteratorMode();
         $this->scopes->setIteratorMode(SplDoublyLinkedList::IT_MODE_KEEP);
         $value = $this->raw($name);
-        $result = $value instanceof Service ? $value($arguments, $this) : $value;
+        $result = $value instanceof Service ? $value->get($arguments, $this) : $value;
         $this->scopes = new SplDoublyLinkedList;
         $this->scopes->setIteratorMode($mode);
         return $result;
@@ -116,7 +116,7 @@ class Dim implements ArrayAccess
         return $scope;
     }
 
-    protected function getNames($class)
+    protected static function getNames($class)
     {
         $names = class_parents($class) + class_implements($class);
         if (function_exists('class_uses')) {

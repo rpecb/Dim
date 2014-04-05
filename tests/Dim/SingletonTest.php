@@ -10,7 +10,7 @@ class SingletonTest extends PHPUnit_Framework_TestCase
         $service = $this->getMockBuilder('Singleton')->setMethods(array('resolveClass'))->setConstructorArgs(
             array('stdClass', $args2)
         )->getMock();
-        $service->expects($this->once())->method('resolveClass')->with(
+        $service->staticExpects($this->once())->method('resolveClass')->with(
             $this->stringContains('stdClass'),
             $this->identicalTo($args1 + $args2),
             $this->identicalTo($dim)
@@ -22,4 +22,3 @@ class SingletonTest extends PHPUnit_Framework_TestCase
         $this->assertSame($foo, $bar);
     }
 }
- 

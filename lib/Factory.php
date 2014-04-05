@@ -16,6 +16,6 @@ class Factory extends Service
     public function get($arguments = array(), Dim $dim = null)
     {
         $arguments = is_array($arguments) ? $arguments : array($arguments);
-        return $this->resolveCallable($this->callable, $arguments + $this->arguments, $dim);
+        return static::resolveCallable($this->callable, $arguments + $this->arguments, $dim);
     }
 }

@@ -137,7 +137,7 @@ class DimTest extends PHPUnit_Framework_TestCase
         $args = array(1, 2, 3);
         $dim = new Dim;
         $service = $this->getMockBuilder('Service')->disableOriginalConstructor()->getMock();
-        $service->expects($this->once())->method('__invoke')->with(
+        $service->expects($this->once())->method('get')->with(
             $this->identicalTo($args),
             $this->identicalTo($dim)
         )->will($this->returnValue(new stdClass));

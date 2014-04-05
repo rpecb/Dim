@@ -22,7 +22,7 @@ class FactoryTest extends PHPUnit_Framework_TestCase
         $service = $this->getMockBuilder('Factory')->setMethods(array('resolveCallable'))->setConstructorArgs(
             array('stdClass', $callable, $args2)
         )->getMock();
-        $service->expects($this->once())->method('resolveCallable')->with(
+        $service->staticExpects($this->once())->method('resolveCallable')->with(
             $this->identicalTo($callable),
             $this->identicalTo($args1 + $args2),
             $this->identicalTo($dim)

@@ -22,7 +22,7 @@ class Service
     public function get($arguments = array(), Dim $dim = null)
     {
         $arguments = is_array($arguments) ? $arguments : array($arguments);
-        return $this->resolveClass($this->class, $arguments + $this->arguments, $dim);
+        return static::resolveClass($this->class, $arguments + $this->arguments, $dim);
     }
 
     public function __invoke($arguments = array(), Dim $dim = null)
@@ -30,7 +30,7 @@ class Service
         return $this->get($arguments, $dim);
     }
 
-    protected function resolveClass($class, array $arguments = array(), Dim $dim = null)
+    protected static function resolveClass($class, array $arguments = array(), Dim $dim = null)
     {
         $reflectionClass = new ReflectionClass($class);
         if (!$reflectionClass->isInstantiable()) {
@@ -39,13 +39,13 @@ class Service
         $reflectionMethod = $reflectionClass->getConstructor();
         if ($reflectionMethod) {
             return $reflectionClass->newInstanceArgs(
-                $this->getReflectionParameters($reflectionMethod, $arguments, $dim)
+                static::getReflectionParameters($reflectionMethod, $arguments, $dim)
             );
         }
         return $reflectionClass->newInstance();
     }
 
-    protected function resolveCallable($callable, array $arguments = array(), Dim $dim = null)
+    protected static function resolveCallable($callable, array $arguments = array(), Dim $dim = null)
     {
         if (is_array($callable)) {
             list($class, $method) = $callable;
@@ -66,10 +66,10 @@ class Service
         } else {
             $reflection = new ReflectionFunction($callable);
         }
-        return call_user_func_array($callable, $this->getReflectionParameters($reflection, $arguments, $dim));
+        return call_user_func_array($callable, static::getReflectionParameters($reflection, $arguments, $dim));
     }
 
-    protected function getReflectionParameters(
+    protected static function getReflectionParameters(
         ReflectionFunctionAbstract $reflection,
         array $arguments = array(),
         Dim $dim = null

@@ -13,7 +13,7 @@ class Extension extends Factory
     public function get($arguments = array(), Dim $dim = null)
     {
         $arguments = is_array($arguments) ? $arguments : array($arguments);
-        return $this->resolveCallable(
+        return static::resolveCallable(
             $this->callable,
             $arguments + $this->arguments + array($this->service->get()),
             $dim
