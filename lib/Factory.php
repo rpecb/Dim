@@ -4,7 +4,7 @@ class Factory extends Service
 {
     protected $callable;
 
-    public function __construct($class, $callable, $arguments = array())
+    public function __construct($class, $callable, $arguments = array()) #
     {
         parent::__construct($class, $arguments);
         if (!is_callable($callable)) {
@@ -13,7 +13,7 @@ class Factory extends Service
         $this->callable = $callable;
     }
 
-    public function get($arguments = array(), Dim $dim = null)
+    public function get($arguments = array(), Dim $dim = null) #
     {
         $arguments = is_array($arguments) ? $arguments : array($arguments);
         return static::resolveCallable($this->callable, $arguments + $this->arguments, $dim);
