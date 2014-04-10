@@ -2,7 +2,7 @@
 
 class ExtensionTest extends PHPUnit_Framework_TestCase
 {
-    public function testGet()
+    public function testGet() # Service mock without constructor (getClass, get), Dim mock, Extension mock (resolveCallable)
     {
         $service = $this->getMockBuilder('Service')->disableOriginalConstructor()->getMock();
         $service->expects($this->at(0))->method('getClass')->will($this->returnValue('stdClass'));

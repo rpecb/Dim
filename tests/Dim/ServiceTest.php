@@ -6,18 +6,18 @@ class ServiceTest extends PHPUnit_Framework_TestCase
      * @expectedException InvalidArgumentException
      * @expectedExceptionMessage A class name expected.
      */
-    public function testConstructException()
+    public function testConstructException() # Service
     {
         new Service('BarFoo');
     }
 
-    public function testGetClass()
+    public function testGetClass() # Service
     {
         $service = new Service('stdClass');
         $this->assertEquals('stdClass', $service->getClass());
     }
 
-    public function testGetReflectionParameters()
+    public function testGetReflectionParameters() # Dim mock (has, get), Service with public getReflectionParameters
     {
         $foo = new stdClass;
         $dim = $this->getMock('Dim');
@@ -51,7 +51,7 @@ class ServiceTest extends PHPUnit_Framework_TestCase
         $this->assertNull($parameters[3]);
     }
 
-    public function testGetReflectionParametersWithScope()
+    public function testGetReflectionParametersWithScope() # Dim mock
     {
         $dim = $this->getMock('Dim');
         $std = new stdClass;
@@ -114,9 +114,6 @@ class ServiceTest extends PHPUnit_Framework_TestCase
         $getReflectionParameters->invoke($service, $reflection);
     }
 
-    /**
-     * @depends testGetReflectionParameters
-     */
     public function testResolveClass()
     {
         $class = new ReflectionClass('Service');
@@ -126,9 +123,6 @@ class ServiceTest extends PHPUnit_Framework_TestCase
         $this->assertInstanceOf('stdClass', $resolveClass->invoke($service, 'stdClass'));
     }
 
-    /**
-     * @depends testGetReflectionParameters
-     */
     public function testResolveClassWithArguments()
     {
         $arguments = array(new stdClass, 2, 3);
@@ -160,9 +154,6 @@ class ServiceTest extends PHPUnit_Framework_TestCase
         $resolveClass->invoke($service, 'Bar');
     }
 
-    /**
-     * @depends testGetReflectionParameters
-     */
     public function testResolveCallable()
     {
         $class = new ReflectionClass('Service');
@@ -190,9 +181,6 @@ class ServiceTest extends PHPUnit_Framework_TestCase
         $this->assertInstanceOf('stdClass', $resolveCallable->invoke($service, 'foobar'));
     }
 
-    /**
-     * @depends testGetReflectionParameters
-     */
     public function testResolveCallableWithArguments()
     {
         $args = array(1, 2, 3);
@@ -247,9 +235,6 @@ class ServiceTest extends PHPUnit_Framework_TestCase
         $resolveCallable->invoke($service, 'Foo::bar');
     }
 
-    /**
-     * @depends testResolveClass
-     */
     public function testGet()
     {
         $args1 = array(1, 2, 3);

@@ -5,13 +5,13 @@ class Service
     protected $class;
     protected $arguments;
 
-    public function __construct($class, $arguments = array()) #
+    public function __construct($class, $arguments = null)
     {
         if (!is_string($class) || !class_exists($class)) {
             throw new InvalidArgumentException('A class name expected.');
         }
         $this->class = $class;
-        $this->arguments = is_array($arguments) ? $arguments : array($arguments);
+        $this->arguments = (array)$arguments;
     }
 
     public function getClass()
@@ -19,18 +19,17 @@ class Service
         return $this->class;
     }
 
-    public function get($arguments = array(), Dim $dim = null) #
+    public function get($arguments = null, Dim $dim = null)
     {
-        $arguments = is_array($arguments) ? $arguments : array($arguments);
-        return static::resolveClass($this->class, $arguments + $this->arguments, $dim);
+        return static::resolveClass($this->class, (array)$arguments + $this->arguments, $dim);
     }
 
-    public function __invoke($arguments = array(), Dim $dim = null) #
+    public function __invoke($arguments = null, Dim $dim = null)
     {
         return $this->get($arguments, $dim);
     }
 
-    protected static function resolveClass($class, array $arguments = array(), Dim $dim = null) #
+    protected static function resolveClass($class, array $arguments = array(), Dim $dim = null)
     {
         $reflectionClass = new ReflectionClass($class);
         if (!$reflectionClass->isInstantiable()) {
@@ -45,7 +44,7 @@ class Service
         return $reflectionClass->newInstance();
     }
 
-    protected static function resolveCallable($callable, array $arguments = array(), Dim $dim = null) #
+    protected static function resolveCallable($callable, array $arguments = array(), Dim $dim = null)
     {
         if (is_array($callable)) {
             list($class, $method) = $callable;
@@ -74,7 +73,7 @@ class Service
         array $arguments = array(),
         Dim $dim = null
     )
-    { #
+    {
         $parameters = array();
         foreach ($reflection->getParameters() as $reflectionParameter) {
             if (array_key_exists($reflectionParameter->getName(), $arguments)) {

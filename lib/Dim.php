@@ -2,7 +2,7 @@
 
 class Dim implements ArrayAccess
 {
-    // TODO: Unit tests: inject dependencies in tests, update depends, test not required arguments, test arguments array casting
+    // TODO: Unit tests: data providers
     // TODO: namespaces
     // TODO: Doc blocks
     // TODO: PHP CS Fixer
@@ -20,7 +20,7 @@ class Dim implements ArrayAccess
         $this->set($this, get_called_class());
     }
 
-    public function scope($scope, $callable = null) #
+    public function scope($scope, $callable = null)
     {
         $this->scopes->push('__' . $scope . '__');
         if ($callable) {
@@ -36,7 +36,7 @@ class Dim implements ArrayAccess
         return $this;
     }
 
-    public function set($service, $names = null) #
+    public function set($service, $names = null)
     {
         $scope = & $this->getScope();
         $names = (array)$names;
@@ -61,9 +61,8 @@ class Dim implements ArrayAccess
         $scope = array_fill_keys((array)$aliases, $scope[$name]) + $scope;
     }
 
-    public function get($name, $arguments = array()) #
+    public function get($name, $arguments = null)
     {
-        $arguments = is_array($arguments) ? $arguments : array($arguments);
         $mode = $this->scopes->getIteratorMode();
         $this->scopes->setIteratorMode(SplDoublyLinkedList::IT_MODE_KEEP);
         $value = $this->raw($name);
@@ -156,7 +155,7 @@ class Dim implements ArrayAccess
         return $this->get($name);
     }
 
-    public function __invoke($name, $arguments = array()) #
+    public function __invoke($name, $arguments = null)
     {
         return $this->get($name, $arguments);
     }
