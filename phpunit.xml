@@ -5,4 +5,9 @@
             <directory>./tests/Dim/</directory>
         </testsuite>
     </testsuites>
+    <filter>
+        <whitelist>
+            <directory>./lib/</directory>
+        </whitelist>
+    </filter>
 </phpunit>

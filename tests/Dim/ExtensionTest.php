@@ -1,7 +1,13 @@
 <?php
 
+/**
+ * @coversDefaultClass Extension
+ */
 class ExtensionTest extends PHPUnit_Framework_TestCase
 {
+    /**
+     * @covers ::get
+     */
     public function testGet()
     {
         $service = $this->getMockBuilder('Service')->disableOriginalConstructor()->getMock();

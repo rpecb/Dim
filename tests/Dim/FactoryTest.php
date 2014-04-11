@@ -1,8 +1,12 @@
 <?php
 
+/**
+ * @coversDefaultClass Factory
+ */
 class FactoryTest extends PHPUnit_Framework_TestCase
 {
     /**
+     * @covers ::__construct
      * @expectedException InvalidArgumentException
      * @expectedExceptionMessage A callable expected.
      */
@@ -11,6 +15,9 @@ class FactoryTest extends PHPUnit_Framework_TestCase
         new Factory('stdClass', 'foo');
     }
 
+    /**
+     * @covers ::get
+     */
     public function testGet()
     {
         $args1 = array(1, 2, 3);

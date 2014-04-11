@@ -1,7 +1,13 @@
 <?php
 
+/**
+ * @coversDefaultClass Singleton
+ */
 class SingletonTest extends PHPUnit_Framework_TestCase
 {
+    /**
+     * @covers ::get
+     */
     public function testGet()
     {
         $args1 = array(1, 2, 3);

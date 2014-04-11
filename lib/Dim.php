@@ -2,7 +2,7 @@
 
 class Dim implements ArrayAccess
 {
-    // TODO: Unit tests: data providers
+    // TODO: Unit tests: names
     // TODO: namespaces
     // TODO: Doc blocks
     // TODO: PHP CS Fixer

@@ -1,8 +1,12 @@
 <?php
 
+/**
+ * @coversDefaultClass Service
+ */
 class ServiceTest extends PHPUnit_Framework_TestCase
 {
     /**
+     * @covers ::__construct
      * @expectedException InvalidArgumentException
      * @expectedExceptionMessage A class name expected.
      */
@@ -11,12 +15,18 @@ class ServiceTest extends PHPUnit_Framework_TestCase
         new Service('BarFoo');
     }
 
+    /**
+     * @covers ::getClass
+     */
     public function testGetClass()
     {
         $service = new Service('stdClass');
         $this->assertEquals('stdClass', $service->getClass());
     }
 
+    /**
+     * @covers ::getReflectionParameters
+     */
     public function testGetReflectionParameters()
     {
         $foo = new stdClass;
@@ -51,6 +61,9 @@ class ServiceTest extends PHPUnit_Framework_TestCase
         $this->assertNull($parameters[3]);
     }
 
+    /**
+     * @covers ::getReflectionParameters
+     */
     public function testGetReflectionParametersWithScope()
     {
         $dim = $this->getMock('Dim');
@@ -100,6 +113,7 @@ class ServiceTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers ::getReflectionParameters
      * @expectedException BadMethodCallException
      * @expectedExceptionMessage Not enough arguments.
      */
@@ -114,6 +128,9 @@ class ServiceTest extends PHPUnit_Framework_TestCase
         $getReflectionParameters->invoke($service, $reflection);
     }
 
+    /**
+     * @covers ::resolveClass
+     */
     public function testResolveClass()
     {
         $class = new ReflectionClass('Service');
@@ -123,6 +140,9 @@ class ServiceTest extends PHPUnit_Framework_TestCase
         $this->assertInstanceOf('stdClass', $resolveClass->invoke($service, 'stdClass'));
     }
 
+    /**
+     * @covers ::resolveClass
+     */
     public function testResolveClassWithArguments()
     {
         $arguments = array(new stdClass, 2, 3);
@@ -142,6 +162,7 @@ class ServiceTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers ::resolveClass
      * @expectedException InvalidArgumentException
      * @expectedExceptionMessage BarStub class is not instantiable.
      */
@@ -154,6 +175,9 @@ class ServiceTest extends PHPUnit_Framework_TestCase
         $resolveClass->invoke($service, 'BarStub');
     }
 
+    /**
+     * @covers ::resolveCallable
+     */
     public function testResolveCallable()
     {
         $class = new ReflectionClass('Service');
@@ -181,6 +205,9 @@ class ServiceTest extends PHPUnit_Framework_TestCase
         $this->assertInstanceOf('stdClass', $resolveCallable->invoke($service, 'foobar'));
     }
 
+    /**
+     * @covers ::resolveCallable
+     */
     public function testResolveCallableWithArguments()
     {
         $args = array(1, 2, 3);
@@ -210,6 +237,7 @@ class ServiceTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers ::resolveCallable
      * @expectedException InvalidArgumentException
      * @expectedExceptionMessage Can not access to non-public method FooStub::bar.
      */
@@ -223,6 +251,7 @@ class ServiceTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers ::resolveCallable
      * @expectedException InvalidArgumentException
      * @expectedExceptionMessage Can not access to non-public method FooStub::bar.
      */
@@ -235,6 +264,9 @@ class ServiceTest extends PHPUnit_Framework_TestCase
         $resolveCallable->invoke($service, 'FooStub::bar');
     }
 
+    /**
+     * @covers ::get
+     */
     public function testGet()
     {
         $args1 = array(1, 2, 3);
@@ -251,6 +283,9 @@ class ServiceTest extends PHPUnit_Framework_TestCase
         $this->assertInstanceOf('stdClass', $service->get($args1, $dim));
     }
 
+    /**
+     * @covers ::__invoke
+     */
     public function testInvoke()
     {
         $args = array(1, 2, 3);
