@@ -6,18 +6,18 @@ class ServiceTest extends PHPUnit_Framework_TestCase
      * @expectedException InvalidArgumentException
      * @expectedExceptionMessage A class name expected.
      */
-    public function testConstructException() # Service
+    public function testConstructException()
     {
         new Service('BarFoo');
     }
 
-    public function testGetClass() # Service
+    public function testGetClass()
     {
         $service = new Service('stdClass');
         $this->assertEquals('stdClass', $service->getClass());
     }
 
-    public function testGetReflectionParameters() # Dim mock (has, get), Service with public getReflectionParameters
+    public function testGetReflectionParameters()
     {
         $foo = new stdClass;
         $dim = $this->getMock('Dim');
@@ -51,11 +51,11 @@ class ServiceTest extends PHPUnit_Framework_TestCase
         $this->assertNull($parameters[3]);
     }
 
-    public function testGetReflectionParametersWithScope() # Dim mock
+    public function testGetReflectionParametersWithScope()
     {
         $dim = $this->getMock('Dim');
         $std = new stdClass;
-        $service = new Service('FooBar');
+        $service = new Service('FooBarStub');
         $dim->expects($this->at(0))
             ->method('scope')
             ->with($this->stringContains('foo'))
@@ -88,7 +88,7 @@ class ServiceTest extends PHPUnit_Framework_TestCase
             ->will($this->returnValue($std));
         $dim->expects($this->at(1))
             ->method('get')
-            ->with($this->stringContains('FooBar'))
+            ->with($this->stringContains('FooBarStub'))
             ->will(
                 $this->returnCallback(
                     function () use ($service, $dim) {
@@ -96,7 +96,7 @@ class ServiceTest extends PHPUnit_Framework_TestCase
                     }
                 )
             );
-        $dim->scope('foo')->get('FooBar');
+        $dim->scope('foo')->get('FooBarStub');
     }
 
     /**
@@ -138,20 +138,20 @@ class ServiceTest extends PHPUnit_Framework_TestCase
         $class = new ReflectionClass($service);
         $resolveClass = $class->getMethod('resolveClass');
         $resolveClass->setAccessible(true);
-        $this->assertInstanceOf('FooBar', $resolveClass->invoke($service, 'FooBar', $arguments, $dim));
+        $this->assertInstanceOf('FooBarStub', $resolveClass->invoke($service, 'FooBarStub', $arguments, $dim));
     }
 
     /**
      * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage Bar class is not instantiable.
+     * @expectedExceptionMessage BarStub class is not instantiable.
      */
     public function testResolveClassException()
     {
         $class = new ReflectionClass('Service');
         $resolveClass = $class->getMethod('resolveClass');
         $resolveClass->setAccessible(true);
-        $service = new Service('Bar');
-        $resolveClass->invoke($service, 'Bar');
+        $service = new Service('BarStub');
+        $resolveClass->invoke($service, 'BarStub');
     }
 
     public function testResolveCallable()
@@ -159,10 +159,10 @@ class ServiceTest extends PHPUnit_Framework_TestCase
         $class = new ReflectionClass('Service');
         $resolveCallable = $class->getMethod('resolveCallable');
         $resolveCallable->setAccessible(true);
-        $service = new Service('Foo');
-        $this->assertInstanceOf('Foo', $resolveCallable->invoke($service, array(new Foo, 'factory')));
-        $this->assertInstanceOf('Foo', $resolveCallable->invoke($service, 'Foo::factory'));
-        $this->assertInstanceOf('Foo', $resolveCallable->invoke($service, new Foo));
+        $service = new Service('FooStub');
+        $this->assertInstanceOf('FooStub', $resolveCallable->invoke($service, array(new FooStub, 'factory')));
+        $this->assertInstanceOf('FooStub', $resolveCallable->invoke($service, 'FooStub::factory'));
+        $this->assertInstanceOf('FooStub', $resolveCallable->invoke($service, new FooStub));
         $this->assertInstanceOf(
             'stdClass',
             $resolveCallable->invoke(
@@ -211,28 +211,28 @@ class ServiceTest extends PHPUnit_Framework_TestCase
 
     /**
      * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage Can not access to non-public method Foo::bar.
+     * @expectedExceptionMessage Can not access to non-public method FooStub::bar.
      */
     public function testResolveCallableException1()
     {
         $class = new ReflectionClass('Service');
         $resolveCallable = $class->getMethod('resolveCallable');
         $resolveCallable->setAccessible(true);
-        $service = new Service('Foo');
-        $resolveCallable->invoke($service, array(new Foo, 'bar'));
+        $service = new Service('FooStub');
+        $resolveCallable->invoke($service, array(new FooStub, 'bar'));
     }
 
     /**
      * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage Can not access to non-public method Foo::bar.
+     * @expectedExceptionMessage Can not access to non-public method FooStub::bar.
      */
     public function testResolveCallableException2()
     {
         $class = new ReflectionClass('Service');
         $resolveCallable = $class->getMethod('resolveCallable');
         $resolveCallable->setAccessible(true);
-        $service = new Service('Foo');
-        $resolveCallable->invoke($service, 'Foo::bar');
+        $service = new Service('FooStub');
+        $resolveCallable->invoke($service, 'FooStub::bar');
     }
 
     public function testGet()

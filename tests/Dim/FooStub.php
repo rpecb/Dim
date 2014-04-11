@@ -1,6 +1,6 @@
 <?php
 
-class Foo
+class FooStub
 {
     public static function factory()
     {

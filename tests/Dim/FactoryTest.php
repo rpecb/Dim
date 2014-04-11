@@ -6,12 +6,12 @@ class FactoryTest extends PHPUnit_Framework_TestCase
      * @expectedException InvalidArgumentException
      * @expectedExceptionMessage A callable expected.
      */
-    public function testConstructException() # Factory
+    public function testConstructException()
     {
         new Factory('stdClass', 'foo');
     }
 
-    public function testGet() # Dim mock, Factory mock (resolveCallable)
+    public function testGet()
     {
         $args1 = array(1, 2, 3);
         $args2 = array(3 => 4, 5, 6);

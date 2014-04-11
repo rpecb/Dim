@@ -1,6 +1,6 @@
 <?php
 
-class Bar
+class BarStub
 {
     protected function __construct()
     {
