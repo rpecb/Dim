@@ -1,4 +1,17 @@
 <?php
+/**
+ * Dim - the PHP dependency injection manager.
+ *
+ * For the full copyright and license information, please view the LICENSE file that was distributed with this source
+ * code.
+ *
+ * @author    Dmitry Gres <dm.gres@gmail.com>
+ * @copyright 2014 Dmitry Gres
+ * @link      https://github.com/GR3S/Dim
+ * @license   https://github.com/GR3S/Dim/blob/master/LICENSE MIT license
+ * @version   1.0.0
+ * @package   Dim
+ */
 
 namespace DimTest;
 
@@ -58,7 +71,7 @@ class ContainerTest extends PHPUnit_Framework_TestCase
      */
     public function testSetWithoutNames()
     {
-        $service = $this->getMockBuilder('Dim\Service')->disableOriginalConstructor()->getMock();
+        $service = $this->getMockBuilder('Dim\ServiceInterface')->disableOriginalConstructor()->getMock();
         $service->expects($this->once())->method('getClass')->will($this->returnValue('stdClass'));
         $this->dim->set(new ArrayObject);
         $this->dim->set($service);
@@ -70,7 +83,7 @@ class ContainerTest extends PHPUnit_Framework_TestCase
         $this->assertInstanceOf('ArrayObject', $bar);
         $this->assertInstanceOf('ArrayObject', $foobar);
         $this->assertSame($foo, $bar);
-        $this->assertInstanceOf('Dim\Service', $std);
+        $this->assertInstanceOf('Dim\ServiceInterface', $std);
     }
 
     /**
@@ -98,7 +111,7 @@ class ContainerTest extends PHPUnit_Framework_TestCase
     /**
      * @covers ::set
      * @expectedException \BadMethodCallException
-     * @expectedExceptionMessage Service name does not specified.
+     * @expectedExceptionMessage A name of the dependency does not specified.
      */
     public function testSetException()
     {
@@ -152,7 +165,7 @@ class ContainerTest extends PHPUnit_Framework_TestCase
     public function testGet()
     {
         $args = array(1, 2, 3);
-        $service = $this->getMockBuilder('Dim\Service')->disableOriginalConstructor()->getMock();
+        $service = $this->getMockBuilder('Dim\ServiceInterface')->disableOriginalConstructor()->getMock();
         $service->expects($this->once())->method('get')->with(
             $this->identicalTo($args),
             $this->identicalTo($this->dim)

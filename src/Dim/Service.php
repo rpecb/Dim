@@ -1,12 +1,39 @@
 <?php
+/**
+ * Dim - the PHP dependency injection manager.
+ *
+ * For the full copyright and license information, please view the LICENSE file that was distributed with this source
+ * code.
+ *
+ * @author    Dmitry Gres <dm.gres@gmail.com>
+ * @copyright 2014 Dmitry Gres
+ * @link      https://github.com/GR3S/Dim
+ * @license   https://github.com/GR3S/Dim/blob/master/LICENSE MIT license
+ * @version   1.0.0
+ * @package   Dim
+ */
 
 namespace Dim;
 
+/**
+ * Class Service
+ * @package Dim
+ */
 class Service implements ServiceInterface
 {
+    /**
+     * @var string
+     */
     protected $class;
+    /**
+     * @var array
+     */
     protected $arguments;
 
+    /**
+     * @param $class
+     * @param null $arguments
+     */
     public function __construct($class, $arguments = null)
     {
         if (!is_string($class) || !class_exists($class)) {
@@ -16,21 +43,41 @@ class Service implements ServiceInterface
         $this->arguments = (array)$arguments;
     }
 
+    /**
+     * @return string
+     */
     public function getClass()
     {
         return $this->class;
     }
 
+    /**
+     * @param null $arguments
+     * @param Container $dim
+     * @return object
+     */
     public function get($arguments = null, Container $dim = null)
     {
         return static::resolveClass($this->class, (array)$arguments + $this->arguments, $dim);
     }
 
+    /**
+     * @param null $arguments
+     * @param Container $dim
+     * @return object
+     */
     public function __invoke($arguments = null, Container $dim = null)
     {
         return $this->get($arguments, $dim);
     }
 
+    /**
+     * @param $class
+     * @param array $arguments
+     * @param Container $dim
+     * @return object
+     * @throws \InvalidArgumentException
+     */
     protected static function resolveClass($class, array $arguments = array(), Container $dim = null)
     {
         $reflectionClass = new \ReflectionClass($class);
@@ -46,6 +93,13 @@ class Service implements ServiceInterface
         return $reflectionClass->newInstance();
     }
 
+    /**
+     * @param $callable
+     * @param array $arguments
+     * @param Container $dim
+     * @return mixed
+     * @throws \InvalidArgumentException
+     */
     protected static function resolveCallable($callable, array $arguments = array(), Container $dim = null)
     {
         if (is_array($callable)) {
@@ -70,6 +124,13 @@ class Service implements ServiceInterface
         return call_user_func_array($callable, static::getReflectionParameters($reflection, $arguments, $dim));
     }
 
+    /**
+     * @param \ReflectionFunctionAbstract $reflection
+     * @param array $arguments
+     * @param Container $dim
+     * @return array
+     * @throws \BadMethodCallException
+     */
     protected static function getReflectionParameters(
         \ReflectionFunctionAbstract $reflection,
         array $arguments = array(),

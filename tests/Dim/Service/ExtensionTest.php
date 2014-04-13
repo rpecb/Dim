@@ -1,4 +1,17 @@
 <?php
+/**
+ * Dim - the PHP dependency injection manager.
+ *
+ * For the full copyright and license information, please view the LICENSE file that was distributed with this source
+ * code.
+ *
+ * @author    Dmitry Gres <dm.gres@gmail.com>
+ * @copyright 2014 Dmitry Gres
+ * @link      https://github.com/GR3S/Dim
+ * @license   https://github.com/GR3S/Dim/blob/master/LICENSE MIT license
+ * @version   1.0.0
+ * @package   Dim
+ */
 
 namespace DimTest\Service;
 
@@ -16,7 +29,7 @@ class ExtensionTest extends PHPUnit_Framework_TestCase
      */
     public function testGet()
     {
-        $service = $this->getMockBuilder('Dim\Service')->disableOriginalConstructor()->getMock();
+        $service = $this->getMockBuilder('Dim\ServiceInterface')->disableOriginalConstructor()->getMock();
         $service->expects($this->at(0))->method('getClass')->will($this->returnValue('stdClass'));
         $service->expects($this->at(1))->method('get')->will($this->returnValue(new stdClass));
         $args1 = array(1, 2, 3);
