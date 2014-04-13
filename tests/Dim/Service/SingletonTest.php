@@ -1,8 +1,13 @@
 <?php
 
+namespace DimTest\Service;
+
+use PHPUnit_Framework_TestCase;
+use stdClass;
+
 /**
- * @coversDefaultClass Singleton
- * @covers Singleton
+ * @coversDefaultClass Dim\Service\Singleton
+ * @covers Dim\Service\Singleton
  */
 class SingletonTest extends PHPUnit_Framework_TestCase
 {
@@ -13,12 +18,13 @@ class SingletonTest extends PHPUnit_Framework_TestCase
     {
         $args1 = array(1, 2, 3);
         $args2 = array(3 => 4, 5, 6);
-        $dim = $this->getMock('Dim');
-        $service = $this->getMockBuilder('Singleton')->setMethods(array('resolveClass'))->setConstructorArgs(
-            array('stdClass', $args2)
-        )->getMock();
+        $dim = $this->getMock('Dim\Container');
+        $service =
+            $this->getMockBuilder('Dim\Service\Singleton')->setMethods(array('resolveClass'))->setConstructorArgs(
+                array('stdClass', $args2)
+            )->getMock();
         $service->staticExpects($this->once())->method('resolveClass')->with(
-            $this->stringContains('stdClass'),
+            $this->equalTo('stdClass'),
             $this->identicalTo($args1 + $args2),
             $this->identicalTo($dim)
         )->will($this->returnValue(new stdClass));

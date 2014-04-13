@@ -1,5 +1,10 @@
 <?php
 
+namespace Dim\Service;
+
+use Dim\Container;
+use Dim\Service;
+
 class Extension extends Factory
 {
     protected $service;
@@ -10,7 +15,7 @@ class Extension extends Factory
         $this->service = $service;
     }
 
-    public function get($arguments = null, Dim $dim = null)
+    public function get($arguments = null, Container $dim = null)
     {
         return static::resolveCallable(
             $this->callable,

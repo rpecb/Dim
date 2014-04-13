@@ -1,13 +1,19 @@
 <?php
 
+namespace DimTest\Service;
+
+use Dim\Service\Factory;
+use PHPUnit_Framework_TestCase;
+use stdClass;
+
 /**
- * @coversDefaultClass Factory
- * @covers Factory
+ * @coversDefaultClass Dim\Service\Factory
+ * @covers Dim\Service\Factory
  */
 class FactoryTest extends PHPUnit_Framework_TestCase
 {
     /**
-     * @expectedException InvalidArgumentException
+     * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage A callable expected.
      */
     public function testConstructException()
@@ -25,10 +31,11 @@ class FactoryTest extends PHPUnit_Framework_TestCase
         $callable = function () {
             return new stdClass;
         };
-        $dim = $this->getMock('Dim');
-        $service = $this->getMockBuilder('Factory')->setMethods(array('resolveCallable'))->setConstructorArgs(
-            array('stdClass', $callable, $args2)
-        )->getMock();
+        $dim = $this->getMock('Dim\Container');
+        $service =
+            $this->getMockBuilder('Dim\Service\Factory')->setMethods(array('resolveCallable'))->setConstructorArgs(
+                array('stdClass', $callable, $args2)
+            )->getMock();
         $service->staticExpects($this->once())->method('resolveCallable')->with(
             $this->identicalTo($callable),
             $this->identicalTo($args1 + $args2),

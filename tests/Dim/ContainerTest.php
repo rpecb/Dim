@@ -1,15 +1,23 @@
 <?php
 
+namespace DimTest;
+
+use ArrayObject;
+use Dim\Container;
+use PHPUnit_Framework_TestCase;
+use ReflectionClass;
+use stdClass;
+
 /**
- * @coversDefaultClass Dim
+ * @coversDefaultClass Dim\Container
  */
-class DimTest extends PHPUnit_Framework_TestCase
+class ContainerTest extends PHPUnit_Framework_TestCase
 {
     protected $dim;
 
     public function setUp()
     {
-        $this->dim = new Dim;
+        $this->dim = new Container;
     }
 
     public function tearDown()
@@ -22,8 +30,8 @@ class DimTest extends PHPUnit_Framework_TestCase
      */
     public function testConstruct()
     {
-        $dim = $this->getMock('Dim');
-        $dim->expects($this->once())->method('set')->with($this->identicalTo($dim), $this->stringContains('Dim'));
+        $dim = $this->getMock('Dim\Container');
+        $dim->expects($this->once())->method('set')->with($this->identicalTo($dim), $this->equalTo(get_class($dim)));
         $dim->__construct();
     }
 
@@ -32,12 +40,12 @@ class DimTest extends PHPUnit_Framework_TestCase
      */
     public function testRaw()
     {
-        $this->assertSame($this->dim, $this->dim->raw('Dim'));
+        $this->assertSame($this->dim, $this->dim->raw('Dim\Container'));
     }
 
     /**
      * @covers ::raw
-     * @expectedException InvalidArgumentException
+     * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage Dependency foo is not defined in current scope.
      */
     public function testRawException()
@@ -50,7 +58,7 @@ class DimTest extends PHPUnit_Framework_TestCase
      */
     public function testSetWithoutNames()
     {
-        $service = $this->getMockBuilder('Service')->disableOriginalConstructor()->getMock();
+        $service = $this->getMockBuilder('Dim\Service')->disableOriginalConstructor()->getMock();
         $service->expects($this->once())->method('getClass')->will($this->returnValue('stdClass'));
         $this->dim->set(new ArrayObject);
         $this->dim->set($service);
@@ -62,7 +70,7 @@ class DimTest extends PHPUnit_Framework_TestCase
         $this->assertInstanceOf('ArrayObject', $bar);
         $this->assertInstanceOf('ArrayObject', $foobar);
         $this->assertSame($foo, $bar);
-        $this->assertInstanceOf('Service', $std);
+        $this->assertInstanceOf('Dim\Service', $std);
     }
 
     /**
@@ -89,7 +97,7 @@ class DimTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers ::set
-     * @expectedException BadMethodCallException
+     * @expectedException \BadMethodCallException
      * @expectedExceptionMessage Service name does not specified.
      */
     public function testSetException()
@@ -130,7 +138,7 @@ class DimTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers ::alias
-     * @expectedException InvalidArgumentException
+     * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage Dependency foo is not defined in current scope.
      */
     public function testAliasException()
@@ -144,14 +152,14 @@ class DimTest extends PHPUnit_Framework_TestCase
     public function testGet()
     {
         $args = array(1, 2, 3);
-        $service = $this->getMockBuilder('Service')->disableOriginalConstructor()->getMock();
+        $service = $this->getMockBuilder('Dim\Service')->disableOriginalConstructor()->getMock();
         $service->expects($this->once())->method('get')->with(
             $this->identicalTo($args),
             $this->identicalTo($this->dim)
         )->will($this->returnValue(new stdClass));
         $this->dim->set(new stdClass, 'std');
         $this->dim->set($service, 'svc');
-        $this->assertSame($this->dim, $this->dim->get('Dim', $args));
+        $this->assertSame($this->dim, $this->dim->get('Dim\Container', $args));
         $this->assertInstanceOf('stdClass', $this->dim->get('std', $args));
         $this->assertInstanceOf('stdClass', $this->dim->get('svc', $args));
     }
@@ -188,7 +196,7 @@ class DimTest extends PHPUnit_Framework_TestCase
         $this->assertFalse($this->dim->has('ArrayObject'));
         $this->assertFalse($this->dim->has('ArrayAccess'));
         $this->assertFalse($this->dim->has('Countable'));
-        $this->assertTrue($this->dim->has('Dim'));
+        $this->assertTrue($this->dim->has('Dim\Container'));
     }
 
     /**
@@ -214,8 +222,8 @@ class DimTest extends PHPUnit_Framework_TestCase
      */
     public function testOffsetExists()
     {
-        $dim = $this->getMock('Dim', array('has'));
-        $dim->expects($this->once())->method('has')->with($this->stringContains('foo'));
+        $dim = $this->getMock('Dim\Container', array('has'));
+        $dim->expects($this->once())->method('has')->with($this->equalTo('foo'));
         isset($dim['foo']);
     }
 
@@ -224,8 +232,8 @@ class DimTest extends PHPUnit_Framework_TestCase
      */
     public function testOffsetSet()
     {
-        $dim = $this->getMock('Dim', array('set'));
-        $dim->expects($this->once())->method('set')->with($this->stringContains('bar'), $this->stringContains('foo'));
+        $dim = $this->getMock('Dim\Container', array('set'));
+        $dim->expects($this->once())->method('set')->with($this->equalTo('bar'), $this->equalTo('foo'));
         $dim['foo'] = 'bar';
     }
 
@@ -234,8 +242,8 @@ class DimTest extends PHPUnit_Framework_TestCase
      */
     public function testOffsetGet()
     {
-        $dim = $this->getMock('Dim', array('get'));
-        $dim->expects($this->once())->method('get')->with($this->stringContains('foo'));
+        $dim = $this->getMock('Dim\Container', array('get'));
+        $dim->expects($this->once())->method('get')->with($this->equalTo('foo'));
         $dim['foo'];
     }
 
@@ -244,8 +252,8 @@ class DimTest extends PHPUnit_Framework_TestCase
      */
     public function testOffsetUnset()
     {
-        $dim = $this->getMock('Dim', array('remove'));
-        $dim->expects($this->once())->method('remove')->with($this->stringContains('foo'));
+        $dim = $this->getMock('Dim\Container', array('remove'));
+        $dim->expects($this->once())->method('remove')->with($this->equalTo('foo'));
         unset($dim['foo']);
     }
 
@@ -254,8 +262,8 @@ class DimTest extends PHPUnit_Framework_TestCase
      */
     public function testIsset()
     {
-        $dim = $this->getMock('Dim', array('has'));
-        $dim->expects($this->once())->method('has')->with($this->stringContains('foo'));
+        $dim = $this->getMock('Dim\Container', array('has'));
+        $dim->expects($this->once())->method('has')->with($this->equalTo('foo'));
         isset($dim->foo);
     }
 
@@ -264,8 +272,8 @@ class DimTest extends PHPUnit_Framework_TestCase
      */
     public function testMagicSet()
     {
-        $dim = $this->getMock('Dim', array('set'));
-        $dim->expects($this->once())->method('set')->with($this->stringContains('bar'), $this->stringContains('foo'));
+        $dim = $this->getMock('Dim\Container', array('set'));
+        $dim->expects($this->once())->method('set')->with($this->equalTo('bar'), $this->equalTo('foo'));
         $dim->foo = 'bar';
     }
 
@@ -274,8 +282,8 @@ class DimTest extends PHPUnit_Framework_TestCase
      */
     public function testMagicGet()
     {
-        $dim = $this->getMock('Dim', array('get'));
-        $dim->expects($this->once())->method('get')->with($this->stringContains('foo'));
+        $dim = $this->getMock('Dim\Container', array('get'));
+        $dim->expects($this->once())->method('get')->with($this->equalTo('foo'));
         $dim->foo;
     }
 
@@ -284,8 +292,8 @@ class DimTest extends PHPUnit_Framework_TestCase
      */
     public function testUnset()
     {
-        $dim = $this->getMock('Dim', array('remove'));
-        $dim->expects($this->once())->method('remove')->with($this->stringContains('foo'));
+        $dim = $this->getMock('Dim\Container', array('remove'));
+        $dim->expects($this->once())->method('remove')->with($this->equalTo('foo'));
         unset($dim->foo);
     }
 
@@ -294,8 +302,8 @@ class DimTest extends PHPUnit_Framework_TestCase
      */
     public function testInvoke()
     {
-        $dim = $this->getMock('Dim', array('get'));
-        $dim->expects($this->once())->method('get')->with($this->stringContains('foo'), $this->stringContains('bar'));
+        $dim = $this->getMock('Dim\Container', array('get'));
+        $dim->expects($this->once())->method('get')->with($this->equalTo('foo'), $this->equalTo('bar'));
         $dim('foo', 'bar');
     }
 
@@ -364,7 +372,7 @@ class DimTest extends PHPUnit_Framework_TestCase
     /**
      * @covers ::scope
      * @covers ::getScope
-     * @expectedException InvalidArgumentException
+     * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage A callable expected.
      */
     public function testScopeException()
@@ -376,7 +384,7 @@ class DimTest extends PHPUnit_Framework_TestCase
      * @covers ::scope
      * @covers ::getScope
      * @covers ::raw
-     * @expectedException InvalidArgumentException
+     * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage Dependency stdClass is not defined in current scope.
      */
     public function testScopeRawException()
@@ -389,7 +397,7 @@ class DimTest extends PHPUnit_Framework_TestCase
      * @covers ::scope
      * @covers ::getScope
      * @covers ::alias
-     * @expectedException InvalidArgumentException
+     * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage Dependency stdClass is not defined in current scope.
      */
     public function testScopeAliasException()

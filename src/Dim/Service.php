@@ -1,6 +1,8 @@
 <?php
 
-class Service
+namespace Dim;
+
+class Service implements ServiceInterface
 {
     protected $class;
     protected $arguments;
@@ -8,7 +10,7 @@ class Service
     public function __construct($class, $arguments = null)
     {
         if (!is_string($class) || !class_exists($class)) {
-            throw new InvalidArgumentException('A class name expected.');
+            throw new \InvalidArgumentException('A class name expected.');
         }
         $this->class = $class;
         $this->arguments = (array)$arguments;
@@ -19,21 +21,21 @@ class Service
         return $this->class;
     }
 
-    public function get($arguments = null, Dim $dim = null)
+    public function get($arguments = null, Container $dim = null)
     {
         return static::resolveClass($this->class, (array)$arguments + $this->arguments, $dim);
     }
 
-    public function __invoke($arguments = null, Dim $dim = null)
+    public function __invoke($arguments = null, Container $dim = null)
     {
         return $this->get($arguments, $dim);
     }
 
-    protected static function resolveClass($class, array $arguments = array(), Dim $dim = null)
+    protected static function resolveClass($class, array $arguments = array(), Container $dim = null)
     {
-        $reflectionClass = new ReflectionClass($class);
+        $reflectionClass = new \ReflectionClass($class);
         if (!$reflectionClass->isInstantiable()) {
-            throw new InvalidArgumentException($class . ' class is not instantiable.');
+            throw new \InvalidArgumentException($class . ' class is not instantiable.');
         }
         $reflectionMethod = $reflectionClass->getConstructor();
         if ($reflectionMethod) {
@@ -44,7 +46,7 @@ class Service
         return $reflectionClass->newInstance();
     }
 
-    protected static function resolveCallable($callable, array $arguments = array(), Dim $dim = null)
+    protected static function resolveCallable($callable, array $arguments = array(), Container $dim = null)
     {
         if (is_array($callable)) {
             list($class, $method) = $callable;
@@ -55,25 +57,24 @@ class Service
             $method = '__invoke';
         }
         if (isset($class) && isset($method)) {
-            $reflection = new ReflectionMethod($class, $method);
+            $reflection = new \ReflectionMethod($class, $method);
             if (!$reflection->isPublic()) {
-                throw new InvalidArgumentException(
+                throw new \InvalidArgumentException(
                     'Can not access to non-public method ' .
                     (is_object($class) ? get_class($class) : $class) . '::' . $method . '.'
                 );
             }
         } else {
-            $reflection = new ReflectionFunction($callable);
+            $reflection = new \ReflectionFunction($callable);
         }
         return call_user_func_array($callable, static::getReflectionParameters($reflection, $arguments, $dim));
     }
 
     protected static function getReflectionParameters(
-        ReflectionFunctionAbstract $reflection,
+        \ReflectionFunctionAbstract $reflection,
         array $arguments = array(),
-        Dim $dim = null
-    )
-    {
+        Container $dim = null
+    ) {
         $parameters = array();
         foreach ($reflection->getParameters() as $reflectionParameter) {
             if (array_key_exists($reflectionParameter->getName(), $arguments)) {
@@ -85,7 +86,7 @@ class Service
             } else {
                 $classReflection = $reflectionParameter->getClass();
                 if (!is_object($classReflection) || $dim === null || !$dim->has($classReflection->getName())) {
-                    throw new BadMethodCallException('Not enough arguments.');
+                    throw new \BadMethodCallException('Not enough arguments.');
                 }
                 $parameters[] = $dim->get($classReflection->getName());
             }

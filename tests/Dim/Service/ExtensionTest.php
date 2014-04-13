@@ -1,8 +1,13 @@
 <?php
 
+namespace DimTest\Service;
+
+use PHPUnit_Framework_TestCase;
+use stdClass;
+
 /**
- * @coversDefaultClass Extension
- * @covers Extension
+ * @coversDefaultClass Dim\Service\Extension
+ * @covers Dim\Service\Extension
  */
 class ExtensionTest extends PHPUnit_Framework_TestCase
 {
@@ -11,7 +16,7 @@ class ExtensionTest extends PHPUnit_Framework_TestCase
      */
     public function testGet()
     {
-        $service = $this->getMockBuilder('Service')->disableOriginalConstructor()->getMock();
+        $service = $this->getMockBuilder('Dim\Service')->disableOriginalConstructor()->getMock();
         $service->expects($this->at(0))->method('getClass')->will($this->returnValue('stdClass'));
         $service->expects($this->at(1))->method('get')->will($this->returnValue(new stdClass));
         $args1 = array(1, 2, 3);
@@ -19,10 +24,11 @@ class ExtensionTest extends PHPUnit_Framework_TestCase
         $callable = function () {
             return new stdClass;
         };
-        $dim = $this->getMock('Dim');
-        $extended = $this->getMockBuilder('Extension')->setMethods(array('resolveCallable'))->setConstructorArgs(
-            array($service, $callable, $args2)
-        )->getMock();
+        $dim = $this->getMock('Dim\Container');
+        $extended =
+            $this->getMockBuilder('Dim\Service\Extension')->setMethods(array('resolveCallable'))->setConstructorArgs(
+                array($service, $callable, $args2)
+            )->getMock();
         $extended->staticExpects($this->once())->method('resolveCallable')->with(
             $this->identicalTo($callable),
             $this->identicalTo($args1 + $args2),

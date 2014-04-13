@@ -1,22 +1,22 @@
 <?php
 
-class Dim implements ArrayAccess
+namespace Dim;
+
+class Container implements \ArrayAccess
 {
-    // TODO: Unit tests: names
     // TODO: namespaces
     // TODO: Doc blocks
     // TODO: PHP CS Fixer
     // TODO: Static analysis
     // TODO: Security analysis
     // TODO: Composer package
-    // TODO: Post on Github
     protected $values = array();
     protected $scopes;
 
     public function __construct()
     {
-        $this->scopes = new SplDoublyLinkedList;
-        $this->scopes->setIteratorMode(SplDoublyLinkedList::IT_MODE_DELETE);
+        $this->scopes = new \SplDoublyLinkedList;
+        $this->scopes->setIteratorMode(\SplDoublyLinkedList::IT_MODE_DELETE);
         $this->set($this, get_called_class());
     }
 
@@ -25,12 +25,12 @@ class Dim implements ArrayAccess
         $this->scopes->push('__' . $scope . '__');
         if ($callable) {
             if (!is_callable($callable)) {
-                throw new InvalidArgumentException('A callable expected.');
+                throw new \InvalidArgumentException('A callable expected.');
             }
             $mode = $this->scopes->getIteratorMode();
-            $this->scopes->setIteratorMode(SplDoublyLinkedList::IT_MODE_KEEP);
+            $this->scopes->setIteratorMode(\SplDoublyLinkedList::IT_MODE_KEEP);
             $callable();
-            $this->scopes = new SplDoublyLinkedList;
+            $this->scopes = new \SplDoublyLinkedList;
             $this->scopes->setIteratorMode($mode);
         }
         return $this;
@@ -46,7 +46,7 @@ class Dim implements ArrayAccess
             } elseif (is_object($service)) {
                 $names = static::getNames(get_class($service));
             } else {
-                throw new BadMethodCallException('Service name does not specified.');
+                throw new \BadMethodCallException('Service name does not specified.');
             }
         }
         $scope = array_fill_keys($names, $service) + $scope;
@@ -56,7 +56,7 @@ class Dim implements ArrayAccess
     {
         $scope = & $this->getScope();
         if (!array_key_exists($name, $scope)) {
-            throw new InvalidArgumentException('Dependency ' . $name . ' is not defined in current scope.');
+            throw new \InvalidArgumentException('Dependency ' . $name . ' is not defined in current scope.');
         }
         $scope = array_fill_keys((array)$aliases, $scope[$name]) + $scope;
     }
@@ -64,10 +64,10 @@ class Dim implements ArrayAccess
     public function get($name, $arguments = null)
     {
         $mode = $this->scopes->getIteratorMode();
-        $this->scopes->setIteratorMode(SplDoublyLinkedList::IT_MODE_KEEP);
+        $this->scopes->setIteratorMode(\SplDoublyLinkedList::IT_MODE_KEEP);
         $value = $this->raw($name);
         $result = $value instanceof Service ? $value->get($arguments, $this) : $value;
-        $this->scopes = new SplDoublyLinkedList;
+        $this->scopes = new \SplDoublyLinkedList;
         $this->scopes->setIteratorMode($mode);
         return $result;
     }
@@ -76,7 +76,7 @@ class Dim implements ArrayAccess
     {
         $scope = & $this->getScope();
         if (!array_key_exists($name, $scope)) {
-            throw new InvalidArgumentException('Dependency ' . $name . ' is not defined in current scope.');
+            throw new \InvalidArgumentException('Dependency ' . $name . ' is not defined in current scope.');
         }
         return $scope[$name];
     }

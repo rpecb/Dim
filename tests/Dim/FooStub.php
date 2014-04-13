@@ -1,5 +1,7 @@
 <?php
 
+namespace DimTest;
+
 class FooStub
 {
     public static function factory()
