@@ -2,6 +2,7 @@
 
 /**
  * @coversDefaultClass Service
+ * @covers Service
  */
 class ServiceTest extends PHPUnit_Framework_TestCase
 {

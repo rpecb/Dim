@@ -301,6 +301,7 @@ class DimTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers ::scope
+     * @covers ::getScope
      */
     public function testScope()
     {
@@ -329,6 +330,7 @@ class DimTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers ::scope
+     * @covers ::getScope
      */
     public function testSubScope()
     {
@@ -341,6 +343,7 @@ class DimTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers ::scope
+     * @covers ::getScope
      */
     public function testScopeWithCallable()
     {
@@ -360,6 +363,7 @@ class DimTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers ::scope
+     * @covers ::getScope
      * @expectedException InvalidArgumentException
      * @expectedExceptionMessage A callable expected.
      */
@@ -370,6 +374,7 @@ class DimTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers ::scope
+     * @covers ::getScope
      * @covers ::raw
      * @expectedException InvalidArgumentException
      * @expectedExceptionMessage Dependency stdClass is not defined in current scope.
@@ -382,6 +387,7 @@ class DimTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers ::scope
+     * @covers ::getScope
      * @covers ::alias
      * @expectedException InvalidArgumentException
      * @expectedExceptionMessage Dependency stdClass is not defined in current scope.

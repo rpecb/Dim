@@ -2,6 +2,7 @@
 
 /**
  * @coversDefaultClass Extension
+ * @covers Extension
  */
 class ExtensionTest extends PHPUnit_Framework_TestCase
 {

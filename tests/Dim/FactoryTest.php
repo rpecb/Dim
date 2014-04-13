@@ -2,11 +2,11 @@
 
 /**
  * @coversDefaultClass Factory
+ * @covers Factory
  */
 class FactoryTest extends PHPUnit_Framework_TestCase
 {
     /**
-     * @covers ::__construct
      * @expectedException InvalidArgumentException
      * @expectedExceptionMessage A callable expected.
      */
