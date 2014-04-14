@@ -22,7 +22,6 @@ namespace Dim;
  * @author  Dmitry Gres <dm.gres@gmail.com>
  * @license https://github.com/GR3S/Dim/blob/master/LICENSE MIT license
  * @link    https://github.com/GR3S/Dim/blob/master/src/Dim/Container.php
- * @since   1.0.0
  */
 class Container implements \ArrayAccess
 {
@@ -176,7 +175,7 @@ class Container implements \ArrayAccess
     }
 
     /**
-     * Removes all dependencies from container.
+     * Removes all dependencies from the container.
      */
     public function clear()
     {
@@ -191,7 +190,7 @@ class Container implements \ArrayAccess
     /**
      * Returns a reference to part of array with dependencies of current scope.
      *
-     * @return array
+     * @return array Dependencies of current scope
      */
     protected function &getScope()
     {

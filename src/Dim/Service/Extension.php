@@ -19,20 +19,28 @@ use Dim\Container;
 use Dim\ServiceInterface;
 
 /**
- * Class Extension
- * @package Dim\Service
+ * Service that extends other service.
+ *
+ * @package Dim
+ * @author  Dmitry Gres <dm.gres@gmail.com>
+ * @license https://github.com/GR3S/Dim/blob/master/LICENSE MIT license
+ * @link    https://github.com/GR3S/Dim/blob/master/src/Dim/Service/Extension.php
  */
 class Extension extends Factory
 {
     /**
-     * @var \Dim\Service
+     * Extended service.
+     *
+     * @var ServiceInterface
      */
     protected $service;
 
     /**
-     * @param ServiceInterface $service
-     * @param null $callable
-     * @param null $arguments
+     * Instantiates the service.
+     *
+     * @param ServiceInterface $service Service that will be extended.
+     * @param callable $callable A function that extends an instance of the service.
+     * @param mixed $arguments An argument or an array of arguments that will be passed to the service.
      */
     public function __construct(ServiceInterface $service, $callable, $arguments = null)
     {
@@ -41,9 +49,11 @@ class Extension extends Factory
     }
 
     /**
-     * @param null $arguments
-     * @param Container $dim
-     * @return mixed
+     * Creates an instance of the class of the service.
+     *
+     * @param mixed $arguments An argument or an array of arguments that will be passed to the service.
+     * @param Container $dim An instance of the dependency injection container.
+     * @return object An instance of the class of the service.
      */
     public function get($arguments = null, Container $dim = null)
     {

@@ -16,23 +16,35 @@
 namespace Dim;
 
 /**
- * Class Service
+ * Service that instantiates a class.
+ *
  * @package Dim
+ * @author  Dmitry Gres <dm.gres@gmail.com>
+ * @license https://github.com/GR3S/Dim/blob/master/LICENSE MIT license
+ * @link    https://github.com/GR3S/Dim/blob/master/src/Dim/Service.php
  */
 class Service implements ServiceInterface
 {
     /**
+     * The class name for creating service.
+     *
      * @var string
      */
     protected $class;
+
     /**
+     * Arguments that will be passed to the service.
+     *
      * @var array
      */
     protected $arguments;
 
     /**
-     * @param $class
-     * @param null $arguments
+     * Instantiates the service.
+     *
+     * @param string $class The class name for creating service.
+     * @param mixed $arguments An argument or an array of arguments that will be passed to the service.
+     * @throws \InvalidArgumentException If the class does not exists.
      */
     public function __construct($class, $arguments = null)
     {
@@ -44,7 +56,9 @@ class Service implements ServiceInterface
     }
 
     /**
-     * @return string
+     * Returns service class name.
+     *
+     * @return string Service class name.
      */
     public function getClass()
     {
@@ -52,9 +66,11 @@ class Service implements ServiceInterface
     }
 
     /**
-     * @param null $arguments
-     * @param Container $dim
-     * @return object
+     * Creates an instance of the class of the service.
+     *
+     * @param mixed $arguments An argument or an array of arguments that will be passed to the service.
+     * @param Container $dim An instance of the dependency injection container.
+     * @return object An instance of the class of the service.
      */
     public function get($arguments = null, Container $dim = null)
     {
@@ -62,9 +78,11 @@ class Service implements ServiceInterface
     }
 
     /**
-     * @param null $arguments
-     * @param Container $dim
-     * @return object
+     * Creates an instance of the class of the service.
+     *
+     * @param mixed $arguments An argument or an array of arguments that will be passed to the service.
+     * @param Container $dim An instance of the dependency injection container.
+     * @return object An instance of the class of the service.
      */
     public function __invoke($arguments = null, Container $dim = null)
     {
@@ -72,11 +90,13 @@ class Service implements ServiceInterface
     }
 
     /**
-     * @param $class
-     * @param array $arguments
-     * @param Container $dim
-     * @return object
-     * @throws \InvalidArgumentException
+     * Resolves dependencies of the class and creates an instance of the class of the service.
+     *
+     * @param string $class The class name for creating service.
+     * @param array $arguments Arguments that will be passed to the service.
+     * @param Container $dim An instance of the dependency injection container.
+     * @return object An instance of the class of the service.
+     * @throws \InvalidArgumentException If the class is not instantiable.
      */
     protected static function resolveClass($class, array $arguments = array(), Container $dim = null)
     {
@@ -94,11 +114,13 @@ class Service implements ServiceInterface
     }
 
     /**
-     * @param $callable
-     * @param array $arguments
-     * @param Container $dim
-     * @return mixed
-     * @throws \InvalidArgumentException
+     * Resolves dependencies of the callable and creates an instance of the class of the service.
+     *
+     * @param callable $callable A function that creates an instance of the service.
+     * @param array $arguments Arguments that will be passed to the service.
+     * @param Container $dim An instance of the dependency injection container.
+     * @return object An instance of the class of the service.
+     * @throws \InvalidArgumentException If the callable is non-public.
      */
     protected static function resolveCallable($callable, array $arguments = array(), Container $dim = null)
     {
@@ -125,11 +147,15 @@ class Service implements ServiceInterface
     }
 
     /**
-     * @param \ReflectionFunctionAbstract $reflection
-     * @param array $arguments
-     * @param Container $dim
-     * @return array
-     * @throws \BadMethodCallException
+     * Returns arguments for creating an instance of the service.
+     * Adds to passed arguments default values ​and dependencies.
+     *
+     * @param \ReflectionFunctionAbstract $reflection An instance of the reflection of the function.
+     * @param array $arguments Arguments that will be passed to the service.
+     * @param Container $dim An instance of the dependency injection container.
+     * @return array Passed arguments with default values and dependencies.
+     * @throws \BadMethodCallException If service is not registered in the dependency injection container or if
+     * insufficient number of arguments passed or if can not satisfy service dependencies.
      */
     protected static function getReflectionParameters(
         \ReflectionFunctionAbstract $reflection,

@@ -19,20 +19,28 @@ use Dim\Container;
 use Dim\Service;
 
 /**
- * Class Singleton
- * @package Dim\Service
+ * Service always returns the same instance of the class.
+ *
+ * @package Dim
+ * @author  Dmitry Gres <dm.gres@gmail.com>
+ * @license https://github.com/GR3S/Dim/blob/master/LICENSE MIT license
+ * @link    https://github.com/GR3S/Dim/blob/master/src/Dim/Service/Singleton.php
  */
 class Singleton extends Service
 {
     /**
-     * @var
+     * Instance of the class of the service.
+     *
+     * @var object
      */
     protected $instance;
 
     /**
-     * @param null $arguments
-     * @param Container $dim
-     * @return object
+     * Creates an instance of the class of the service.
+     *
+     * @param mixed $arguments An argument or an array of arguments that will be passed to the service.
+     * @param Container $dim An instance of the dependency injection container.
+     * @return object An instance of the class of the service.
      */
     public function get($arguments = null, Container $dim = null)
     {
