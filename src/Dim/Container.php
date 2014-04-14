@@ -25,7 +25,7 @@ namespace Dim;
  */
 class Container implements \ArrayAccess
 {
-    // TODO: Doc blocks
+    // TODO: README.md
     // TODO: PHP CS Fixer
     // TODO: Static analysis
     // TODO: Security analysis
