@@ -68,8 +68,8 @@ $container->name = 'value';
 // or
 $container['name'] = 'value';
 ```
-> If as value used an object you can omit the definition of names, in this case for names will be used class name of
-object, names of extended classes and interfaces and names of used traits.
+> For objects you can omit the definition of names, in this case for names will be used class name of object, names of
+extended classes and interfaces and names of used traits.
 
 ## Defining services
 ```php
@@ -104,6 +104,8 @@ $container->set(
 ```
 > Keys should be identical to parameter names or their positions in constructor definition.
 
+## Defining aliases
+
 ## Retrieving data
 ```php
 $foo = $container->get('Foo');
@@ -122,7 +124,56 @@ $foo = $container->get('Foo', array('three' => 'three'));
 $foo = $container('Foo', array('three' => 'three'));
 ```
 
+## Scopes
+
 ## Kinds of services
+
+### Service
+Class: *Dim\Service*
+Creates and returns new instance of class:
+```php
+$container->foo = new Service('Foo');
+$foo1 = $container->foo;
+$foo2 = $container->foo;
+```
+> `$foo1` and `$foo2` are different instances.
+
+
+### Singleton
+Class: *Dim\Service\Singleton*
+Once creates an instance of class and always returns the same instance for all calls:
+```php
+$container->foo = new Singleton('Foo');
+$foo1 = $container->foo;
+$foo2 = $container->foo;
+```
+> `$foo1` and `$foo2` are the same.
+
+### Factory
+Class: *Dim\Service\Factory*
+Returns new instance of class created by function or factory method:
+```php
+$container->foo = new Factory('Foo', function () {
+    return new Foo;
+});
+$foo = $container->foo;
+```
+
+### Extension
+Class: *Dim\Service\Extension*
+Extends creation of instance by other service:
+```php
+$container->foo = new Service('Foo');
+$container->bar = new Extension($container->foo, function (Foo $foo) {
+    $foo->property = 'value';
+    $foo->callMethod();
+    // ...
+    return $foo;
+});
+$bar = $container->bar;
+```
+
+## Other actions
 
 ## Tests
 To run the test suite, you need [PHPUnit](http://phpunit.de):
