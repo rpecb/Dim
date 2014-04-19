@@ -68,6 +68,8 @@ $container->name = 'value';
 // or
 $container['name'] = 'value';
 ```
+> If as value used an object you can omit the definition of names, in this case for names will be used class name of
+object, names of extended classes and interfaces and names of used traits.
 
 ## Defining services
 ```php
@@ -81,7 +83,7 @@ $container->Foo = new Service('Foo');
 // or
 $container['Foo'] = new Service('Foo');
 ```
-> In first case for names will be used class name and names of extended classes, interfaces and traits.
+> In first case for names will be used class name, names of extended classes and interfaces and names of used traits.
 
 You can define arguments that will be passed to constructor of service class:
 ```php
