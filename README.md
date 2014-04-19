@@ -125,7 +125,6 @@ $foo = $container('Foo', array('three' => 'three'));
 ```
 
 ## Scopes
-
 ## Kinds of services
 
 ### Service
@@ -137,7 +136,6 @@ $foo1 = $container->foo;
 $foo2 = $container->foo;
 ```
 > `$foo1` and `$foo2` are different instances.
-
 
 ### Singleton
 Class: *Dim\Service\Singleton*
