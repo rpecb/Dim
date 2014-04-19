@@ -52,12 +52,12 @@ and run the `php composer.phar install` command to install it:
     require_once __DIR__ . '/vendor/autoload.php';
     ```
 
-> Alternatively, you can download the [archive](https://github.com/GR3S/Dim/archive/master.zip) and extract it.
+3. Instantiate the `Container` class:
+    ```php
+    $container = new Container;
+    ```
 
-Creating a container is a matter of instating the `Container` class:
-```php
-$container = new Container;
-```
+> Alternatively, you can download the [archive](https://github.com/GR3S/Dim/archive/master.zip) and extract it.
 
 ## Defining parameters
 ```php
@@ -84,11 +84,17 @@ $container['Foo'] = new Service('Foo');
 
 You can define arguments that will be passed to constructor of service class:
 ```php
-new Service('Foo', array(new One, new Two, 3));
+$container->set(
+    new Service('Foo', array(new One, new Two, 3))
+);
 // or
-new Service('Foo', array('one' => new One, 'two' => new Two, 'three' => 3));
+$container->set(
+    new Service('Foo', array('one' => new One, 'two' => new Two, 'three' => 3))
+);
 // or
-new Service('Foo', array(0 => new One, 'two' => new Two, 2 => 3));
+$container->set(
+    new Service('Foo', array(0 => new One, 'two' => new Two, 2 => 3))
+);
 // ...
 ```
 > Keys should be identical to parameter names or their positions in constructor definition.
@@ -99,7 +105,7 @@ $foo = $container->get('Foo');
 // or
 $foo = $container->Foo;
 // or
-$foo = $container['Foo];
+$foo = $container['Foo'];
 // or
 $foo = $container('Foo');
 ```
