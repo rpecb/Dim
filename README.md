@@ -3,7 +3,6 @@
 Dim is a small, simple and powerful Dependency Injection Container for PHP:
 ```php
 class One { /* ... */ }
-
 class Two { /* ... */ }
 
 class Foo
@@ -12,22 +11,18 @@ class Foo
     {
         // ...
     }
+    // ...
 }
 
 // Instantiates the container
 $container = new Container;
-
 // Puts service that creates an instance of "One" to the container
 $container->set(new Service('One'));
-
 // Puts instance of "Two" to the container
 $container->set(new Two);
-
 // Puts service that creates an instance of "Foo" to the container
 $container->set(new Service('Foo'));
-
 // ...
-
 // Instantiates "Foo" passing dependencies "One", "Two" and third argument "3" to the constructor
 $three = $container->get('Foo', array('three' => 3));
 ```
