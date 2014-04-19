@@ -37,18 +37,18 @@ Dim works with PHP 5.3 or later.
 You may install the Dim with [Composer](https://getcomposer.org).
 1. Create a `composer.json` file in your project root
 and run the `php composer.phar install` command to install it:
-```php
-{
-    "require": {
-        "GR3S/Dim": "1.*"
+    ```php
+    {
+        "require": {
+            "GR3S/Dim": "1.*"
+        }
     }
-}
-```
+    ```
 2. Add this line to your application’s index.php file:
-```php
-<?php
-require_once __DIR__ . '/vendor/autoload.php';
-```
+    ```php
+    <?php
+    require_once __DIR__ . '/vendor/autoload.php';
+    ```
 Alternatively, you can download the [archive](https://github.com/GR3S/Dim/archive/master.zip) and extract it.
 
 Creating a container is a matter of instating the `Container` class:
