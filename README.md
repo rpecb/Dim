@@ -128,7 +128,8 @@ $foo = $container('Foo', array('three' => 'three'));
 ## Kinds of services
 
 ### Service
-Class: *Dim\Service*
+*Class: Dim\Service*
+
 Creates and returns new instance of class:
 ```php
 $container->foo = new Service('Foo');
@@ -138,7 +139,8 @@ $foo2 = $container->foo;
 > `$foo1` and `$foo2` are different instances.
 
 ### Singleton
-Class: *Dim\Service\Singleton*
+*Class: Dim\Service\Singleton*
+
 Once creates an instance of class and always returns the same instance for all calls:
 ```php
 $container->foo = new Singleton('Foo');
@@ -148,7 +150,8 @@ $foo2 = $container->foo;
 > `$foo1` and `$foo2` are the same.
 
 ### Factory
-Class: *Dim\Service\Factory*
+*Class: Dim\Service\Factory*
+
 Returns new instance of class created by function or factory method:
 ```php
 $container->foo = new Factory('Foo', function () {
@@ -158,7 +161,8 @@ $foo = $container->foo;
 ```
 
 ### Extension
-Class: *Dim\Service\Extension*
+*Class: Dim\Service\Extension*
+
 Extends creation of instance by other service:
 ```php
 $container->foo = new Service('Foo');
