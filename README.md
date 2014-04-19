@@ -1,5 +1,4 @@
-# Dim
-*The PHP dependency injection manager*
+# Dim - PHP Dependency Injection Manager
 
 Dim is a small, simple and powerful Dependency Injection Container for PHP 5.3 or later.
 ```php
