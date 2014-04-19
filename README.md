@@ -175,6 +175,8 @@ $container->bar = new Extension($container->foo, function (Foo $foo) {
 $bar = $container->bar;
 ```
 
+> All services supports passing additional arguments.
+
 ## Other actions
 
 ## Tests
