@@ -2,7 +2,11 @@
 
 Dim is a small, simple and powerful Dependency Injection Container for PHP:
 ```php
+use Dim\Container;
+use Dim\Service;
+
 class One { /* ... */ }
+
 class Two { /* ... */ }
 
 class Foo
@@ -49,7 +53,7 @@ and run the `php composer.phar install` command to install it:
 
 3. Instantiate the `Container` class:
     ```php
-    $container = new Container;
+    $container = new Dim\Container;
     ```
 
 > Alternatively, you can download the [archive](https://github.com/GR3S/Dim/archive/master.zip) and extract it.
@@ -67,6 +71,8 @@ $container['name'] = 'value';
 
 ## Defining services
 ```php
+use Dim\Service;
+
 $container->set(new Service('Foo'));
 // or
 $container->set(new Service('Foo') , array('name1', 'name2'));
@@ -79,6 +85,8 @@ $container['Foo'] = new Service('Foo');
 
 You can define arguments that will be passed to constructor of service class:
 ```php
+use Dim\Service;
+
 $container->set(
     new Service('Foo', array(new One, new Two, 3))
 );
@@ -111,6 +119,8 @@ $foo = $container->get('Foo', array('three' => 'three'));
 // or
 $foo = $container('Foo', array('three' => 'three'));
 ```
+
+## Kinds of services
 
 ## Tests
 To run the test suite, you need [PHPUnit](http://phpunit.de):
