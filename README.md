@@ -1,34 +1,38 @@
 # Dim, a PHP dependency injection manager
 Dim is a small, simple and powerful Dependency Injection Container for PHP 5.3 or later.
 ```php
-class One
-{
-    //...
-}
+class One { /* ... */ }
 
-class Two
-{
-    //...
-}
+class Two { /* ... */ }
 
 class Three
 {
     public function __construct(One $one, Two $two)
     {
-        //...
+        // ...
     }
 }
 
-$container = new Container; // Creates an instance of the container
-$container->three = new Service('Three'); // Creates an association between «three» and service creates an instance of «Three»
-$container->one = new Service('One'); // Creates an association between «one» and service creates an instance of «One»
-$container->two = new Two; // Creates an association between «one» and instance of «One»
-//...
-$three = $container->three; // Instantiates Three with passed dependencies One and Two to the constructor
+// Instantiates the container
+$container = new Container;
+
+// Puts service that creates an instance of "Three" to the container
+$container->set(new Service('Three'));
+
+// Puts service that creates an instance of "One" to the container
+$container->set(new Service('One'));
+
+// Puts instance of "Two" to the container
+$container->set(new Two);
+
+// ...
+
+// Instantiates "Three" passing dependencies "One" and "Two" to the constructor
+$three = $container->get('Three');
 ```
 
 ## Installation
-You may install the Dim with [Composer](https://getcomposer.org). Just create a `composer.json` file in your project
+You may install the Dim with [Composer](https://getcomposer.org). Create a `composer.json` file in your project
 root and run the `php composer.phar install` command to install it:
 ```php
 {
