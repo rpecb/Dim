@@ -40,7 +40,7 @@ and run the `php composer.phar install` command to install it:
     ```php
     {
         "require": {
-            "gr3s/dim": "1.*"
+            "gres/dim": "1.*"
         }
     }
     ```
