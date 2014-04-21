@@ -209,7 +209,10 @@ $foo = $container->raw('foo');
 > `$foo` will contains an instance of `Service` class.
 
 #### Check that parameter or service is defined:
-*Methods: Dim\Container::has, Dim\Container::offsetExists, Dim\Container::__isset*
+*Methods:*
+* *Dim\Container::has*
+* *Dim\Container::offsetExists*
+* *Dim\Container::__isset*
 ```php
 $container->foo = new Service('Foo');
 $foo = $container->has('foo');
@@ -223,7 +226,10 @@ $bar = $container->has('bar');
 > `$foo` will contains `true`, `$bar` will contains `false`
 
 #### Remove parameter or service from container:
-*Methods: Dim\Container::remove, Dim\Container::offsetUnset, Dim\Container::__unset*
+*Methods:*
+* *Dim\Container::remove*
+* *Dim\Container::offsetUnset*
+* *Dim\Container::__unset*
 ```php
 $container->remove('foo');
 // or
