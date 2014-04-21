@@ -419,4 +419,3 @@ class ContainerTest extends PHPUnit_Framework_TestCase
         $this->dim->scope('foo')->alias('stdClass', 'foo');
     }
 }
- 

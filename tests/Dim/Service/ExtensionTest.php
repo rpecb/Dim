@@ -50,4 +50,3 @@ class ExtensionTest extends PHPUnit_Framework_TestCase
         $this->assertInstanceOf('stdClass', $extended->get($args1, $dim));
     }
 }
- 

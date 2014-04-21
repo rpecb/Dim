@@ -57,4 +57,3 @@ class FactoryTest extends PHPUnit_Framework_TestCase
         $this->assertInstanceOf('stdClass', $service->get($args1, $dim));
     }
 }
- 

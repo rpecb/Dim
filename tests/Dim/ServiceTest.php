@@ -321,4 +321,3 @@ class ServiceTest extends PHPUnit_Framework_TestCase
         $service($args, $dim);
     }
 }
- 

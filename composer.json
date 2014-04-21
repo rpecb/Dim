@@ -16,7 +16,6 @@
 	"support": {
 		"email": "dm.gres@gmail.com",
 		"issues": "https://github.com/GR3S/Dim/issues",
-		//"wiki": "",
 		"source": "https://github.com/GR3S/Dim"
 	},
 	"require": {
