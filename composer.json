@@ -27,7 +27,7 @@
 	"autoload": {
 		"psr-4": {
 			"Dim\\": "src/Dim/",
-			"DimTest\\": "tests/Dim/"
+			"DimTest\\": "tests/DimTest/"
 		}
 	}
 }

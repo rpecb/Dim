@@ -35,18 +35,18 @@ interface ServiceInterface
     /**
      * Creates an instance of the class of the service.
      *
-     * @param mixed $arguments An argument or an array of arguments that will be passed to the service.
-     * @param Container $dim An instance of the dependency injection container.
-     * @return object An instance of the class of the service.
+     * @param  mixed $arguments An argument or an array of arguments that will be passed to the service.
+     * @param  Container $dim An instance of the dependency injection container.
+     * @return object    An instance of the class of the service.
      */
     public function get($arguments = null, Container $dim = null);
 
     /**
      * Creates an instance of the class of the service.
      *
-     * @param mixed $arguments An argument or an array of arguments that will be passed to the service.
-     * @param Container $dim An instance of the dependency injection container.
-     * @return object An instance of the class of the service.
+     * @param  mixed $arguments An argument or an array of arguments that will be passed to the service.
+     * @param  Container $dim An instance of the dependency injection container.
+     * @return object    An instance of the class of the service.
      */
     public function __invoke($arguments = null, Container $dim = null);
 }

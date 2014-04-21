@@ -25,9 +25,6 @@ namespace Dim;
  */
 class Container implements \ArrayAccess
 {
-    // TODO: README.md
-    // TODO: PHP CS Fixer
-    // TODO: Static analysis
     // TODO: Security analysis
     // TODO: Composer package
     // TODO: travis-ci, packagist, coveralls, versioneye, github tag
@@ -58,8 +55,8 @@ class Container implements \ArrayAccess
     /**
      * Sets current scope.
      *
-     * @param string $scope Scope name.
-     * @param null|callable $callable A callable that can do multiple operations in current scope.
+     * @param  string $scope Scope name.
+     * @param  null|callable $callable A callable that can do multiple operations in current scope.
      * @return $this
      * @throws \InvalidArgumentException
      */
@@ -76,14 +73,15 @@ class Container implements \ArrayAccess
             $this->scopes = new \SplDoublyLinkedList;
             $this->scopes->setIteratorMode($mode);
         }
+
         return $this;
     }
 
     /**
      * Sets a dependency.
      *
-     * @param mixed $service A parameter or a service.
-     * @param null|string|array $names A name or an array of names of the dependency.
+     * @param  mixed $service A parameter or a service.
+     * @param  null|string|array $names A name or an array of names of the dependency.
      * @throws \BadMethodCallException If a name of the dependency does not specified.
      */
     public function set($service, $names = null)
@@ -105,8 +103,8 @@ class Container implements \ArrayAccess
     /**
      * Sets an alias of dependency.
      *
-     * @param string $name A Name of the dependency.
-     * @param string|array $aliases An alias or an array of aliases of the dependency.
+     * @param  string $name A Name of the dependency.
+     * @param  string|array $aliases An alias or an array of aliases of the dependency.
      * @throws \InvalidArgumentException If dependency with this name is not defined in current scope.
      */
     public function alias($name, $aliases)
@@ -121,9 +119,9 @@ class Container implements \ArrayAccess
     /**
      * Returns the dependency.
      *
-     * @param string $name A name of the dependency.
-     * @param mixed $arguments An argument or an array of arguments that will be passed to dependency.
-     * @return mixed The dependency value.
+     * @param  string $name A name of the dependency.
+     * @param  mixed $arguments An argument or an array of arguments that will be passed to dependency.
+     * @return mixed  The dependency value.
      */
     public function get($name, $arguments = null)
     {
@@ -133,14 +131,15 @@ class Container implements \ArrayAccess
         $result = $value instanceof ServiceInterface ? $value->get($arguments, $this) : $value;
         $this->scopes = new \SplDoublyLinkedList;
         $this->scopes->setIteratorMode($mode);
+
         return $result;
     }
 
     /**
      * Returns a raw value from the container.
      *
-     * @param string $name A name of dependency.
-     * @return mixed The raw value from the container.
+     * @param  string $name A name of dependency.
+     * @return mixed                     The raw value from the container.
      * @throws \InvalidArgumentException If dependency with this name is not defined in current scope.
      */
     public function raw($name)
@@ -149,18 +148,20 @@ class Container implements \ArrayAccess
         if (!array_key_exists($name, $scope)) {
             throw new \InvalidArgumentException('Dependency ' . $name . ' is not defined in current scope.');
         }
+
         return $scope[$name];
     }
 
     /**
      * Checks that the dependency is defined.
      *
-     * @param string $name A name of the dependency.
-     * @return bool Whether the dependency is defined.
+     * @param  string $name A name of the dependency.
+     * @return bool   Whether the dependency is defined.
      */
     public function has($name)
     {
         $scope = & $this->getScope();
+
         return array_key_exists($name, $scope);
     }
 
@@ -202,14 +203,15 @@ class Container implements \ArrayAccess
             }
             $scope = & $scope[$v];
         }
+
         return $scope;
     }
 
     /**
      * Returns names of all parent classes, interfaces, traits extended by given class.
      *
-     * @param string $class A class name.
-     * @return array Names of parent classes, interfaces, traits extended by given class.
+     * @param  string $class A class name.
+     * @return array  Names of parent classes, interfaces, traits extended by given class.
      */
     protected static function getNames($class)
     {
@@ -218,6 +220,7 @@ class Container implements \ArrayAccess
             $names += class_uses($class);
         }
         $names[] = $class;
+
         return $names;
     }
 
@@ -235,8 +238,8 @@ class Container implements \ArrayAccess
     /**
      * Returns the dependency.
      *
-     * @param string $name A name of the dependency.
-     * @return mixed The dependency value.
+     * @param  string $name A name of the dependency.
+     * @return mixed  The dependency value.
      */
     public function offsetGet($name)
     {
@@ -246,8 +249,8 @@ class Container implements \ArrayAccess
     /**
      * Checks that the dependency is defined.
      *
-     * @param string $name A name of the dependency.
-     * @return bool Whether the dependency is defined.
+     * @param  string $name A name of the dependency.
+     * @return bool   Whether the dependency is defined.
      */
     public function offsetExists($name)
     {
@@ -278,8 +281,8 @@ class Container implements \ArrayAccess
     /**
      * Returns the dependency.
      *
-     * @param string $name A name of the dependency.
-     * @return mixed The dependency value.
+     * @param  string $name A name of the dependency.
+     * @return mixed  The dependency value.
      */
     public function __get($name)
     {
@@ -289,8 +292,8 @@ class Container implements \ArrayAccess
     /**
      * Checks that the dependency is defined.
      *
-     * @param string $name A name of the dependency.
-     * @return bool Whether the dependency is defined.
+     * @param  string $name A name of the dependency.
+     * @return bool   Whether the dependency is defined.
      */
     public function __isset($name)
     {
@@ -310,9 +313,9 @@ class Container implements \ArrayAccess
     /**
      * Returns the dependency.
      *
-     * @param string $name A name of the dependency.
-     * @param mixed $arguments An argument or an array of arguments that will be passed to dependency.
-     * @return mixed The dependency value.
+     * @param  string $name A name of the dependency.
+     * @param  mixed $arguments An argument or an array of arguments that will be passed to dependency.
+     * @return mixed  The dependency value.
      */
     public function __invoke($name, $arguments = null)
     {

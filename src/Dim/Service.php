@@ -42,8 +42,9 @@ class Service implements ServiceInterface
     /**
      * Instantiates the service.
      *
-     * @param string $class The class name for creating service.
-     * @param mixed $arguments An argument or an array of arguments that will be passed to the service.
+     * @param  string $class The class name for creating service.
+     * @param  mixed $arguments An argument or an array of arguments that will be passed to the
+     *                                              service.
      * @throws \InvalidArgumentException If the class does not exists.
      */
     public function __construct($class, $arguments = null)
@@ -68,9 +69,9 @@ class Service implements ServiceInterface
     /**
      * Creates an instance of the class of the service.
      *
-     * @param mixed $arguments An argument or an array of arguments that will be passed to the service.
-     * @param Container $dim An instance of the dependency injection container.
-     * @return object An instance of the class of the service.
+     * @param  mixed $arguments An argument or an array of arguments that will be passed to the service.
+     * @param  Container $dim An instance of the dependency injection container.
+     * @return object    An instance of the class of the service.
      */
     public function get($arguments = null, Container $dim = null)
     {
@@ -80,9 +81,9 @@ class Service implements ServiceInterface
     /**
      * Creates an instance of the class of the service.
      *
-     * @param mixed $arguments An argument or an array of arguments that will be passed to the service.
-     * @param Container $dim An instance of the dependency injection container.
-     * @return object An instance of the class of the service.
+     * @param  mixed $arguments An argument or an array of arguments that will be passed to the service.
+     * @param  Container $dim An instance of the dependency injection container.
+     * @return object    An instance of the class of the service.
      */
     public function __invoke($arguments = null, Container $dim = null)
     {
@@ -92,10 +93,10 @@ class Service implements ServiceInterface
     /**
      * Resolves dependencies of the class and creates an instance of the class of the service.
      *
-     * @param string $class The class name for creating service.
-     * @param array $arguments Arguments that will be passed to the service.
-     * @param Container $dim An instance of the dependency injection container.
-     * @return object An instance of the class of the service.
+     * @param  string $class The class name for creating service.
+     * @param  array $arguments Arguments that will be passed to the service.
+     * @param  Container $dim An instance of the dependency injection container.
+     * @return object                    An instance of the class of the service.
      * @throws \InvalidArgumentException If the class is not instantiable.
      */
     protected static function resolveClass($class, array $arguments = array(), Container $dim = null)
@@ -110,16 +111,17 @@ class Service implements ServiceInterface
                 static::getReflectionParameters($reflectionMethod, $arguments, $dim)
             );
         }
+
         return $reflectionClass->newInstance();
     }
 
     /**
      * Resolves dependencies of the callable and creates an instance of the class of the service.
      *
-     * @param callable $callable A function that creates an instance of the service.
-     * @param array $arguments Arguments that will be passed to the service.
-     * @param Container $dim An instance of the dependency injection container.
-     * @return object An instance of the class of the service.
+     * @param  callable $callable A function that creates an instance of the service.
+     * @param  array $arguments Arguments that will be passed to the service.
+     * @param  Container $dim An instance of the dependency injection container.
+     * @return object                    An instance of the class of the service.
      * @throws \InvalidArgumentException If the callable is non-public.
      */
     protected static function resolveCallable($callable, array $arguments = array(), Container $dim = null)
@@ -143,6 +145,7 @@ class Service implements ServiceInterface
         } else {
             $reflection = new \ReflectionFunction($callable);
         }
+
         return call_user_func_array($callable, static::getReflectionParameters($reflection, $arguments, $dim));
     }
 
@@ -150,12 +153,13 @@ class Service implements ServiceInterface
      * Returns arguments for creating an instance of the service.
      * Adds to passed arguments default values ​and dependencies.
      *
-     * @param \ReflectionFunctionAbstract $reflection An instance of the reflection of the function.
-     * @param array $arguments Arguments that will be passed to the service.
-     * @param Container $dim An instance of the dependency injection container.
-     * @return array Passed arguments with default values and dependencies.
-     * @throws \BadMethodCallException If service is not registered in the dependency injection container or if
-     * insufficient number of arguments passed or if can not satisfy service dependencies.
+     * @param  \ReflectionFunctionAbstract $reflection An instance of the reflection of the function.
+     * @param  array $arguments Arguments that will be passed to the service.
+     * @param  Container $dim An instance of the dependency injection container.
+     * @return array                       Passed arguments with default values and dependencies.
+     * @throws \BadMethodCallException     If service is not registered in the dependency injection container or if
+     *                                     insufficient number of arguments passed or if can not satisfy service
+     *                                     dependencies.
      */
     protected static function getReflectionParameters(
         \ReflectionFunctionAbstract $reflection,
@@ -178,6 +182,7 @@ class Service implements ServiceInterface
                 $parameters[] = $dim->get($classReflection->getName());
             }
         }
+
         return $parameters ? $parameters : $arguments;
     }
 }
