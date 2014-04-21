@@ -25,9 +25,6 @@ namespace Dim;
  */
 class Container implements \ArrayAccess
 {
-    // TODO: Security analysis
-    // TODO: Composer package
-    // TODO: travis-ci, packagist, coveralls, versioneye, github tag
     /**
      * Dependencies.
      *
