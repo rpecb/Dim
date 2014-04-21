@@ -1,4 +1,5 @@
 # Dim – PHP Dependency Injection Manager
+[![Build Status](https://travis-ci.org/GR3S/Dim.svg)](https://travis-ci.org/GR3S/Dim)
 Dim is a small, simple and powerful Dependency Injection Container for PHP:
 ```php
 use Dim\Container;
