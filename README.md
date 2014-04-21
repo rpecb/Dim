@@ -73,8 +73,6 @@ extended classes and interfaces and names of used traits.
 
 ## Defining services
 ```php
-use Dim\Service;
-
 $container->set(new Service('Foo'));
 // or
 $container->set(new Service('Foo') , array('name1', 'name2'));
@@ -87,8 +85,6 @@ $container['Foo'] = new Service('Foo');
 
 You can define arguments that will be passed to constructor of service class:
 ```php
-use Dim\Service;
-
 $container->set(
     new Service('Foo', array(new One, new Two, 3))
 );
@@ -105,6 +101,13 @@ $container->set(
 > Keys should be identical to parameter names or their positions in constructor definition.
 
 ## Defining aliases
+If you need to add an additional name for defined parameter or service you can use `alias` method:
+```php
+$container->Foo = new Service('Foo');
+$container->alias('Foo', 'alias');
+// or
+$container->alias('Foo', array('alias1', 'alias2'));
+```
 
 ## Retrieving data
 ```php
@@ -125,6 +128,29 @@ $foo = $container('Foo', array('three' => 'three'));
 ```
 
 ## Scopes
+If you wish to limit the scope for dependencies you can use scopes:
+```php
+$container->scope('foo')->set(new Service('One'));
+$container->scope('foo')->set(new Two);
+$container->scope('foo')->set(new Service('Foo'));
+// Service "Foo" will look for dependencies in scope "foo"
+$foo1 = $container->scope('foo')->Foo;
+// ...
+$container->scope('bar')->set(new Service('One'));
+$container->scope('bar')->set(new Two);
+$container->scope('bar')->set(new Service('Foo'));
+// Service "Foo" will look for dependencies in scope "bar"
+$foo1 = $container->scope('bar')->Foo;
+```
+Also you can group actions in scope:
+```php
+$container->scope('foo', function () use ($container) {
+    $container->set(new Service('One'));
+    $container->set(new Two);
+    $container->set(new Service('Foo'));
+});
+```
+
 ## Kinds of services
 
 ### Service
@@ -177,6 +203,42 @@ $bar = $container->bar;
 
 ## Other actions
 
+* Get raw data from container:
+    *Method: Dim\Container::raw*
+    ```php
+    $container->foo = new Service('Foo');
+    $foo = $container->raw('foo');
+    ```
+    > `$foo` will contains an instance of `Service` class.
+
+* Check that parameter or service is defined:
+    *Methods: Dim\Container::has, Dim\Container::offsetExists, Dim\Container::__isset*
+    ```php
+    $container->foo = new Service('Foo');
+    $foo = $container->has('foo');
+    // or
+    $foo = isset($container['foo']);
+    // or
+    $foo = isset($container->foo);
+    // ...
+    $bar = $container->has('bar');
+    ```
+    > `$foo` will contains `true`, `$bar` will contains `false`
+
+* Remove parameter or service from container:
+    *Methods: Dim\Container::remove, Dim\Container::offsetUnset, Dim\Container::__unset*
+    ```php
+    $container->remove('foo');
+    // or
+    unset($container['foo']);
+    // or
+    unset($container->foo);
+    ```
+* Remove all parameters and services from container:
+    *Method: Dim\Container::clear*
+    ```php
+    $container->clear();
+    ```
 
 ## Tests
 To run the test suite, you need [PHPUnit](http://phpunit.de):

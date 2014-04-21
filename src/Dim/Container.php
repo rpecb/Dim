@@ -30,6 +30,7 @@ class Container implements \ArrayAccess
     // TODO: Static analysis
     // TODO: Security analysis
     // TODO: Composer package
+    // TODO: travis-ci, packagist, coveralls, versioneye, github tag
     /**
      * Dependencies.
      *
