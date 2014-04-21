@@ -1,5 +1,5 @@
 {
-	"name": "GR3S/Dim",
+	"name": "gr3s/dim",
 	"description": "The PHP dependency injection manager",
 	"version": "1.0.0",
 	"type": "library",
