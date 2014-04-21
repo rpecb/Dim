@@ -8,6 +8,6 @@ php:
   - hhvm
 
 before_script:
-  - composer install
+  - composer install --dev
 
-script: phpunit --colors --coverage-text
+script: vendor/bin/phpunit --colors --coverage-text
