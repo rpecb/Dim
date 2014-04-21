@@ -1,5 +1,6 @@
 # Dim – PHP Dependency Injection Manager
 [![Build Status](https://travis-ci.org/GR3S/Dim.svg)](https://travis-ci.org/GR3S/Dim)
+[![Coverage Status](https://coveralls.io/repos/GR3S/Dim/badge.png)](https://coveralls.io/r/GR3S/Dim)
 [![License](http://img.shields.io/packagist/l/gres/dim.svg)](https://github.com/GR3S/Dim/blob/master/LICENSE)
 
 Dim is a small, simple and powerful Dependency Injection Container for PHP:
