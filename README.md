@@ -1,5 +1,4 @@
 # Dim – PHP Dependency Injection Manager
-
 Dim is a small, simple and powerful Dependency Injection Container for PHP:
 ```php
 use Dim\Container;
@@ -152,7 +151,6 @@ $container->scope('foo', function () use ($container) {
 ```
 
 ## Kinds of services
-
 ### Service
 *Class: Dim\Service*
 
@@ -202,47 +200,42 @@ $bar = $container->bar;
 ```
 
 ## Other actions
+#### Get raw data from container:
+*Method: Dim\Container::raw*
+```php
+$container->foo = new Service('Foo');
+$foo = $container->raw('foo');
+```
+> `$foo` will contains an instance of `Service` class.
 
-* Get raw data from container:
+#### Check that parameter or service is defined:
+*Methods: Dim\Container::has, Dim\Container::offsetExists, Dim\Container::__isset*
+```php
+$container->foo = new Service('Foo');
+$foo = $container->has('foo');
+// or
+$foo = isset($container['foo']);
+// or
+$foo = isset($container->foo);
+// ...
+$bar = $container->has('bar');
+```
+> `$foo` will contains `true`, `$bar` will contains `false`
 
-    *Method: Dim\Container::raw*
-    ```php
-    $container->foo = new Service('Foo');
-    $foo = $container->raw('foo');
-    ```
-    > `$foo` will contains an instance of `Service` class.
-
-* Check that parameter or service is defined:
-
-    *Methods: Dim\Container::has, Dim\Container::offsetExists, Dim\Container::__isset*
-    ```php
-    $container->foo = new Service('Foo');
-    $foo = $container->has('foo');
-    // or
-    $foo = isset($container['foo']);
-    // or
-    $foo = isset($container->foo);
-    // ...
-    $bar = $container->has('bar');
-    ```
-    > `$foo` will contains `true`, `$bar` will contains `false`
-
-* Remove parameter or service from container:
-
-    *Methods: Dim\Container::remove, Dim\Container::offsetUnset, Dim\Container::__unset*
-    ```php
-    $container->remove('foo');
-    // or
-    unset($container['foo']);
-    // or
-    unset($container->foo);
-    ```
-* Remove all parameters and services from container:
-
-    *Method: Dim\Container::clear*
-    ```php
-    $container->clear();
-    ```
+#### Remove parameter or service from container:
+*Methods: Dim\Container::remove, Dim\Container::offsetUnset, Dim\Container::__unset*
+```php
+$container->remove('foo');
+// or
+unset($container['foo']);
+// or
+unset($container->foo);
+```
+#### Remove all parameters and services from container:
+*Method: Dim\Container::clear*
+```php
+$container->clear();
+```
 
 ## Tests
 To run the test suite, you need [PHPUnit](http://phpunit.de):
