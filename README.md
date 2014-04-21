@@ -204,6 +204,7 @@ $bar = $container->bar;
 ## Other actions
 
 * Get raw data from container:
+
     *Method: Dim\Container::raw*
     ```php
     $container->foo = new Service('Foo');
@@ -212,6 +213,7 @@ $bar = $container->bar;
     > `$foo` will contains an instance of `Service` class.
 
 * Check that parameter or service is defined:
+
     *Methods: Dim\Container::has, Dim\Container::offsetExists, Dim\Container::__isset*
     ```php
     $container->foo = new Service('Foo');
@@ -226,6 +228,7 @@ $bar = $container->bar;
     > `$foo` will contains `true`, `$bar` will contains `false`
 
 * Remove parameter or service from container:
+
     *Methods: Dim\Container::remove, Dim\Container::offsetUnset, Dim\Container::__unset*
     ```php
     $container->remove('foo');
@@ -235,6 +238,7 @@ $bar = $container->bar;
     unset($container->foo);
     ```
 * Remove all parameters and services from container:
+
     *Method: Dim\Container::clear*
     ```php
     $container->clear();
