@@ -10,7 +10,11 @@ php:
 before_script:
   - composer install --dev
 
-script: vendor/bin/phpunit --colors --coverage-text
+script:
+  - vendor/bin/phpunit --colors --coverage-text
+
+after_script:
+  - php vendor/bin/coveralls
 
 matrix:
   allow_failures:
